@@ -1,0 +1,7 @@
+@import "../common/page";
+
+#draft-page {
+  @include page();
+
+  background: #00F;
+}

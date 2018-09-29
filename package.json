@@ -1,0 +1,40 @@
+{
+  "name": "draftcraft",
+  "version": "1.0.0",
+  "description": "This is a web game allaws users learn drafting with fun",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasiliy-uskov/draftcraft.git"
+  },
+  "author": "https://github.com/vasiliy-uskov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vasiliy-uskov/draftcraft/issues"
+  },
+  "homepage": "https://github.com/vasiliy-uskov/draftcraft#readme",
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "browserify": "^16.2.3",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.3",
+    "gulp-scss": "^1.4.0",
+    "gulp-uglify": "^3.0.1",
+    "modulename": "0.0.4",
+    "through2": "^2.0.3",
+    "typescript": "^3.1.1"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^3.0.1",
+    "modulename": "0.0.4",
+    "tsify": "^4.0.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}
