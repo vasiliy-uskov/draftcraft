@@ -1,12 +1,15 @@
-import {Disposable} from "../disposable/Disposable";
+import {Component} from "../components/Component";
 import {PagesType} from "./PagesType";
 import {EventDispatcher} from "../disposable/EventDispatcher";
 
-class BasePage extends Disposable{
+class BasePage extends Component {
     constructor(container: HTMLElement) {
-        super();
-        this._container = container;
+        super({
+            baseElement: container,
+            className: "page",
+        });
     }
+
     public open(): Promise<void> {
         return Promise.resolve();
     }
@@ -24,7 +27,6 @@ class BasePage extends Disposable{
         this._changePageRequestEvent.dispatch(page);
     }
 
-    private _container: HTMLElement;
     private _changePageRequestEvent: EventDispatcher<PagesType> = this._createEventDispatcher<PagesType>();
 }
 

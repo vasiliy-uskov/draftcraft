@@ -5,4 +5,16 @@ function verify<T>(a: T | null): T {
     throw new Error("Unexpected null");
 }
 
-export {verify};
+function isBool(a: any): boolean {
+    return typeof a == "boolean";
+}
+
+function isNumber(a: any): boolean {
+    return typeof a == "number";
+}
+
+function isString(a: any): boolean {
+    return typeof a == "string";
+}
+
+export {verify, isBool, isNumber, isString};
