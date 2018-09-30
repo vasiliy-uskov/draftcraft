@@ -39,7 +39,7 @@ class BemInfo {
 
     private _blockName: string;
     private _elementName: string|void;
-    private _modifiers: Map<string, string|boolean|number>;
+    private _modifiers: Map<string, string|boolean|number> = new Map();
 }
 
 export {BemInfo};

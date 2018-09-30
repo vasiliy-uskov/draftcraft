@@ -16,6 +16,7 @@ class Component extends Disposable {
         if (config.bemInfo) {
             this._bemInfo.push(config.bemInfo);
         }
+        this._invalidateClassName();
     }
 
     public addChild(child: HTMLElement) {
@@ -68,13 +69,31 @@ class Component extends Disposable {
         }
     }
 
-    createChildBemInfo(elementName: string): BemInfo {
+    public createChildBemInfo(elementName: string): BemInfo {
         return new BemInfo(this._bemInfo[0].blockName(), elementName);
     }
 
     public setStyle(style: string, value: string|number) {
         const prevStyle = this._baseElement.getAttribute("style");
         this._baseElement.setAttribute("style", prevStyle + ";" + `${style}: ${value}`);
+    }
+
+    public updateModifier(modifier: string, value: string|number|boolean) {
+        this._bemInfo[0].updateModifier(modifier, value);
+        this._invalidateClassName()
+    }
+
+    public addBemInfo(bemInfo: BemInfo) {
+        this._bemInfo.push(bemInfo);
+        this._invalidateClassName();
+    }
+
+    private _invalidateClassName() {
+        let className = "";
+        for (const bemInfo of this._bemInfo) {
+            className += className ? " " + bemInfo.getClassName() : bemInfo.getClassName();
+        }
+        this._baseElement.setAttribute("class", className)
     }
 
     private _initBaseElement(tagName?: string, baseElement?: HTMLElement) {
