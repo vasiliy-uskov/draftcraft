@@ -13,7 +13,7 @@ class EventDispatcher<T> implements IDisposable {
         this._handlers.splice(handlerIndex, 1);
     }
 
-    dispatch(data: T) {
+    dispatch(data?: T) {
         for (const handler of this._handlers) {
             handler(data);
         }

@@ -9,7 +9,7 @@ class FramesController {
         framesHandlers.push(handler);
     }
     static removeFrameHandler(handler: IFrameHandler) {
-        const handlerIndex = this._framesHandlers.indexOf(handler);
+        const handlerIndex = framesHandlers.indexOf(handler);
         framesHandlers.splice(handlerIndex, 1);
     }
 }

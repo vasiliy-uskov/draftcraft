@@ -2,26 +2,35 @@ const gulp = require("gulp");
 const uglify = require("gulp-uglify");
 
 gulp.task("compile-ts", () => {
-	var browserify = require("browserify");
-	var source = require('vinyl-source-stream');
-	var tsify = require("tsify");
-	var sourcemaps = require('gulp-sourcemaps');
-	var streamify = require('gulp-streamify');
-	const babel = require("gulp-babel");
+	const browserify = require("browserify");
+	const source = require('vinyl-source-stream');
+	const tsify = require("tsify");
+	const sourcemaps = require('gulp-sourcemaps');
+	const watchify = require("watchify");
+	const gutil = require("gulp-util");
+	var buffer = require('vinyl-buffer');
+	const babelify = require("babelify");
 	return browserify({
 		basedir: '.',
-		debug: true,
+		debug: false,
 		entries: ['src/app.ts'],
 		cache: {},
 		packageCache: {}
-	}).plugin(tsify)
-		.bundle()
-		.pipe(source('index.js'))
-		.pipe(streamify(babel({presets: ["es2015"]})))
-		.pipe(streamify(sourcemaps.init({loadMaps: true})))
-		.pipe(streamify(uglify()))
-		.pipe(streamify(sourcemaps.write('./')))
-		.pipe(gulp.dest("bin/build"));
+	})
+	.plugin(tsify)
+		.transform(babelify.configure({
+			presets: ["es2015"],
+			extensions: ['.js', '.ts']
+		}
+	)).bundle().on('error', (error) => {
+			console.log(error.message);
+		})
+	.pipe(source('index.js'))
+	.pipe(buffer())
+	.pipe(sourcemaps.init({loadMaps: true}))
+	.pipe(uglify())
+	.pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest("bin/build"));
 });
 
 gulp.task("compile-scss", () => {

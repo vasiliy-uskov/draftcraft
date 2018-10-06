@@ -13,7 +13,8 @@ interface IAnimation {
 }
 
 class Animation extends Disposable implements IAnimation, IFrameHandler {
-    constructor(startValues: Array<number>, endValues: Array<number>, leadTime: number, accFn: (x: number) => number|void = (x) => x) {
+    constructor(startValues: Array<number>, endValues: Array<number>, leadTime: number, accFn: ((x: number) => number)) {
+        super();
         this._startValues = startValues;
         this._endValues = endValues;
         this._leadTime = leadTime;
@@ -33,13 +34,13 @@ class Animation extends Disposable implements IAnimation, IFrameHandler {
     }
 
     public play() {
-        this._startTime = Data.now();
+        this._startTime = Date.now();
         this._progress = 0;
         FramesController.addFrameHandler(this);
     }
 
     public stop(goToEnd: boolean|void) {
-        FramesController.removeHandler(this);
+        FramesController.removeFrameHandler(this);
         if (goToEnd) {
             this._progress = 1;
             this._frameEvent.dispatch(this._getCurrentValues(this._progress));
@@ -52,14 +53,14 @@ class Animation extends Disposable implements IAnimation, IFrameHandler {
     }
 
     public onFrame() {
-        const now = Data.now();
+        const now = Date.now();
         this._progress = (this._startTime - now) / this._leadTime;
         if (this._progress > 1) {
-            progress = 1;
+            this._progress = 1;
         }
         this._frameEvent.dispatch(this._getCurrentValues(this._progress));
         if (this._progress == 1) {
-            FramesController.removeHandler(this);
+            FramesController.removeFrameHandler(this);
             this._endEvent.dispatch();
         }
     }
@@ -85,7 +86,7 @@ class Animation extends Disposable implements IAnimation, IFrameHandler {
     private _leadTime: number;
 }
 
-function createAnimation(startValues: Array<number>, endValues: Array<number>, leadTime: number, accFn: (x: number) => number|void): IAnimation {
+function createAnimation(startValues: Array<number>, endValues: Array<number>, leadTime: number, accFn: (x: number) => number = (x) => x): IAnimation {
     return new Animation(startValues, endValues, leadTime, accFn);
 }
 
