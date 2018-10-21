@@ -35,6 +35,7 @@ class Animation extends Disposable implements IAnimation, IFrameHandler {
     }
 
     public play() {
+        this._startEvent.dispatch();
         this._startTime = Date.now();
         this._progress = 0;
         FramesController.addFrameHandler(this);

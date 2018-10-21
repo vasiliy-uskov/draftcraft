@@ -7,7 +7,9 @@ class Messages {
             "levelsButton": "LEVELS",
             "logo": "DraftCraft",
         });
-        this._messages.set(PagesType.LevelsPage, {});
+        this._messages.set(PagesType.LevelsPage, {
+            "back": "BACK",
+        });
         this._messages.set(PagesType.ResultPage, {});
         this._messages.set(PagesType.DraftPage, {});
     }

@@ -4,13 +4,13 @@ import {EventDispatcher} from "../../disposable/EventDispatcher";
 import {BemInfo} from "../component/BemInfo";
 
 class Button extends Component {
-    constructor({text, bemInfo}: {text: string, bemInfo: BemInfo}) {
+    constructor({content, bemInfo}: {content: string, bemInfo: BemInfo}) {
         super({
             tagName: TagsName.button,
             blockName: "button",
+            content,
         });
         this.addBemInfo(bemInfo);
-        this.setTextContent(text);
         this._listen("click", this, (event) => this._clickEvent.dispatch(event));
     }
 

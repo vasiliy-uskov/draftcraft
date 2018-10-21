@@ -18,25 +18,22 @@ class StartPage extends BasePage {
         logo.setTextContent(this._getMessage("logo"));
         menu.addChild(logo);
 
-        this._startButton = new Button({
-            text: this._getMessage("startButton"),
+        const startButton = new Button({
+            content: this._getMessage("startButton"),
             bemInfo: menu.createChildBemInfo("start-button")
         });
-        menu.addChild(this._startButton);
-        this._addDisposable(this._startButton);
-        this._addHandler(this._startButton.clickEvent(), () => this._sendChangePageRequest(PagesType.DraftPage));
+        menu.addChild(startButton);
+        this._addDisposable(startButton);
+        this._addHandler(startButton.clickEvent(), () => this._sendChangePageRequest(PagesType.DraftPage));
 
-        this._levelsButton = new Button({
-            text: this._getMessage("levelsButton"),
+        const levelsButton = new Button({
+            content: this._getMessage("levelsButton"),
             bemInfo: menu.createChildBemInfo("levels-button")
         });
-        menu.addChild(this._levelsButton);
-        this._addDisposable(this._levelsButton);
-        this._addHandler(this._levelsButton.clickEvent(), () => this._sendChangePageRequest(PagesType.LevelsPage));
+        menu.addChild(levelsButton);
+        this._addDisposable(levelsButton);
+        this._addHandler(levelsButton.clickEvent(), () => this._sendChangePageRequest(PagesType.LevelsPage));
     }
-
-    _startButton: Button;
-    _levelsButton: Button;
 }
 
 export {StartPage};

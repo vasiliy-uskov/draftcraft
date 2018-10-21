@@ -1,3 +1,6 @@
+const MAX_STARS_COUNT = 3;
+const MAX_SCORE = 1000;
+
 class Level {
     constructor(task: string, help: string, img: string|null, score: number|null = null) {
         this._task = task;
@@ -8,6 +11,11 @@ class Level {
 
     public score(): number|null {
         return this._score;
+    }
+
+    public starsCount(): number {
+        const score = this._score ? this._score : 0;
+        return Math.floor(score * MAX_STARS_COUNT / MAX_SCORE) ;
     }
 
     public img(): string|null {

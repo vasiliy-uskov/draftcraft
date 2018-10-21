@@ -16,30 +16,26 @@ class BasePage extends Component {
     }
 
     public open(transitionDirection: Direction): Promise<void> {
-        console.trace(this._pageType);
         const animation = new Transition(this, transitionDirection, false);
         this._addDisposable(animation);
-        this.setStyle("display", "block");
-        return new Promise((resolve, reject) => {
-            this._addHandlerCallOnce(animation.endEvent(), () => {
-                resolve();
-                this._removeDisposable(animation);
-            });
-            animation.play();
+        this._addHandlerCallOnce(animation.endEvent(), () => {
+            this._removeDisposable(animation);
         });
+        this.setStyle("transform", "scale(0)"); //to hide an element
+        this.setStyle("display", "block");
+        animation.play();
+        return Promise.resolve();
     }
 
     public close(transitionDirection: Direction): Promise<void> {
         const animation = new Transition(this, transitionDirection, true);
         this._addDisposable(animation);
-        return new Promise((resolve, reject) => {
-            this._addHandlerCallOnce(animation.endEvent(), () => {
-                resolve();
-                this._removeDisposable(animation);
-                this.setStyle("display", "none");
-            });
-            animation.play()
+        this._addHandlerCallOnce(animation.endEvent(), () => {
+            this._removeDisposable(animation);
+            this.setStyle("display", "none");
         });
+        animation.play();
+        return Promise.resolve();
     }
 
     /** @final */

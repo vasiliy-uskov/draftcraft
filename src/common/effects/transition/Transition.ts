@@ -38,7 +38,7 @@ class Transition extends Disposable {
             case Direction.Top:
                 return `translate(0, ${reversed ? shift - 100 : -shift}%)`;
             case Direction.Right:
-                return `translate(${reversed ? shift - 100 : shift}%)`;
+                return `translate(${reversed ? 100 - shift : shift}%)`;
             case Direction.Left:
                 return `translate(${reversed ? shift - 100 : -shift}%)`;
         }

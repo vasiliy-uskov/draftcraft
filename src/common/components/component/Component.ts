@@ -10,6 +10,7 @@ class Component extends Disposable {
         tagName?: TagsName,
         blockName?: string,
         bemInfo?: BemInfo,
+        content?: string,
     }) {
         super();
         this._initBaseElement(config.tagName, config.baseElement);
@@ -18,6 +19,9 @@ class Component extends Disposable {
         }
         if (config.bemInfo) {
             this._bemInfo.push(config.bemInfo);
+        }
+        if (config.content) {
+            this._baseElement.innerHTML = config.content;
         }
         this._invalidateClassName();
     }
@@ -35,6 +39,13 @@ class Component extends Disposable {
     public removeChild(component: Component|Node) {
         const element = component instanceof Node ? component : component.element();
         this._baseElement.removeChild(element);
+    }
+
+    removeChildren() {
+        const children = this._baseElement.children;
+        for (let i = 0; i < children.length; ++i) {
+            this.removeChild(children[i]);
+        }
     }
 
     public element(): HTMLElement {
