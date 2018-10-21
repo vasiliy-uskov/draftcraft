@@ -5,6 +5,7 @@ class Messages {
         this._messages.set(PagesType.StartPage, {
             "startButton": "PLAY",
             "levelsButton": "LEVELS",
+            "logo": "DraftCraft",
         });
         this._messages.set(PagesType.LevelsPage, {});
         this._messages.set(PagesType.ResultPage, {});

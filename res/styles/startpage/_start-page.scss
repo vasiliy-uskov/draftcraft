@@ -1,2 +1,13 @@
 #start-page {
+  .game-menu {
+    position: relative;
+    width: 570px;
+    margin: auto;
+    top: calc(50% - 200px);
+    z-index: 1;
+  }
+
+  .game-menu__game-logo {
+    font: bold 110px Tahoma;
+  }
 }

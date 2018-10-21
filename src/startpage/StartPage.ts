@@ -11,10 +11,12 @@ class StartPage extends BasePage {
         const menu = new Component({
             blockName: "game-menu",
         });
-        menu.addChild(new Component({
-            bemInfo: menu.createChildBemInfo("game-logo"),
-        }));
         this.addChild(menu);
+        const logo = new Component({
+            bemInfo: menu.createChildBemInfo("game-logo"),
+        });
+        logo.setTextContent(this._getMessage("logo"));
+        menu.addChild(logo);
 
         this._startButton = new Button({
             text: this._getMessage("startButton"),
