@@ -1,13 +1,24 @@
 #start-page {
   .game-menu {
     position: relative;
-    width: 570px;
+    width: 604px;
     margin: auto;
-    top: calc(50% - 200px);
+    top: calc(50% - 70px);
     z-index: 1;
-  }
+    transform: translate(0, -50%);
 
-  .game-menu__game-logo {
-    font: bold 110px Tahoma;
+    &__game-logo {
+      font: bold 120px $FONT_FAMILY;
+      width: 570px;
+      margin: auto;
+    }
+
+    &__levels-button {
+      margin-left: 90px;
+    }
+
+    &__start-button {
+      margin-top: 16px;
+    }
   }
 }
