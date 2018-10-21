@@ -10,7 +10,7 @@ class BasePage extends Component {
             blockName: "page",
         });
         this._messages = messages;
-        this._pageType = this._pageType;
+        this._pageType = pageType;
     }
 
     public open(): Promise<void> {

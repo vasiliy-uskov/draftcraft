@@ -6,8 +6,6 @@ gulp.task("compile-ts", () => {
 	const source = require('vinyl-source-stream');
 	const tsify = require("tsify");
 	const sourcemaps = require('gulp-sourcemaps');
-	const watchify = require("watchify");
-	const gutil = require("gulp-util");
 	var buffer = require('vinyl-buffer');
 	const babelify = require("babelify");
 	return browserify({
@@ -37,6 +35,7 @@ gulp.task("compile-scss", () => {
 	const scss = require("gulp-scss");
 	const cssBase64 = require("gulp-css-base64");
 	const fs = require("fs");
+	const gutil = require("gulp-util");
 	const expandJsTpl = () => {
 		const cssFilePath = "./bin/build/styles.css";
 		const outStylesPath = "./bin/build/styles.js";
@@ -46,8 +45,10 @@ gulp.task("compile-scss", () => {
 			if (error) {console.log(error);}
 		});
 		const styleTemplate = fs.readFileSync(templatePath, "utf-8");
-		fs.writeFileSync(outStylesPath, styleTemplate.replace(/{STYLES}/g, styles));
-		gulp.src(outStylesPath).pipe(uglify()).pipe(gulp.dest((file) => file.base));
+		fs.writeFileSync(outStylesPath, styleTemplate.replace(/{STYLES}/g, styles.replace(/\"/g, "\\\"")));
+		gulp.src(outStylesPath).pipe(uglify()).on('error',(err) => {
+			gutil.log(gutil.colors.red('[Error]'), err.toString());
+		}).pipe(gulp.dest((file) => file.base));
 	};
 	gulp.src("res/styles/styles.scss")
 		.pipe(scss({
