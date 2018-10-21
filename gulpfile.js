@@ -33,7 +33,7 @@ gulp.task("compile-ts", () => {
 
 gulp.task("compile-scss", () => {
 	const scss = require("gulp-scss");
-	const cssBase64 = require("gulp-css-base64");
+	const base64Inline = require("gulp-base64-inline");
 	const fs = require("fs");
 	const gutil = require("gulp-util");
 	const expandJsTpl = () => {
@@ -56,7 +56,7 @@ gulp.task("compile-scss", () => {
 			tmpPath: "",
 			style: "compressed"
 		}))
-		.pipe(cssBase64())
+		.pipe(base64Inline())
 		.pipe(gulp.dest("bin/build")).on("end", expandJsTpl);
 });
 
