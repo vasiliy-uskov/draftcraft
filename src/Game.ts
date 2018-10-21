@@ -6,29 +6,30 @@ import {LevelsPage} from "./levelspage/LevelsPage";
 import {ResultPage} from "./resultpage/ResultPage";
 import {DraftPage} from "./draftpage/DraftPage";
 import {GameContext} from "./model/GameContext";
+import {Messages} from "./common/lng/Messages";
 
 class Game extends Disposable {
-    constructor(gameContext: GameContext) {
+    constructor(gameContext: GameContext, messages: Messages) {
         super();
-        this._startPage = new StartPage(verify<HTMLElement>(document.getElementById("start-page")));
+        this._startPage = new StartPage(verify<HTMLElement>(document.getElementById("start-page")), messages);
         this._addHandler(this._startPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
         const levelsPageContainer = verify<HTMLElement>(document.getElementById("levels-page"));
-        this._levelsPage = new LevelsPage(levelsPageContainer, gameContext);
+        this._levelsPage = new LevelsPage(levelsPageContainer, gameContext, messages);
         this._addHandler(this._levelsPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
         const resultPageContainer = verify<HTMLElement>(document.getElementById("result-page"));
-        this._resultPage = new ResultPage(resultPageContainer, gameContext);
+        this._resultPage = new ResultPage(resultPageContainer, gameContext, messages);
         this._addHandler(this._resultPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
         const draftPageContainer = verify<HTMLElement>(document.getElementById("draft-page"));
-        this._draftPage = new DraftPage(draftPageContainer, gameContext);
+        this._draftPage = new DraftPage(draftPageContainer, gameContext, messages);
         this._addHandler(this._draftPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });

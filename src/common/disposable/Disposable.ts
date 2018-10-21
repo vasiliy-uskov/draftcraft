@@ -1,9 +1,11 @@
 import {EventDispatcher} from "./EventDispatcher";
 import {IDisposable} from "./IDisposable";
+import {Component} from "../components/component/Component";
 
 class Disposable {
     public dispose() {
         this._destruct();
+        this._removeDependency(...this._dependentObjects);
         for (const dependentObject of this._dependentObjects) {
             dependentObject.dispose()
         }
@@ -12,6 +14,7 @@ class Disposable {
             handlerCleaner();
         }
         delete this._handlerCleaners;
+        delete this._listenedEvents;
     }
 
     protected _destruct() {}
@@ -26,6 +29,13 @@ class Disposable {
     /** @final */
     protected _addDisposable(dependentObject: IDisposable) {
         this._dependentObjects.push(dependentObject);
+    }
+
+    /** @final */
+    protected _removeDisposable(dependentObject: IDisposable) {
+        this._removeDependency(dependentObject);
+        this._dependentObjects.splice(this._dependentObjects.indexOf(dependentObject), 1);
+        dependentObject.dispose();
     }
 
     /** @final */
@@ -47,6 +57,56 @@ class Disposable {
         delete this._handlerCleaners[eventId];
     }
 
+    protected _listen(type: string, target: Component, handler): number /*event id*/  {
+       if (!this._listenedEvents.has(target)) {
+           this._listenedEvents.set(target, new Map());
+           this._listenedEventsCleaners.set(target, new Map());
+       }
+       const componentEvents = this._listenedEvents.get(target);
+       const componentEventsCleaner = this._listenedEventsCleaners.get(target);
+       if (!componentEvents.has(type)) {
+           const event = this._createEventDispatcher<Event>();
+           componentEvents.set(type, event);
+           const dispatchEvent = (browserEvent: Event) => event.dispatch(browserEvent);
+           target.element().addEventListener(type, dispatchEvent);
+           componentEventsCleaner.set(type, () => {
+               target.element().removeEventListener(type, dispatchEvent)
+           });
+       }
+       const handlerId = this._addHandler(componentEvents.get(type), handler);
+       if (!this._dependentObjectHandlersIds.has(target)) {
+           this._dependentObjectHandlersIds.set(target, [])
+       }
+       this._dependentObjectHandlersIds.get(target).push(handlerId);
+       return handlerId;
+    }
+
+    _unlisten(id: number) {
+        this._removeHandler(id);
+        for (const [dependentObject, ids] of this._dependentObjectHandlersIds) {
+            if (!ids.length) {
+                this._removeDependency(dependentObject);
+            }
+        }
+    }
+
+    _removeDependency(...dependentObjects: Array<IDisposable>) {
+        for (const dependentObject of dependentObjects) {
+            for (const handlerId of this._dependentObjectHandlersIds.get(dependentObject)) {
+                this._removeHandler(handlerId);
+            }
+            for (const cleaner of this._listenedEventsCleaners.get(dependentObject).values()) {
+                cleaner();
+            }
+            this._listenedEventsCleaners.delete(dependentObject);
+            this._dependentObjectHandlersIds.delete(dependentObject);
+            this._listenedEvents.delete(dependentObject);
+        }
+    }
+
+    private _listenedEvents: Map<IDisposable, Map<string, EventDispatcher<Event>>> = new Map();
+    private _listenedEventsCleaners: Map<IDisposable, Map<string, () => void>> = new Map();
+    private _dependentObjectHandlersIds: Map<IDisposable, Array<number>> = new Map();
     private _handlerCleaners: Array<() => void> = [];
     private _dependentObjects: Array<IDisposable> = [];
 }

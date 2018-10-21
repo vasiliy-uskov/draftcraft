@@ -1,4 +1,4 @@
-import {isBool} from "../utils/typetools";
+import {isBool} from "../../utils/typetools";
 
 class BemInfo {
     constructor(blockName: string, elementName?: string) {

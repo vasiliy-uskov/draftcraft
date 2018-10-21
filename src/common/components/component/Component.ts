@@ -1,17 +1,19 @@
-import {Disposable} from "../disposable/Disposable";
+import {Disposable} from "../../disposable/Disposable";
 import {BemInfo} from "./BemInfo";
+import {TagsName} from "../TagsName";
+import {EventDispatcher} from "../../disposable/EventDispatcher";
 
 class Component extends Disposable {
     constructor(config: {
         baseElement?: HTMLElement,
-        tagName?: string,
-        className?: string,
+        tagName?: TagsName,
+        blockName?: string,
         bemInfo?: BemInfo,
     }) {
         super();
         this._initBaseElement(config.tagName, config.baseElement);
-        if (config.className) {
-            this._bemInfo.push(new BemInfo(config.className));
+        if (config.blockName) {
+            this._bemInfo.push(new BemInfo(config.blockName));
         }
         if (config.bemInfo) {
             this._bemInfo.push(config.bemInfo);
@@ -19,16 +21,19 @@ class Component extends Disposable {
         this._invalidateClassName();
     }
 
-    public addChild(child: HTMLElement) {
-        this._baseElement.appendChild(child);
+    public addChild(component: Component|Node) {
+        const element = component instanceof Node ? component : component.element();
+        this._baseElement.appendChild(element);
     }
 
-    public insertChild(child: HTMLElement, position: number) {
-        this._baseElement.insertBefore(child, this._baseElement.childNodes[position]);
+    public insertChild(component: Component|Node, position: number) {
+        const element = component instanceof Node ? component : component.element();
+        this._baseElement.insertBefore(element, this._baseElement.childNodes[position]);
     }
 
-    public removeChild(child: HTMLElement) {
-        this._baseElement.removeChild(child);
+    public removeChild(component: Component|Node) {
+        const element = component instanceof Node ? component : component.element();
+        this._baseElement.removeChild(element);
     }
 
     public element(): HTMLElement {
@@ -49,6 +54,10 @@ class Component extends Disposable {
 
     public y(): number {
         return this._baseElement.offsetTop;
+    }
+
+    setTextContent(text: string) {
+        this.addChild(document.createTextNode(text));
     }
 
     public setWidth(width: number) {
@@ -96,17 +105,15 @@ class Component extends Disposable {
         this._baseElement.setAttribute("class", className)
     }
 
-    private _initBaseElement(tagName?: string, baseElement?: HTMLElement) {
+    private _initBaseElement(tagName?: TagsName, baseElement?: HTMLElement) {
         if (baseElement && tagName) {
             throw new Error("Undefined behavior: tagName and baseElement is set");
-        }
-        else if (!baseElement && !tagName) {
-            throw new Error("Undefined behavior: tagName and baseElement is unset");
         }
         if (baseElement) {
             this._baseElement = baseElement;
         }
-        if (tagName) {
+        if (tagName || !baseElement) {
+            tagName = tagName ? tagName : TagsName.div;
             this._baseElement = document.createElement(tagName);
         }
     }
