@@ -2,6 +2,8 @@ import {Component} from "../components/component/Component";
 import {PagesType} from "./PagesType";
 import {EventDispatcher} from "../disposable/EventDispatcher";
 import {Messages} from "../lng/Messages";
+import {Transition} from "../effects/transition/Transition";
+import {Direction} from "../effects/transition/Direction";
 
 class BasePage extends Component {
     constructor(container: HTMLElement, messages: Messages, pageType: PagesType) {
@@ -13,11 +15,31 @@ class BasePage extends Component {
         this._pageType = pageType;
     }
 
-    public open(): Promise<void> {
-        return Promise.resolve();
+    public open(transitionDirection: Direction): Promise<void> {
+        console.trace(this._pageType);
+        const animation = new Transition(this, transitionDirection, false);
+        this._addDisposable(animation);
+        this.setStyle("display", "block");
+        return new Promise((resolve, reject) => {
+            this._addHandlerCallOnce(animation.endEvent(), () => {
+                resolve();
+                this._removeDisposable(animation);
+            });
+            animation.play();
+        });
     }
-    public close(): Promise<void> {
-        return Promise.resolve();
+
+    public close(transitionDirection: Direction): Promise<void> {
+        const animation = new Transition(this, transitionDirection, true);
+        this._addDisposable(animation);
+        return new Promise((resolve, reject) => {
+            this._addHandlerCallOnce(animation.endEvent(), () => {
+                resolve();
+                this._removeDisposable(animation);
+                this.setStyle("display", "none");
+            });
+            animation.play()
+        });
     }
 
     /** @final */

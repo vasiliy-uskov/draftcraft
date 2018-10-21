@@ -2,13 +2,14 @@ import {Disposable} from "../disposable/Disposable";
 import {EventDispatcher} from "../disposable/EventDispatcher";
 import {IFrameHandler} from "./FramesController";
 import {FramesController} from "./FramesController";
+import {IDisposable} from "../disposable/IDisposable";
 
-interface IAnimation {
+interface IAnimation extends IDisposable {
     startEvent(): EventDispatcher<void>;
     endEvent(): EventDispatcher<void>;
     frameEvent(): EventDispatcher<Array<number>>;
     play();
-    stop(goToEnd: boolean|void);
+    stop(goToEnd?: boolean);
     state(): number; // progress from 0 to 1
 }
 
@@ -39,7 +40,7 @@ class Animation extends Disposable implements IAnimation, IFrameHandler {
         FramesController.addFrameHandler(this);
     }
 
-    public stop(goToEnd: boolean|void) {
+    public stop(goToEnd: boolean = false) {
         FramesController.removeFrameHandler(this);
         if (goToEnd) {
             this._progress = 1;
@@ -54,7 +55,7 @@ class Animation extends Disposable implements IAnimation, IFrameHandler {
 
     public onFrame() {
         const now = Date.now();
-        this._progress = (this._startTime - now) / this._leadTime;
+        this._progress = (now - this._startTime) / this._leadTime;
         if (this._progress > 1) {
             this._progress = 1;
         }

@@ -6,13 +6,13 @@ class Disposable {
     public dispose() {
         this._destruct();
         this._removeDependency(...this._dependentObjects);
+        for (const handlerCleaner of this._handlerCleaners) {
+            handlerCleaner();
+        }
         for (const dependentObject of this._dependentObjects) {
             dependentObject.dispose()
         }
         delete this._dependentObjects;
-        for (const handlerCleaner of this._handlerCleaners) {
-            handlerCleaner();
-        }
         delete this._handlerCleaners;
         delete this._listenedEvents;
     }
@@ -29,6 +29,9 @@ class Disposable {
     /** @final */
     protected _addDisposable(dependentObject: IDisposable) {
         this._dependentObjects.push(dependentObject);
+        this._dependentObjectHandlersIds.set(dependentObject, []);
+        this._listenedEvents.set(dependentObject, new Map);
+        this._listenedEventsCleaners.set(dependentObject, new Map);
     }
 
     /** @final */
@@ -48,6 +51,14 @@ class Disposable {
         return handlerCleanerId;
     }
 
+    _addHandlerCallOnce<T>(event: EventDispatcher<T>, handler: (arg: T) => void): number /*event id*/ {
+        const id = this._addHandler<T>(event, (arg: T) => {
+            handler(arg);
+            this._removeHandler(id);
+        });
+        return id;
+    }
+
     /** @final */
     protected _removeHandler(eventId: number) {
         if (!this._handlerCleaners.hasOwnProperty(eventId)) {
@@ -55,6 +66,9 @@ class Disposable {
         }
         this._handlerCleaners[eventId]();
         delete this._handlerCleaners[eventId];
+        for (const [,ids] of this._dependentObjectHandlersIds) {
+            ids.splice(ids.indexOf(eventId), 1);
+        }
     }
 
     protected _listen(type: string, target: Component, handler): number /*event id*/  {

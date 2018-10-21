@@ -32,7 +32,7 @@ class StartPage extends BasePage {
         });
         menu.addChild(this._levelsButton);
         this._addDisposable(this._levelsButton);
-        this._addHandler(this._startButton.clickEvent(), () => this._sendChangePageRequest(PagesType.LevelsPage));
+        this._addHandler(this._levelsButton.clickEvent(), () => this._sendChangePageRequest(PagesType.LevelsPage));
     }
 
     _startButton: Button;

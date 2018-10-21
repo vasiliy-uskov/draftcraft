@@ -18,6 +18,7 @@ const animationFrameCallback = () => {
     for (const handler of framesHandlers) {
         handler.onFrame();
     }
+    requestAnimationFrame(animationFrameCallback);
 };
 requestAnimationFrame(animationFrameCallback);
 

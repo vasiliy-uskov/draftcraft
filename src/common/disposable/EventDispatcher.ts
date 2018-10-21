@@ -7,9 +7,6 @@ class EventDispatcher<T> implements IDisposable {
 
     removeHandler(handler: (arg: T) => void) {
         const handlerIndex = this._handlers.indexOf(handler);
-        if (handlerIndex < 0) {
-            throw new Error(`No handler ${handler}`);
-        }
         this._handlers.splice(handlerIndex, 1);
     }
 
