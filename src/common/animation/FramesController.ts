@@ -1,5 +1,5 @@
 interface IFrameHandler {
-    onFrame();
+    onFrame(): void;
 }
 
 const framesHandlers: Array<IFrameHandler> = [];

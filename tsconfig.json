@@ -15,7 +15,10 @@
       "es2015.reflect",
       "es2015.symbol",
       "es2015.symbol.wellknown"
-    ]
+    ],
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true
   },
   "exclude": [
     "node_modules"

@@ -2,24 +2,25 @@ import {PagesType} from "../page/PagesType";
 
 class Messages {
     constructor() {
-        this._messages.set(PagesType.StartPage, {
-            "startButton": "PLAY",
-            "levelsButton": "LEVELS",
-            "logo": "DraftCraft",
-        });
-        this._messages.set(PagesType.LevelsPage, {
-            "back": "BACK",
-        });
-        this._messages.set(PagesType.ResultPage, {});
-        this._messages.set(PagesType.DraftPage, {});
+        const startPageMap = new Map<string, string>();
+        startPageMap.set("startButton", "PLAY");
+        startPageMap.set("levelsButton", "LEVELS");
+        startPageMap.set("logo", "DraftCraft");
+        this._messages.set(PagesType.StartPage, startPageMap);
+        const levelsPageMap = new Map<string, string>();
+        this._messages.set(PagesType.LevelsPage, new Map<string, string>());
+        this._messages.set(PagesType.ResultPage, new Map<string, string>());
+        this._messages.set(PagesType.DraftPage, new Map<string, string>());
     }
 
     getMessage(page: PagesType, messageId: string) : string {
-        const message = this._messages.get(page)[messageId];
-        return message ? message : messageId;
+        if (this._messages.has(page) && this._messages.get(page).has(messageId)) {
+            return this._messages.get(page).get(messageId);
+        }
+        return messageId;
     }
 
-    private _messages: Map<PagesType, Object> = new Map();
+    private _messages: Map<PagesType, Map<string, string>> = new Map();
 }
 
 export {Messages};

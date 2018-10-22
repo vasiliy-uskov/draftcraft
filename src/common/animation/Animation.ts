@@ -8,8 +8,8 @@ interface IAnimation extends IDisposable {
     startEvent(): EventDispatcher<void>;
     endEvent(): EventDispatcher<void>;
     frameEvent(): EventDispatcher<Array<number>>;
-    play();
-    stop(goToEnd?: boolean);
+    play(): void;
+    stop(goToEnd?: boolean): void;
     state(): number; // progress from 0 to 1
 }
 

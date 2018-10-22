@@ -11,7 +11,7 @@ class Button extends Component {
             content,
         });
         this.addBemInfo(bemInfo);
-        this._listen("click", this, (event) => this._clickEvent.dispatch(event));
+        this._listen("click", this, (event: Event) => this._clickEvent.dispatch(event));
     }
 
     clickEvent(): EventDispatcher<Event> {

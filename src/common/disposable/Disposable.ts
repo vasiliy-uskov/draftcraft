@@ -71,7 +71,7 @@ class Disposable {
         }
     }
 
-    protected _listen(type: string, target: Component, handler): number /*event id*/  {
+    protected _listen(type: string, target: Component, handler: (event: Event) => void): number /*event id*/  {
        if (!this._listenedEvents.has(target)) {
            this._listenedEvents.set(target, new Map());
            this._listenedEventsCleaners.set(target, new Map());

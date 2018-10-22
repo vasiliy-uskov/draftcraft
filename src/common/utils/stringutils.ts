@@ -1,6 +1,6 @@
 
 function toCamelCase(str: string): string {
-    return String(str).replace(/\-([a-z])/g, function(all, match) { return match.toUpperCase(); });
+    return String(str).replace(/\-([a-z])/g, (all: string, match: string) => { return match.toUpperCase(); });
 }
 
 export {toCamelCase}

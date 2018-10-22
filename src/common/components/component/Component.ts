@@ -96,9 +96,9 @@ class Component extends Disposable {
 
     public setStyle(style: string, value: string|number) {
         style = toCamelCase(style);
-        const setStyle = (style, value) => this._baseElement.style[style] = value;
+        const setStyle = (style: string, value: string|number) => this._baseElement.style.setProperty(style, value.toString());
         const stylesToSet = [style];
-        if (!this._baseElement.style[style]) {
+        if (!this._baseElement.style.hasOwnProperty(style)) {
             stylesToSet.push("Webkit" + style.substr(0, 1).toUpperCase() + style.substr(1, style.length));
             stylesToSet.push("Moz" + style.substr(0, 1).toUpperCase() + style.substr(1, style.length));
             stylesToSet.push("ms" + style.substr(0, 1).toUpperCase() + style.substr(1, style.length));
