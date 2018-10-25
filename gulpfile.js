@@ -16,11 +16,10 @@ gulp.task("compile-ts", () => {
 		packageCache: {}
 	})
 	.plugin(tsify)
-		.transform(babelify.configure({
-			presets: ["es2015"],
-			extensions: ['.js', '.ts']
-		}
-	)).bundle().on('error', (error) => {
+	.transform(babelify.configure({
+		presets: ["es2015"],
+		extensions: ['.js', '.ts']
+	})).bundle().on('error', (error) => {
 			console.log(error.message);
 		})
 	.pipe(source('index.js'))

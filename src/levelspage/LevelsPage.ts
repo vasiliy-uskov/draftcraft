@@ -14,7 +14,7 @@ class LevelsPage extends BasePage {
         super(container, messages, PagesType.LevelsPage);
         this._gameContext = gameContext;
         const startButton = new Button({
-            content: Icons.Back,
+            content: Icons.back(),
             bemInfo: new BemInfo("icon-button")
         });
         this.addChild(startButton);
@@ -36,7 +36,7 @@ class LevelsPage extends BasePage {
         }
         const levels = this._gameContext.getLevels();
         levels.forEach((level, index) => {
-            const levelView = this._createLevelView(level, index);
+            const levelView = this._createLevelView(level, index + 1);
             this._addDisposable(levelView);
             this._listen("click", levelView, () => {
                 this._gameContext.setCurrentLevel(index);
