@@ -35,3 +35,11 @@
   width: 50px;
   border-radius: 9px;
 }
+
+.back-button {
+  svg {
+    transform: rotate(90deg);
+    width: 36px;
+    margin-top: 6px;
+  }
+}

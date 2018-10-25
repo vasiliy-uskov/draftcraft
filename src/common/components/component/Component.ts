@@ -109,7 +109,7 @@ class Component extends Disposable {
     }
 
     public updateModifier(modifier: string, value: string|number|boolean) {
-        this._bemInfo[0].updateModifier(modifier, value);
+        this._bemInfo[this._bemInfo.length - 1].updateModifier(modifier, value);
         this._invalidateClassName()
     }
 

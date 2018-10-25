@@ -4,7 +4,7 @@ import {Messages} from "./common/lng/Messages";
 import {Level} from "./model/Level";
 
 const gameContext = new GameContext([
-    new Level("Task", "Level", "", 300),
+    new Level("Task", "Level", "", 600),
     new Level("Task", "Level", "", 700),
     new Level("Task", "Level", "", 1000),
     new Level("Task", "Level", "", 700),
