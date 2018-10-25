@@ -6,7 +6,7 @@ import {Direction} from "./Direction";
 
 const LEAD_TIME = 600;
 
-class Transition extends Disposable {
+class Translate extends Disposable {
     constructor(component: Component, direction: Direction, reversed: boolean) {
         super();
         this._addDisposable(this._animation);
@@ -48,4 +48,4 @@ class Transition extends Disposable {
     _animation: IAnimation = createAnimation([100], [0], LEAD_TIME);
 }
 
-export {Transition};
+export {Translate};

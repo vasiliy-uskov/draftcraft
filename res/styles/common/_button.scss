@@ -1,7 +1,4 @@
-.button {
-  width: 257px;
-  height: 70px;
-  border-radius: 15px;
+@mixin buttonCommon() {
   box-shadow: 0px 1px 5px rgba(0,0,0,0.6);
   color: #FFFFFF;
   font: 400 25px $FONT_FAMILY;
@@ -23,4 +20,18 @@
     border: 0;
     outline: 0;
   }
+}
+
+.button {
+  width: 257px;
+  height: 70px;
+  border-radius: 15px;
+  @include buttonCommon();
+}
+
+.icon-button {
+  @include buttonCommon();
+  height: 50px;
+  width: 50px;
+  border-radius: 9px;
 }

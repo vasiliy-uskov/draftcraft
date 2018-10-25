@@ -4,19 +4,15 @@ import {Messages} from "../common/lng/Messages";
 import {PagesType} from "../common/page/PagesType";
 import {Button} from "../common/components/button/Button";
 import {Component} from "../common/components/component/Component";
-import {BemInfo} from "../common/components/component/BemInfo";
 import {Direction} from "../common/effects/transition/Direction";
 import {Level} from "../model/Level";
-import {Icons} from "../common/components/Icons";
+import {BackButton} from "../common/components/button/BackButton";
 
 class LevelsPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
         super(container, messages, PagesType.LevelsPage);
         this._gameContext = gameContext;
-        const startButton = new Button({
-            content: Icons.back(),
-            bemInfo: new BemInfo("icon-button")
-        });
+        const startButton = new BackButton(this.createChildBemInfo("back-button"));
         this.addChild(startButton);
         this._addDisposable(startButton);
         this._addHandler(startButton.clickEvent(), () => this._sendChangePageRequest(PagesType.StartPage));

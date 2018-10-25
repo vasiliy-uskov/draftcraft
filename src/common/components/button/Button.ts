@@ -4,13 +4,32 @@ import {EventDispatcher} from "../../disposable/EventDispatcher";
 import {BemInfo} from "../component/BemInfo";
 
 class Button extends Component {
-    constructor({content, bemInfo}: {content: string, bemInfo: BemInfo}) {
+    constructor({content, bemInfo, icon, blockName}: {
+        content?: string,
+        icon?: string
+        bemInfo?: BemInfo,
+        blockName?: string,
+    }) {
         super({
             tagName: TagsName.button,
             blockName: "button",
-            content,
+            content: icon ? icon : content
         });
-        this.addBemInfo(bemInfo);
+        if (icon && content) {
+            throw new Error("Button with content & icon is not implemented");
+        }
+        if (icon) {
+            this.addBemInfo(new BemInfo("icon-button"));
+        }
+        if (content) {
+            this.addBemInfo(new BemInfo("content-button"));
+        }
+        if (blockName) {
+            this.addBemInfo(new BemInfo(blockName));
+        }
+        if (bemInfo) {
+            this.addBemInfo(bemInfo);
+        }
         this._listen("click", this, (event: Event) => this._clickEvent.dispatch(event));
     }
 

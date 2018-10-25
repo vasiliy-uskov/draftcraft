@@ -2,7 +2,7 @@ import {Component} from "../components/component/Component";
 import {PagesType} from "./PagesType";
 import {EventDispatcher} from "../disposable/EventDispatcher";
 import {Messages} from "../lng/Messages";
-import {Transition} from "../effects/transition/Transition";
+import {Translate} from "../effects/transition/Translate";
 import {Direction} from "../effects/transition/Direction";
 
 class BasePage extends Component {
@@ -16,7 +16,7 @@ class BasePage extends Component {
     }
 
     public open(transitionDirection: Direction): Promise<void> {
-        const animation = new Transition(this, transitionDirection, false);
+        const animation = new Translate(this, transitionDirection, false);
         this._addDisposable(animation);
         this._addHandlerCallOnce(animation.endEvent(), () => {
             this._removeDisposable(animation);
@@ -28,7 +28,7 @@ class BasePage extends Component {
     }
 
     public close(transitionDirection: Direction): Promise<void> {
-        const animation = new Transition(this, transitionDirection, true);
+        const animation = new Translate(this, transitionDirection, true);
         this._addDisposable(animation);
         this._addHandlerCallOnce(animation.endEvent(), () => {
             this._removeDisposable(animation);
