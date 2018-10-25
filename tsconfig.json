@@ -22,8 +22,5 @@
   },
   "exclude": [
     "node_modules"
-  ],
-  "files": [
-    "res/images/svg/index.d.ts"
   ]
 }

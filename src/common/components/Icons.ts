@@ -1,8 +1,8 @@
-import * as backIcon from "../../../res/images/svg/back.svg";
+import * as fs from "fs";
 
 class Icons {
     public static back():string {
-        return "";
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/back.svg").toString();
     }
 }
 

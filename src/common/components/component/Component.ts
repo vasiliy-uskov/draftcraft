@@ -1,7 +1,6 @@
 import {Disposable} from "../../disposable/Disposable";
 import {BemInfo} from "./BemInfo";
 import {TagsName} from "../TagsName";
-import {EventDispatcher} from "../../disposable/EventDispatcher";
 import {toCamelCase} from "../../utils/stringutils";
 
 class Component extends Disposable {
