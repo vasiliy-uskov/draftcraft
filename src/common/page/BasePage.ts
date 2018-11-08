@@ -16,10 +16,12 @@ class BasePage extends Component {
     }
 
     public open(transitionDirection: Direction): Promise<void> {
+        this._beforeOpen();
         const animation = new Translate(this, transitionDirection, false);
         this._addDisposable(animation);
         this._addHandlerCallOnce(animation.endEvent(), () => {
             this._removeDisposable(animation);
+            this._afterOpen();
         });
         this.setStyle("transform", "scale(0)"); //to hide an element
         this.setStyle("display", "block");
@@ -28,11 +30,13 @@ class BasePage extends Component {
     }
 
     public close(transitionDirection: Direction): Promise<void> {
+        this._beforeClose();
         const animation = new Translate(this, transitionDirection, true);
         this._addDisposable(animation);
         this._addHandlerCallOnce(animation.endEvent(), () => {
             this._removeDisposable(animation);
             this.setStyle("display", "none");
+            this._afterClose();
         });
         animation.play();
         return Promise.resolve();
@@ -42,6 +46,14 @@ class BasePage extends Component {
     public changePageRequestEvent(): EventDispatcher<PagesType> {
         return this._changePageRequestEvent;
     }
+
+    protected _beforeOpen(): void {}
+
+    protected _afterOpen(): void {}
+
+    protected _beforeClose(): void {}
+
+    protected _afterClose(): void {}
 
     /** @final */
     protected _sendChangePageRequest(page: PagesType) {

@@ -108,6 +108,10 @@ class Component extends Disposable {
         }
     }
 
+    public setAttribute(atrName: string, atrValue: string) {
+        this._baseElement.setAttribute(atrName, atrValue);
+    }
+
     public updateModifier(modifier: string, value: string|number|boolean) {
         this._bemInfo[this._bemInfo.length - 1].updateModifier(modifier, value);
         this._invalidateClassName()

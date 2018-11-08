@@ -27,7 +27,7 @@ gulp.task("compile-ts", () => {
 	.pipe(source('index.js'))
 	.pipe(buffer())
 	.pipe(sourcemaps.init({loadMaps: true}))
-	.pipe(uglify())
+//	.pipe(uglify())
 	.pipe(sourcemaps.write('./'))
 	.pipe(gulp.dest("bin/build"));
 });
