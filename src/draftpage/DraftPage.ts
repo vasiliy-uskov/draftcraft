@@ -8,6 +8,7 @@ import {ITool} from "./tools/ITool";
 import {Icons} from "../common/components/Icons";
 import {LineTool} from "./tools/line/LineTool";
 import {IChange} from "./tools/IChange";
+import {CompassTool} from "./tools/compass/CompassTool";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
@@ -40,14 +41,17 @@ class DraftPage extends BasePage {
     }
 
     private _createTools(): Array<{icon: string, tool: ITool}> {
-        const tools = [];
         const lineTool = new LineTool(this._workplace.workingCanvasContext(), this._workplace.canvasMouseEventDispatcher());
         this._addDisposable(lineTool);
-        tools.push({
-                icon: Icons.line(),
-                tool: lineTool,
-        });
-        return tools;
+        const compassTool =  new CompassTool(this._workplace.workingCanvasContext(), this._workplace.canvasMouseEventDispatcher());
+        this._addDisposable(compassTool);
+        return [{
+            icon: Icons.line(),
+            tool: lineTool,
+        }, {
+            icon: Icons.compass(),
+            tool: compassTool,
+        }];
     }
 
     private _addToolsHandler(tools: Array<ITool>) {

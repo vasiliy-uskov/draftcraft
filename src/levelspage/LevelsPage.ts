@@ -24,7 +24,6 @@ class LevelsPage extends BasePage {
     }
 
     _invalidateLevelsList() {
-        debugger;
         for (const levelView of this._levelsViews) {
             this.removeChild(levelView);
             this._removeDisposable(levelView);

@@ -1,38 +1,35 @@
 import {BaseTool} from "../BaseTool";
 import {Line} from "./Line";
-import {Vec2} from "../../../common/utils/Vec2";
-import {DrawLineChange} from "./DrawLineChange";
-import {verify} from "../../../common/utils/typetools";
+import {DrawChange} from "../DrawChange";
 
 class LineTool extends BaseTool {
     protected _mouseDownHandler(event: MouseEvent): void {
-        const mousePos = new Vec2(event.clientX, event.clientY);
-        this._line = new Line(mousePos, mousePos);
-        this._invalidateLineView();
+        if (!this._line) {
+            const mousePos = this._getMouseCord(event);
+            this._line = new Line(mousePos, mousePos);
+            this._invalidateLineView();
+        }
+        else {
+            this._dispatchChangeEvent(new DrawChange(this._line));
+            this._line = null;
+            this._drawingContext.clean();
+        }
     }
 
     protected _mouseMoveHandler(event: MouseEvent): void {
         if (this._line) {
-            this._line.setEnd(new Vec2(event.clientX, event.clientY));
+            this._line.setEnd(this._getMouseCord(event));
             this._invalidateLineView();
         }
     }
 
-    protected _mouseUpHandler(event: MouseEvent): void {
-        verify(this._line);
-        this._dispatchChangeEvent(new DrawLineChange(this._line));
-        this._line = null;
-        this._drawingContext.clean();
-    }
+    protected _mouseUpHandler(event: MouseEvent): void {}
 
     private _invalidateLineView() {
         this._drawingContext.clean();
         if (this._line)
         {
-            this._drawingContext.beginPath();
-            this._drawingContext.moveTo(this._line.start());
-            this._drawingContext.lineTo(this._line.end());
-            this._drawingContext.endPath();
+            this._line.draw(this._drawingContext);
         }
     }
 

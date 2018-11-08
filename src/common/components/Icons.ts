@@ -13,6 +13,9 @@ class Icons {
     public static line():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/line.svg").toString();
     }
+    public static compass():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/compass.svg").toString();
+    }
 }
 
 export {Icons};

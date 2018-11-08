@@ -1,4 +1,5 @@
 import {verifyNumber} from "./typetools";
+import {normalizeAngle} from "./mathutils";
 
 class Vec2 {
     constructor(x: number, y: number) {
@@ -6,8 +7,9 @@ class Vec2 {
         this.y = y;
     }
 
-    public angle(): number { // return slope angle in radians
-        return Math.atan(this.y / this.x);
+    public angle(): number {
+        const angle = Math.atan(this.y / this.x);
+        return normalizeAngle(this.x < 0 ? Math.PI + angle : angle);
     }
 
     public radius(): number {

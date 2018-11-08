@@ -4,6 +4,7 @@ import {MouseEventDispatcher} from "../workplace/MouseEventDispatcher";
 import {Disposable} from "../../common/disposable/Disposable";
 import {EventDispatcher} from "../../common/disposable/EventDispatcher";
 import {IChange} from "./IChange";
+import {Vec2} from "../../common/utils/Vec2";
 
 abstract class BaseTool extends Disposable implements ITool {
     constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher) {
@@ -21,6 +22,7 @@ abstract class BaseTool extends Disposable implements ITool {
         {
             return;
         }
+        this._activated = true;
         this._mouseDownHandlerKey = this._addHandler(
             this._mouseEventDispatcher.mouseDownEvent(),
             (event: MouseEvent) => this._mouseDownHandler(event)
@@ -40,9 +42,10 @@ abstract class BaseTool extends Disposable implements ITool {
         {
             return;
         }
+        this._activated = false;
         this._removeHandler(this._mouseDownHandlerKey);
         this._removeHandler(this._mouseMoveHandlerKey);
-        this._removeHandler(this._mouseMoveHandlerKey);
+        this._removeHandler(this._mouseUpHandlerKey);
     }
 
     protected abstract _mouseDownHandler(event: MouseEvent): void;
@@ -52,6 +55,11 @@ abstract class BaseTool extends Disposable implements ITool {
     /** @final */
     protected _dispatchChangeEvent(change: IChange) {
         this._changeEvent.dispatch(change);
+    }
+
+    /** @final */
+    protected _getMouseCord(event: MouseEvent) {
+        return new Vec2(event.clientX, event.clientY);
     }
 
     protected _drawingContext: IDrawingContext;

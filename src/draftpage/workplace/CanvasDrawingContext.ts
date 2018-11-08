@@ -11,7 +11,6 @@ class CanvasDrawingContext implements IDrawingContext {
         this._context.beginPath();
     }
     public endPath(): void {
-        this._context.closePath();
         this._context.stroke();
     }
     public moveTo(vec: Vec2): void {
@@ -20,7 +19,9 @@ class CanvasDrawingContext implements IDrawingContext {
     public lineTo(vec: Vec2): void {
         this._context.lineTo(vec.x, vec.y);
     }
-    public arcTo(vec: Vec2): void {} // todo: Realise this method
+    public arc(center: Vec2, radius: number, startAngle: number, angle: number): void {
+        this._context.arc(center.x, center.y, radius, startAngle, startAngle + angle, false);
+    }
 
     public clean(vec?: Array<Vec2>): void {
         if (vec) {

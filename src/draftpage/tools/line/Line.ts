@@ -1,6 +1,8 @@
 import {Vec2} from "../../../common/utils/Vec2";
+import {IDrawingContext} from "../../workplace/IDrawingContext";
+import {IShape} from "../IShape";
 
-class Line {
+class Line implements IShape {
     constructor(start: Vec2, end: Vec2) {
         this._start = start;
         this._end = end;
@@ -18,12 +20,19 @@ class Line {
         return this._start.clone();
     }
 
+    public draw(drawingContext: IDrawingContext): void {
+        drawingContext.beginPath();
+        drawingContext.moveTo(this.start());
+        drawingContext.lineTo(this.end());
+        drawingContext.endPath();
+    }
+
     public toString(): string {
         return JSON.stringify({
             model: "line",
             data: {
-                start: this._start.toString(),
-                end: this._end.toString(),
+                start: this._start,
+                end: this._end,
             }
         })
     }
