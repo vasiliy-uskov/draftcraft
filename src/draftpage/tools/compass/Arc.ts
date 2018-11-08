@@ -31,7 +31,6 @@ class Arc implements IShape {
 
     public setArcEndVec(vec: Vec2): void {
         let endAngle = vec.angle();
-        console.log(this._startAngle / Math.PI * 180, endAngle / Math.PI * 180);
         endAngle = endAngle == 0 ? Math.PI * 2 : endAngle;
         this._angle = endAngle - this._startAngle;
     }
