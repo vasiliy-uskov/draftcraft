@@ -30,12 +30,12 @@
   }
 
   .toolbar {
-    background: #FFFFFF;
+    background: #777777;
     position: absolute;
     top: 40%;
     left: 70px;
     transform: translate(0, -50%);
-    padding: 9px 0 8px;
+    overflow: hidden;
     box-shadow: 0 3px 10px rgba(0,0,0,0.4);
     border: solid 2px #777777;
     border-radius: 15px;
@@ -43,11 +43,28 @@
     z-index: 1;
 
     &__tool {
-      border-bottom: solid 1px #777777;
+      border-bottom: solid 2px #777777;
       padding: 5px;
+
+      svg {
+        fill: #FFFFFF;
+      }
+
+      &_selected {
+        background: #FFFFFF;
+
+        svg {
+          fill: #444444;
+        }
+      }
+
+      &:first-child {
+        padding-top: 13px;
+      }
 
       &:last-child {
         border-bottom: 0;
+        padding-bottom: 10px;
       }
     }
   }

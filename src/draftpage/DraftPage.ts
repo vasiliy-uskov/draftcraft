@@ -9,6 +9,7 @@ import {Icons} from "../common/components/Icons";
 import {LineTool} from "./tools/line/LineTool";
 import {IChange} from "./tools/IChange";
 import {CompassTool} from "./tools/compass/CompassTool";
+import {EraserTool} from "./tools/eraser/EraserTool";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
@@ -45,12 +46,17 @@ class DraftPage extends BasePage {
         this._addDisposable(lineTool);
         const compassTool =  new CompassTool(this._workplace.workingCanvasContext(), this._workplace.canvasMouseEventDispatcher());
         this._addDisposable(compassTool);
+        const eraserTool =  new EraserTool(this._workplace.workingCanvasContext(), this._workplace.canvasMouseEventDispatcher());
+        this._addDisposable(eraserTool);
         return [{
             icon: Icons.line(),
             tool: lineTool,
         }, {
             icon: Icons.compass(),
             tool: compassTool,
+        }, {
+            icon: Icons.eraser(),
+            tool: eraserTool,
         }];
     }
 
