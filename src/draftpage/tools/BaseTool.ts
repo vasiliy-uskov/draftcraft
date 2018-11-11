@@ -57,7 +57,6 @@ abstract class BaseTool extends Disposable implements ITool {
         this._changeEvent.dispatch(change);
     }
 
-    /** @final */
     protected _getMouseCord(event: MouseEvent) {
         return new Vec2(event.clientX, event.clientY);
     }

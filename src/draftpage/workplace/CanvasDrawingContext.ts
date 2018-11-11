@@ -1,5 +1,6 @@
 import {IDrawingContext} from "./IDrawingContext";
 import {Vec2} from "../../common/utils/Vec2";
+import {BoundingRect} from "../../common/utils/BoundingRect";
 
 class CanvasDrawingContext implements IDrawingContext {
     constructor(canvasElement: HTMLCanvasElement) {
@@ -7,11 +8,32 @@ class CanvasDrawingContext implements IDrawingContext {
         this._canvasElement = canvasElement;
     }
 
+    public setFill(color: string) {
+        if (this._context.fillStyle != color) {
+            this._context.fillStyle = color;
+        }
+    }
+    public setStroke(color: string) {
+        if (this._context.strokeStyle != color) {
+            this._context.strokeStyle = color;
+        }
+    }
+    public setStrokeWidth(width: number) {
+        if (this._context.lineWidth != width) {
+            this._context.lineWidth = width;
+        }
+    }
     public beginPath(): void {
         this._context.beginPath();
     }
-    public endPath(): void {
+    public closePath(): void {
+        this._context.closePath();
+    }
+    public stroke(): void {
         this._context.stroke();
+    }
+    public fill(): void {
+        this._context.fill();
     }
     public moveTo(vec: Vec2): void {
         this._context.moveTo(vec.x, vec.y);
@@ -22,12 +44,12 @@ class CanvasDrawingContext implements IDrawingContext {
     public arc(center: Vec2, radius: number, startAngle: number, angle: number): void {
         this._context.arc(center.x, center.y, radius, startAngle, startAngle + angle, false);
     }
-
-    public clean(vec?: Array<Vec2>): void {
-        if (vec) {
-            for (const point of vec) {
-                this._context.clearRect(point.x, point.y, 1, 1);
-            }
+    public rect(rect: BoundingRect): void {
+        this._context.rect(rect.x, rect.y, rect.width, rect.height);
+    }
+    public clean(rect?: BoundingRect): void {
+        if (rect) {
+            this._context.clearRect(rect.x, rect.y, rect.width, rect.height);
         }
         else {
             this._context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);

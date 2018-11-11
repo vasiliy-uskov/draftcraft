@@ -1,32 +1,28 @@
 import {Vec2} from "../../../common/utils/Vec2";
 import {IDrawingContext} from "../../workplace/IDrawingContext";
 import {IShape} from "../IShape";
+import {BoundingRect} from "../../../common/utils/BoundingRect";
+import {Size} from "../../../common/utils/Size";
+import {ToolsViewParams} from "../ToolsViewParams";
 
-const CLEAN_AREA_SIZE = 40;
 class CleanArea implements IShape {
     constructor(center: Vec2) {
-        const startX = center.x - CLEAN_AREA_SIZE / 2;
-        const startY = center.y - CLEAN_AREA_SIZE / 2;
-        const currPoint =  new Vec2(0, 0);
-        for (let i = 0; i < CLEAN_AREA_SIZE * CLEAN_AREA_SIZE; ++i) {
-            currPoint.x = startX + i % CLEAN_AREA_SIZE;
-            currPoint.y = startY + Math.floor(i / CLEAN_AREA_SIZE);
-            this._area.push(currPoint.clone());
-        }
+        const size = new Size(ToolsViewParams.eraserSize(), ToolsViewParams.eraserSize());
+        this._rect = new BoundingRect(center, size)
     }
 
     draw(drawingContext: IDrawingContext) {
-        drawingContext.clean(this._area);
+        drawingContext.clean(this._rect);
     }
 
     toString(): string {
         return JSON.stringify({
             model: "eraser",
-            data: JSON.stringify(this._area),
+            data: this._rect,
         })
     }
 
-    _area: Array<Vec2> = [];
+    private _rect: BoundingRect;
 }
 
 export {CleanArea};

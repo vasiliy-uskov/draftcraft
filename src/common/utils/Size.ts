@@ -12,6 +12,13 @@ class Size {
         return new Size(this.width, this.height);
     }
 
+    public toString(): string {
+        return JSON.stringify({
+            width: this.width,
+            height: this.height
+        })
+    }
+
     public width: number;
     public height: number;
 }

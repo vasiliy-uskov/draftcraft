@@ -2,6 +2,7 @@ import {Vec2} from "../../../common/utils/Vec2";
 import {IShape} from "../IShape";
 import {IDrawingContext} from "../../workplace/IDrawingContext";
 import {normalizeAngle} from "../../../common/utils/mathutils";
+import {ToolsViewParams} from "../ToolsViewParams";
 
 class Arc implements IShape {
     constructor(center: Vec2, arcStartPoint: Vec2, arcEndPoint: Vec2) {
@@ -49,9 +50,11 @@ class Arc implements IShape {
     }
 
     public draw(drawingContext: IDrawingContext) {
+        drawingContext.setStroke(ToolsViewParams.linesColor());
+        drawingContext.setStrokeWidth(ToolsViewParams.linesWidth());
         drawingContext.beginPath();
         drawingContext.arc(this.center(), this.radius(), this.startAngle(), this.angle());
-        drawingContext.endPath();
+        drawingContext.stroke();
     }
 
     public toString(): string {

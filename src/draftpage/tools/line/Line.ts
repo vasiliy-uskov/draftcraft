@@ -1,6 +1,7 @@
 import {Vec2} from "../../../common/utils/Vec2";
 import {IDrawingContext} from "../../workplace/IDrawingContext";
 import {IShape} from "../IShape";
+import {ToolsViewParams} from "../ToolsViewParams";
 
 class Line implements IShape {
     constructor(start: Vec2, end: Vec2) {
@@ -21,10 +22,12 @@ class Line implements IShape {
     }
 
     public draw(drawingContext: IDrawingContext): void {
+        drawingContext.setStroke(ToolsViewParams.linesColor());
+        drawingContext.setStrokeWidth(ToolsViewParams.linesWidth());
         drawingContext.beginPath();
         drawingContext.moveTo(this.start());
         drawingContext.lineTo(this.end());
-        drawingContext.endPath();
+        drawingContext.stroke();
     }
 
     public toString(): string {
