@@ -2,7 +2,7 @@ import * as fs from "fs";
 
 class Icons {
     public static back():string {
-        return fs.readFileSync(__dirname + "/../../../res/images/svg/arrow.svg").toString();
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/back.svg").toString();
     }
     public static stickyNote():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/sticky-note.svg").toString();
@@ -18,6 +18,12 @@ class Icons {
     }
     public static eraser():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/eraser.svg").toString();
+    }
+    public static arrow():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/arrow.svg").toString();
+    }
+    public static cross():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/cross.svg").toString();
     }
 }
 

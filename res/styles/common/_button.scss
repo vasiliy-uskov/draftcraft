@@ -1,5 +1,5 @@
 @mixin buttonCommon() {
-  box-shadow: 0px 1px 5px rgba(0,0,0,0.6);
+  box-shadow: 0px 1px 5px rgba(#000000, 0.6);
   color: #FFFFFF;
   font: 400 25px $FONT_FAMILY;
   background: #F89946;
@@ -8,7 +8,7 @@
   user-select: none;
 
   &:hover {
-    box-shadow: 0px 1px 5px rgba(0,0,0,0.8);
+    box-shadow: 0px 1px 5px rgba(#000000, 0.8);
     background: #FFA65E;
   }
 

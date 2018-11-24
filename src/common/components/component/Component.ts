@@ -40,6 +40,10 @@ class Component extends Disposable {
         this._baseElement.removeChild(element);
     }
 
+    public setContent(content: string) {
+        this._baseElement.innerHTML = content;
+    }
+
     removeChildren() {
         const children = this._baseElement.children;
         for (let i = 0; i < children.length; ++i) {
@@ -85,7 +89,7 @@ class Component extends Disposable {
 
     public applyStyles(stylesList: {[key:string]: string}) {
         for (const style in stylesList) {
-            this.setStyle(style, <string>(stylesList[style]));
+            this.setStyle(style, stylesList[style]);
         }
     }
 
@@ -113,7 +117,7 @@ class Component extends Disposable {
     }
 
     public updateModifier(modifier: string, value: string|number|boolean) {
-        this._bemInfo[this._bemInfo.length - 1].updateModifier(modifier, value);
+        this._bemInfo[0].updateModifier(modifier, value);
         this._invalidateClassName()
     }
 

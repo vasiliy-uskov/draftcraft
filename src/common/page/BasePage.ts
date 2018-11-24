@@ -23,8 +23,7 @@ class BasePage extends Component {
             this._removeDisposable(animation);
             this._afterOpen();
         });
-        this.setStyle("transform", "scale(0)"); //to hide an element
-        this.setStyle("display", "block");
+        requestAnimationFrame(() => this.setStyle("display", "block"));
         animation.play();
         return Promise.resolve();
     }
@@ -35,7 +34,7 @@ class BasePage extends Component {
         this._addDisposable(animation);
         this._addHandlerCallOnce(animation.endEvent(), () => {
             this._removeDisposable(animation);
-            this.setStyle("display", "none");
+            requestAnimationFrame(() => this.setStyle("display", "none"));
             this._afterClose();
         });
         animation.play();

@@ -3,14 +3,19 @@ import {PagesType} from "../page/PagesType";
 class Messages {
     constructor() {
         const startPageMap = new Map<string, string>();
-        startPageMap.set("startButton", "PLAY");
-        startPageMap.set("levelsButton", "LEVELS");
+        startPageMap.set("startButton", "play");
+        startPageMap.set("levelsButton", "levels");
         startPageMap.set("logo", "DraftCraft");
         this._messages.set(PagesType.StartPage, startPageMap);
-        const levelsPageMap = new Map<string, string>();
+
         this._messages.set(PagesType.LevelsPage, new Map<string, string>());
+
         this._messages.set(PagesType.ResultPage, new Map<string, string>());
-        this._messages.set(PagesType.DraftPage, new Map<string, string>());
+
+        const draftPageMap = new Map<string, string>();
+        draftPageMap.set("task", "Task");
+        draftPageMap.set("help", "Help");
+        this._messages.set(PagesType.DraftPage, draftPageMap);
     }
 
     getMessage(page: PagesType, messageId: string) : string {

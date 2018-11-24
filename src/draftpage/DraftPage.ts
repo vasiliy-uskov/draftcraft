@@ -10,6 +10,9 @@ import {LineTool} from "./tools/line/LineTool";
 import {IChange} from "./tools/IChange";
 import {CompassTool} from "./tools/compass/CompassTool";
 import {EraserTool} from "./tools/eraser/EraserTool";
+import {InfoPopup} from "./popup/InfoPopup";
+import {HelpPopup} from "./popup/HelpPopup";
+import {TaskPopup} from "./popup/TaskPopup";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
@@ -27,10 +30,27 @@ class DraftPage extends BasePage {
         this._addDisposable(this._workplace);
         this.addChild(this._workplace);
 
+        this._addDisposable(this._taskPopup);
+        this.addChild(this._taskPopup);
+
+        this._addDisposable(this._helpPopup);
+        this.addChild(this._helpPopup);
     }
 
     protected _beforeOpen() {
-        this._workplace.setBackgroundImage(this._gameContext.currentLevel().img());
+        const currentLevel = this._gameContext.currentLevel();
+        this._workplace.setBackgroundImage(currentLevel.img());
+        this._taskPopup.setTextContent(currentLevel.task());
+        this._helpPopup.setTextContent(currentLevel.help());
+    }
+
+    protected _afterOpen() {
+        this._taskPopup.setActivated(true);
+    }
+
+    protected _beforeClose() {
+        this._taskPopup.setActivated(false);
+        this._helpPopup.setActivated(false);
     }
 
     private _setCurrentTool(tool: ITool): void {
@@ -69,7 +89,7 @@ class DraftPage extends BasePage {
         }
     }
 
-    _invalidateResultCanvas() {
+    private _invalidateResultCanvas() {
         const resultCanvasContext = this._workplace.resultsCanvasContext();
         resultCanvasContext.clean();
         for (const change of this._changes) {
@@ -81,6 +101,8 @@ class DraftPage extends BasePage {
     private _gameContext: GameContext;
     private _changes: Array<IChange> = [];
     private _workplace: Workplace = new Workplace();
+    private _helpPopup: InfoPopup = new HelpPopup(this._getMessage("help"));
+    private _taskPopup: InfoPopup = new TaskPopup(this._getMessage("task"));
     private _toolbar: Toolbar<ITool> = new Toolbar();
 }
 

@@ -1,26 +1,33 @@
 import {IDisposable} from "./IDisposable";
-
 class EventDispatcher<T> implements IDisposable {
-    addHandler(handler: (arg: T) => void) {
-        this._handlers.push(handler);
+    constructor(eventOwner: IDisposable) {
+        this._eventOwner = eventOwner;
     }
 
-    removeHandler(handler: (arg: T) => void) {
-        const handlerIndex = this._handlers.indexOf(handler);
-        this._handlers.splice(handlerIndex, 1);
+    public addHandler(handler: (arg: T) => void) {
+        this._handlers.add(handler);
     }
 
-    dispatch(data?: T) {
-        for (const handler of this._handlers) {
+    public removeHandler(handler: (arg: T) => void) {
+        this._handlers.delete(handler);
+    }
+
+    public dispatch(data?: T) {
+        for (const handler of this._handlers.values()) {
             handler(data);
         }
     }
 
-    dispose() {
-        this._handlers = [];
+    public eventOwner(): IDisposable {
+        return this._eventOwner;
     }
 
-    private _handlers: Array<(arg: T) => void> = [];
+    public dispose() {
+        this._handlers = new Set();
+    }
+
+    private _handlers: Set<(arg: T) => void> = new Set();
+    private _eventOwner: IDisposable = null;
 }
 
 export {EventDispatcher};

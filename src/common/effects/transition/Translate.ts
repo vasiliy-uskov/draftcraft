@@ -24,11 +24,11 @@ class Translate extends Disposable {
     }
 
     startEvent(): EventDispatcher<void> {
-        return this._animation.startEvent();
+        return this._startEvent;
     }
 
     endEvent(): EventDispatcher<void> {
-        return this._animation.endEvent();
+        return this._endEvent;
     }
 
     _getTranslate(direction: Direction, shift: number, reversed: boolean): string {
@@ -45,7 +45,9 @@ class Translate extends Disposable {
         throw new Error("Unexpected direction");
     }
 
-    _animation: IAnimation = createAnimation([100], [0], LEAD_TIME);
+    private _animation = createAnimation([100], [0], LEAD_TIME);
+    private _startEvent = this._createEventDispatcher(this._animation.startEvent());
+    private _endEvent = this._createEventDispatcher(this._animation.endEvent());
 }
 
 export {Translate};

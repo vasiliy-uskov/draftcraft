@@ -4,20 +4,19 @@ interface IFrameHandler {
     onFrame(): void;
 }
 
-const framesHandlers: Array<IFrameHandler|(() => void)> = [];
+const framesHandlers: Set<IFrameHandler|(() => void)> = new Set();
 
 class FramesController {
     static addFrameHandler(handler: IFrameHandler|(() => void)) {
-        framesHandlers.push(handler);
+        framesHandlers.add(handler);
     }
     static removeFrameHandler(handler: IFrameHandler|(() => void)) {
-        const handlerIndex = framesHandlers.indexOf(handler);
-        framesHandlers.splice(handlerIndex, 1);
+        framesHandlers.delete(handler);
     }
 }
 
 const animationFrameCallback = () => {
-    for (let handler of framesHandlers) {
+    for (let handler of framesHandlers.values()) {
         if (isFunction(handler)) {
             handler = handler as (() => void);
             handler();
