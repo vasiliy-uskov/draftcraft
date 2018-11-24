@@ -7,7 +7,6 @@ import {ResultPage} from "./resultpage/ResultPage";
 import {DraftPage} from "./draftpage/DraftPage";
 import {GameContext} from "./model/GameContext";
 import {Messages} from "./common/lng/Messages";
-import {Direction} from "./common/effects/transition/Direction";
 
 class Game extends Disposable {
     constructor(gameContext: GameContext, messages: Messages) {
@@ -49,13 +48,13 @@ class Game extends Disposable {
     private _openPage(page: PagesType): Promise<void> {
         switch (page) {
             case PagesType.StartPage:
-                return this._startPage.open(Direction.Left);
+                return this._startPage.open();
             case PagesType.LevelsPage:
-                return this._levelsPage.open(Direction.Right);
+                return this._levelsPage.open();
             case PagesType.ResultPage:
-                return this._resultPage.open(Direction.Right);
+                return this._resultPage.open();
             case PagesType.DraftPage:
-                return this._draftPage.open(Direction.Right);
+                return this._draftPage.open();
         }
         throw new Error(`Unknown page type ${page}`);
     }
@@ -63,13 +62,13 @@ class Game extends Disposable {
     private _closePage(page: PagesType): Promise<void> {
         switch (page) {
             case PagesType.StartPage:
-                return this._startPage.close(Direction.Left);
+                return this._startPage.close();
             case PagesType.LevelsPage:
-                return this._levelsPage.close(Direction.Right);
+                return this._levelsPage.close();
             case PagesType.ResultPage:
-                return this._resultPage.close(Direction.Right);
+                return this._resultPage.close();
             case PagesType.DraftPage:
-                return this._draftPage.close(Direction.Right);
+                return this._draftPage.close();
         }
         throw new Error(`Unknown page type ${page}`);
     }

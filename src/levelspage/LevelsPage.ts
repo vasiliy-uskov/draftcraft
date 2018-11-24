@@ -18,12 +18,11 @@ class LevelsPage extends BasePage {
         this._addHandler(startButton.clickEvent(), () => this._sendChangePageRequest(PagesType.StartPage));
     }
 
-    open(direction: Direction): Promise<void> {
+    protected _beforeOpen() {
         this._invalidateLevelsList();
-        return super.open(direction);
     }
 
-    _invalidateLevelsList() {
+    private _invalidateLevelsList() {
         for (const levelView of this._levelsViews) {
             this.removeChild(levelView);
             this._removeDisposable(levelView);

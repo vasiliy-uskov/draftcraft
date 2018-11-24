@@ -2,8 +2,7 @@ import {Component} from "../components/component/Component";
 import {PagesType} from "./PagesType";
 import {EventDispatcher} from "../disposable/EventDispatcher";
 import {Messages} from "../lng/Messages";
-import {Translate} from "../effects/transition/Translate";
-import {Direction} from "../effects/transition/Direction";
+import {Fade} from "../effects/transition/Fade";
 
 class BasePage extends Component {
     constructor(container: HTMLElement, messages: Messages, pageType: PagesType) {
@@ -15,30 +14,35 @@ class BasePage extends Component {
         this._pageType = pageType;
     }
 
-    public open(transitionDirection: Direction): Promise<void> {
-        this._beforeOpen();
-        const animation = new Translate(this, transitionDirection, false);
-        this._addDisposable(animation);
-        this._addHandlerCallOnce(animation.endEvent(), () => {
-            this._removeDisposable(animation);
-            this._afterOpen();
+    public open(): Promise<void> {
+        this.setStyle("opacity", 0);
+        this.setStyle("display", "block");
+        return new Promise((resolve, reject) => {
+            this._beforeOpen();
+            const animation = new Fade(this, true);
+            this._addDisposable(animation);
+            this._addHandlerCallOnce(animation.endEvent(), () => {
+                this._removeDisposable(animation);
+                this._afterOpen();
+                resolve();
+            });
+            animation.play();
         });
-        requestAnimationFrame(() => this.setStyle("display", "block"));
-        animation.play();
-        return Promise.resolve();
     }
 
-    public close(transitionDirection: Direction): Promise<void> {
-        this._beforeClose();
-        const animation = new Translate(this, transitionDirection, true);
-        this._addDisposable(animation);
-        this._addHandlerCallOnce(animation.endEvent(), () => {
-            this._removeDisposable(animation);
-            requestAnimationFrame(() => this.setStyle("display", "none"));
-            this._afterClose();
+    public close(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this._beforeClose();
+            const animation = new Fade(this, false);
+            this._addDisposable(animation);
+            this._addHandlerCallOnce(animation.endEvent(), () => {
+                this._removeDisposable(animation);
+                requestAnimationFrame(() => this.setStyle("display", "none"));
+                this._afterClose();
+                resolve();
+            });
+            animation.play();
         });
-        animation.play();
-        return Promise.resolve();
     }
 
     /** @final */

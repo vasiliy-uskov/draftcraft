@@ -47,9 +47,6 @@ class DraftPage extends BasePage {
         this._workplace.setBackgroundImage(currentLevel.img());
         this._taskPopup.setTextContent(currentLevel.task());
         this._helpPopup.setTextContent(currentLevel.help());
-    }
-
-    protected _afterOpen() {
         this._taskPopup.setActivated(true);
     }
 

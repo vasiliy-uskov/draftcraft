@@ -42,9 +42,17 @@ abstract class InfoPopup extends Component {
     }
 
     public setActivated(activated: boolean) {
-        if (this._activated != activated) {
-            this._changeActiveState();
-        }
+        this._activated = activated;
+        this._overlay.setStyle("transition", "none");
+        this._contentContainer.setStyle("transition", "none");
+        this._control.setStyle("transition", "none");
+        requestAnimationFrame(() => {
+            this._invalidatePopupState();
+            this._overlay.setStyle("opacity", OVERLAY_OPACITY);
+            this._overlay.setStyle("transition", "");
+            this._contentContainer.setStyle("transition", "");
+            this._control.setStyle("transition", "");
+        })
     }
 
     private _changeActiveState(): void {
@@ -105,9 +113,9 @@ abstract class InfoPopup extends Component {
         this._overlay.setStyle("display", this._activated ? "block" : "none");
         this.setStyle("height", this._activated ? "100%" : "");
         const popupPosition = this._activated ? this._openedPopupPosition() : this._closedPopupPosition();
-        const popupContentPadding = 20;
+        const popupContentPadding = 10;
         if (this._activated && this._popup.element().scrollHeight != this._popup.height()) {
-            this._contentContainer.setStyle("height", `${this._popup.height() - 2 * popupContentPadding}px`);
+            this._contentContainer.setHeight(this._popup.height() - 2 * popupContentPadding);
         }
         else {
             this._contentContainer.setStyle("height", "");
