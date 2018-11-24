@@ -2,4 +2,9 @@
   @import "workplace";
   @import "toolbar";
   @import "info-popup";
+
+  .back-button {
+    margin: 20px 0 0 20px;
+    display: block;
+  }
 }

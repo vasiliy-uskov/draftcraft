@@ -13,6 +13,7 @@ import {EraserTool} from "./tools/eraser/EraserTool";
 import {InfoPopup} from "./popup/InfoPopup";
 import {HelpPopup} from "./popup/HelpPopup";
 import {TaskPopup} from "./popup/TaskPopup";
+import {BackButton} from "../common/components/button/BackButton";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
@@ -35,6 +36,10 @@ class DraftPage extends BasePage {
 
         this._addDisposable(this._helpPopup);
         this.addChild(this._helpPopup);
+
+        this._addDisposable(this._backButton);
+        this.addChild(this._backButton);
+        this._addHandler(this._backButton.clickEvent(), () => this._sendChangePageRequest(PagesType.StartPage));
     }
 
     protected _beforeOpen() {
@@ -51,6 +56,7 @@ class DraftPage extends BasePage {
     protected _beforeClose() {
         this._taskPopup.setActivated(false);
         this._helpPopup.setActivated(false);
+        this._changes = [];
     }
 
     private _setCurrentTool(tool: ITool): void {
@@ -101,6 +107,7 @@ class DraftPage extends BasePage {
     private _gameContext: GameContext;
     private _changes: Array<IChange> = [];
     private _workplace: Workplace = new Workplace();
+    private _backButton: BackButton = new BackButton();
     private _helpPopup: InfoPopup = new HelpPopup(this._getMessage("help"));
     private _taskPopup: InfoPopup = new TaskPopup(this._getMessage("task"));
     private _toolbar: Toolbar<ITool> = new Toolbar();

@@ -136,7 +136,7 @@ abstract class InfoPopup extends Component {
     private _contentContainer: Component;
     private _control: Component;
     private _overlay: Component;
-    private _activated: boolean;
+    private _activated: boolean = false;
     private _currentAnimation?: IAnimation = null;
     private _content = "";
     private _title = "";
