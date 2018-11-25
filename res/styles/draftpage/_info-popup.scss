@@ -1,7 +1,7 @@
 $borderRadius: 15px;
 
 .popup {
-  z-index: 0;
+  z-index: -1; //ff fix
 
   &__overlay {
     background: #000000;
@@ -72,7 +72,6 @@ $borderRadius: 15px;
   top: 0;
   position: absolute;
   width: 100%;
-  z-index: -1; //ff fix
 
   .popup {
     &__popup-container {

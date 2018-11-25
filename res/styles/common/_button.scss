@@ -23,14 +23,16 @@
 }
 
 .button {
+  @include buttonCommon();
+
   width: 257px;
   height: 70px;
   border-radius: 15px;
-  @include buttonCommon();
 }
 
 .icon-button {
   @include buttonCommon();
+
   height: 50px;
   width: 50px;
   border-radius: 9px;

@@ -15,6 +15,7 @@ class Messages {
         const draftPageMap = new Map<string, string>();
         draftPageMap.set("task", "Task");
         draftPageMap.set("help", "Help");
+        draftPageMap.set("finishButton", "Submit");
         this._messages.set(PagesType.DraftPage, draftPageMap);
     }
 

@@ -1,4 +1,5 @@
 import {Level} from "./Level";
+import {accessSync} from "fs";
 
 class GameContext {
     constructor(levels: Array<Level>) {
@@ -12,6 +13,11 @@ class GameContext {
 
     setCurrentLevel(index: number) {
         this._currentLevel = this._levels[index];
+    }
+
+    setCurrentLevelAnswer(answer: string) {
+        console.log(answer);
+        this._currentLevel = new Level(this._currentLevel.task(), this._currentLevel.help(), this._currentLevel.img(), 800);
     }
 
     currentLevel(): Level {

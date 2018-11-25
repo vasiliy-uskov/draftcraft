@@ -14,6 +14,7 @@ import {InfoPopup} from "./popup/InfoPopup";
 import {HelpPopup} from "./popup/HelpPopup";
 import {TaskPopup} from "./popup/TaskPopup";
 import {BackButton} from "../common/components/button/BackButton";
+import {Button} from "../common/components/button/Button";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
@@ -37,9 +38,25 @@ class DraftPage extends BasePage {
         this._addDisposable(this._helpPopup);
         this.addChild(this._helpPopup);
 
-        this._addDisposable(this._backButton);
-        this.addChild(this._backButton);
-        this._addHandler(this._backButton.clickEvent(), () => this._sendChangePageRequest(PagesType.StartPage));
+        const backButton = new BackButton();
+        this._addDisposable(backButton);
+        this.addChild(backButton);
+        this._addHandler(backButton.clickEvent(), () => this._sendChangePageRequest(PagesType.StartPage));
+
+        const finishButton = new Button({
+            blockName: "finish-button",
+            content: this._getMessage("finishButton"),
+        });
+        this._addDisposable(finishButton);
+        this.addChild(finishButton);
+        this._addHandler(finishButton.clickEvent(), () => {
+            const data = [];
+            for (const change of this._changes) {
+                data.push(change.serialize())
+            }
+            this._gameContext.setCurrentLevelAnswer(JSON.stringify(data));
+            this._sendChangePageRequest(PagesType.ResultPage)
+        });
     }
 
     protected _beforeOpen() {
@@ -104,7 +121,6 @@ class DraftPage extends BasePage {
     private _gameContext: GameContext;
     private _changes: Array<IChange> = [];
     private _workplace: Workplace = new Workplace();
-    private _backButton: BackButton = new BackButton();
     private _helpPopup: InfoPopup = new HelpPopup(this._getMessage("help"));
     private _taskPopup: InfoPopup = new TaskPopup(this._getMessage("task"));
     private _toolbar: Toolbar<ITool> = new Toolbar();

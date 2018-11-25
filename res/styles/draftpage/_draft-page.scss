@@ -4,7 +4,17 @@
   @import "info-popup";
 
   .back-button {
-    margin: 20px 0 0 20px;
+    margin: 1% 0 0 4%;
     display: block;
+  }
+
+  .finish-button {
+    width: auto;
+    height: auto;
+    padding: 20px 30px;
+    position: absolute;
+    display: block;
+    bottom: 50%;
+    right: 6%;
   }
 }
