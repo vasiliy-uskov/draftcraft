@@ -3,72 +3,53 @@
   clear: both;
 
   .back-button {
-    margin: 20px 0 0 20px;
+    margin: 20px 0 50px 20px;
     display: block;
   }
 
-  $cellBackgroundHeightRatio: 1.1146;
-
-  @mixin initCell($cellCount, $margin) {
-    $cellWidth: 100vw / $cellCount;
-    $cellMargin: $margin * (1 + 1 / $cellCount);
-    width: calc(#{$cellWidth} - #{$cellMargin});
-    height: calc((#{$cellWidth} - #{$cellMargin}) * #{$cellBackgroundHeightRatio});
-    margin: $margin 0 0 $margin;
-  }
-
-  @media screen {
-    .level {  @include initCell(2, 20px);  }
-  }
-
-  @media screen and (min-width: 500px) {
-    .level {  @include initCell(3, 40px);  }
-  }
-
-  @media screen and (min-width: 600px) {
-    .level {  @include initCell(4, 60px);  }
-  }
-
-  @media screen and (min-width:  1100px) {
-    .level {  @include initCell(5, 80px);  }
+  .levels-holder {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
   }
 
   .level {
     position: relative;
-    float: left;
-    background-size: cover;
+    display: inline-block;
     cursor: pointer;
+    vertical-align: top;
+    margin: 20px;
 
-    & > svg {
-      position: absolute;
-      width: 100%;
+    &__index {
+      font-family: $FONT_FAMILY;
+      font-style: italic;
+      text-align: center;
+      position: relative;
+      margin: auto;
+      background: #FFFFFF;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      font-size: 96px;
+      width: 190px;
+      line-height: 190px;
+      border-radius: 15px;
+      transition: background 200ms, box-shadow 200ms;
 
-      .shadow {
-        transition: opacity 150ms;
+      &:hover {
+        background: #777777;
+        color: #FFFFFF;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.7);
       }
     }
 
-    &__index {
-      font: 400 5vw "Comic Sans MS", $FONT_FAMILY;
-      width: 100%;
-      text-align: center;
-      margin-top: 10%;
-      color: #f66235;
-      position: relative;
-      height: 46%;
-    }
-
     &__stars-holder {
-      height: 44%;
       width: 100%;
-      padding-top: 10%;
       text-align: center;
+      margin-top: 20px;
     }
 
 
     &__star {
       display: inline-block;
-      height: 54%;
       width: 20%;
       line-height: 54%;
       vert-align: top;
@@ -78,12 +59,6 @@
 
       &:first-child {
         margin-left: 0;
-      }
-    }
-
-    &:hover {
-      svg .shadow {
-        opacity: 0.5 !important;
       }
     }
   }

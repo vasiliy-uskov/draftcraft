@@ -16,6 +16,10 @@ class LevelsPage extends BasePage {
         this.addChild(startButton);
         this._addDisposable(startButton);
         this._addHandler(startButton.clickEvent(), () => this._sendChangePageRequest(PagesType.StartPage));
+
+        this._levelsHolder = new Component({blockName: "levels-holder"});
+        this._addDisposable(this._levelsHolder);
+        this.addChild(this._levelsHolder);
     }
 
     protected _beforeOpen() {
@@ -24,7 +28,7 @@ class LevelsPage extends BasePage {
 
     private _invalidateLevelsList() {
         for (const levelView of this._levelsViews) {
-            this.removeChild(levelView);
+            this._levelsHolder.removeChild(levelView);
             this._removeDisposable(levelView);
         }
         const levels = this._gameContext.getLevels();
@@ -37,14 +41,13 @@ class LevelsPage extends BasePage {
                 this._sendChangePageRequest(PagesType.DraftPage);
             });
             this._levelsViews.push(levelView);
-            this.addChild(levelView);
+            this._levelsHolder.addChild(levelView);
         })
     }
 
     _createLevelView(level: Level, index: number): Component {
         const levelView = new Component({
             blockName: "level",
-            content: Icons.stickyNote(),
         });
         levelView.addChild(new Component({
             bemInfo: levelView.createChildBemInfo("index"),
@@ -66,6 +69,7 @@ class LevelsPage extends BasePage {
     }
 
     _gameContext: GameContext;
+    _levelsHolder: Component;
     _levelsViews: Array<Component> = [];
 }
 
