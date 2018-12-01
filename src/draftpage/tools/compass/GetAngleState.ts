@@ -2,6 +2,7 @@ import {Line} from "../line/Line";
 import {Arc} from "./Arc";
 import {Vec2} from "../../../common/utils/Vec2";
 import {ICompassState} from "./ICompassState";
+import {IDrawingContext} from "../../workplace/drawingcontext/IDrawingContext";
 
 class GetAngleState implements ICompassState {
     constructor(arcCenterCords: Vec2, arcStartCord: Vec2) {
@@ -9,11 +10,11 @@ class GetAngleState implements ICompassState {
         this._arc = new Arc(arcCenterCords, arcStartCord, arcStartCord);
     }
 
-    mouseDownHandler(cord: Vec2): ICompassState|null {
+    public mouseDownHandler(cord: Vec2): ICompassState|null {
         return null;
     }
 
-    mouseMoveHandler(cord: Vec2): void {
+    public mouseMoveHandler(cord: Vec2): void {
         const arcCenter = this._arc.center();
         const mousePointer = new Vec2(
             cord.x - arcCenter.x,
@@ -31,12 +32,18 @@ class GetAngleState implements ICompassState {
         );
     }
 
-    line(): Line|null {
+    public line(): Line|null {
         return this._line;
     }
 
-    arc(): Arc|null {
+    public arc(): Arc|null {
         return this._arc;
+    }
+
+    public redrawState(drawingContext: IDrawingContext) {
+        drawingContext.clean();
+        this._line.draw(drawingContext);
+        this._arc.draw(drawingContext);
     }
 
     private _line: Line;

@@ -1,5 +1,5 @@
 import {ITool} from "./ITool";
-import {IDrawingContext} from "../workplace/IDrawingContext";
+import {IDrawingContext} from "../workplace/drawingcontext/IDrawingContext";
 import {MouseEventDispatcher} from "../workplace/MouseEventDispatcher";
 import {Disposable} from "../../common/disposable/Disposable";
 import {EventDispatcher} from "../../common/disposable/EventDispatcher";

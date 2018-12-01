@@ -1,6 +1,6 @@
 import {IChange} from "./IChange";
 import {IShape} from "./IShape";
-import {IDrawingContext} from "../workplace/IDrawingContext";
+import {IDrawingContext} from "../workplace/drawingcontext/IDrawingContext";
 
 class DrawChange implements IChange {
     constructor(shape: IShape) {

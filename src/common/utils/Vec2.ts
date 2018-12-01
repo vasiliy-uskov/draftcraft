@@ -27,6 +27,18 @@ class Vec2 {
         return new Vec2(this.x, this.y);
     }
 
+    public scale(scale: number): Vec2 {
+        this.x *= scale;
+        this.y *= scale;
+        return this;
+    }
+
+    public add(vec: Vec2): Vec2 {
+        this.x += vec.x;
+        this.y += vec.y;
+        return this;
+    }
+
     static load(json: string): Vec2 {
         const data = JSON.parse(json) as {x: number, y: number};
         verifyNumber(data.x);

@@ -1,6 +1,6 @@
 import {Vec2} from "../../../common/utils/Vec2";
 import {IShape} from "../IShape";
-import {IDrawingContext} from "../../workplace/IDrawingContext";
+import {IDrawingContext} from "../../workplace/drawingcontext/IDrawingContext";
 import {normalizeAngle} from "../../../common/utils/mathutils";
 import {ToolsViewParams} from "../ToolsViewParams";
 

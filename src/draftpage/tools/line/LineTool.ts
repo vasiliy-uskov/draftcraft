@@ -1,6 +1,7 @@
 import {BaseTool} from "../BaseTool";
 import {Line} from "./Line";
 import {DrawChange} from "../DrawChange";
+import {AnnotationDrawer} from "../AnnotationDrawer";
 
 class LineTool extends BaseTool {
     protected _mouseDownHandler(event: MouseEvent): void {
@@ -30,6 +31,7 @@ class LineTool extends BaseTool {
         if (this._line)
         {
             this._line.draw(this._drawingContext);
+            AnnotationDrawer.drawLineAnnotation(this._drawingContext, this._line);
         }
     }
 

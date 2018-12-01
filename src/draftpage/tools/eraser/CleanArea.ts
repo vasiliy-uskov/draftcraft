@@ -1,5 +1,5 @@
 import {Vec2} from "../../../common/utils/Vec2";
-import {IDrawingContext} from "../../workplace/IDrawingContext";
+import {IDrawingContext} from "../../workplace/drawingcontext/IDrawingContext";
 import {IShape} from "../IShape";
 import {BoundingRect} from "../../../common/utils/BoundingRect";
 import {Size} from "../../../common/utils/Size";
