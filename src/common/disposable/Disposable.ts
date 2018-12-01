@@ -95,7 +95,7 @@ class Disposable {
     }
 
     /** @final */
-    private _removeDependency(...dependentObjects: Array<IDisposable>) {
+    protected _removeDependency(...dependentObjects: Array<IDisposable>) {
         for (const dependentObject of dependentObjects) {
             if (this._browserEventsHandlersHolders.has(dependentObject)){
                 this._browserEventsHandlersHolders.get(dependentObject).clean();

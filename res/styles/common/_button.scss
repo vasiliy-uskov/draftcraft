@@ -28,6 +28,7 @@
   width: 257px;
   height: 70px;
   border-radius: 15px;
+  text-transform: uppercase;
 }
 
 .icon-button {
@@ -38,9 +39,8 @@
   border-radius: 9px;
 }
 
-.back-button {
+.back-button, .next-button {
   svg {
-    transform: rotate(90deg);
     width: 36px;
     margin-top: 6px;
   }

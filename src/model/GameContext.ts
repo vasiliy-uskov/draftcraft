@@ -1,38 +1,39 @@
 import {Level} from "./Level";
-import {accessSync} from "fs";
+import {clamp} from "../common/utils/mathutils";
 
 class GameContext {
     constructor(levels: Array<Level>) {
         this._levels = levels;
-        this._currentLevel = this._levels[0];
+        this._currentLevelIndex = 0;
     }
 
-    getLevels(): Array<Level> {
+    public getLevels(): Array<Level> {
         return this._levels.slice();
     }
 
-    setCurrentLevel(index: number) {
-        this._currentLevel = this._levels[index];
+    public setCurrentLevel(index: number) {
+        this._currentLevelIndex = clamp(index, 0, this._levels.length);
     }
 
-    setCurrentLevelAnswer(answer: string) {
+    public setCurrentLevelAnswer(answer: string) {
         console.log(answer);
-        this._currentLevel = new Level(this._currentLevel.task(), this._currentLevel.help(), this._currentLevel.img(), 800);
+        this._levels[this._currentLevelIndex] = new Level(this.currentLevel().task(), this.currentLevel().help(), this.currentLevel().img(), 1000);
     }
 
-    currentLevel(): Level {
-        return this._currentLevel;
+    public currentLevel(): Level {
+        return this._levels[this._currentLevelIndex];
     }
 
-    getLevelByIndex(index: number): Level {
-        if (!this._levels.hasOwnProperty(index)) {
+    public currentLevelIndex(): number {
+        return this._currentLevelIndex;
+    }
 
-        }
-        return this._levels[index];
+    public getLevelByIndex(index: number): Level|null {
+        return this._levels.hasOwnProperty(index) ? this._levels[index] : null;
     }
 
     private _levels: Array<Level> = [];
-    private _currentLevel: Level;
+    private _currentLevelIndex: number;
 }
 
 export {GameContext};

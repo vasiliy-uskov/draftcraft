@@ -1,2 +1,73 @@
 #result-page {
+  .result-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    transform: translate(0, -50%);
+    position: relative;
+    top: 50%;
+
+    &__content {
+      background: #FFFFFF;
+      box-shadow: 0 0 12px rgba(#333333, 0.6);
+    }
+
+    &__message {
+      font: normal 32px/32px Tahoma;
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    &__score {
+      font: normal 65px/116px Tahoma;
+      text-align: center;
+      color: #FFFFFF;
+    }
+
+    &__stars-holder {
+      text-align: center;
+      padding: 25px 0 70px;
+    }
+
+    &__star {
+      width: 40px;
+      display: inline-block;
+    }
+
+    &__controls {
+      margin-top: 10px;
+
+      .button {
+        margin-left: 5px;
+      }
+
+      .home-button, .next-button {
+        position: relative;
+      }
+
+      .next-button {
+        top: 8px;
+        left: 17px;
+      }
+
+      .home-button {
+        top: 7px;
+        left: 15px;
+      }
+    }
+
+    &_result {
+      &_good {
+        .result-card__score {
+          background: #3BB100;
+        }
+      }
+
+      &_bad {
+        .result-card__score {
+          background: #CC2C00;
+        }
+      }
+    }
+  }
 }

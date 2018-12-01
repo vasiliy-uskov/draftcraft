@@ -26,26 +26,31 @@ class LevelsPage extends BasePage {
         this._invalidateLevelsList();
     }
 
-    private _invalidateLevelsList() {
+    protected _beforeClose() {
+        this._cleanLevelsList();
+    }
+
+    private _cleanLevelsList() {
         for (const levelView of this._levelsViews) {
             this._levelsHolder.removeChild(levelView);
             this._removeDisposable(levelView);
         }
-        const levels = this._gameContext.getLevels();
         this._levelsViews = [];
+    }
+
+    private _invalidateLevelsList() {
+        const levels = this._gameContext.getLevels();
         levels.forEach((level, index) => {
             const levelView = this._createLevelView(level, index + 1);
             this._addDisposable(levelView);
-            this._listen("click", levelView, () => {
-                this._gameContext.setCurrentLevel(index);
-                this._sendChangePageRequest(PagesType.DraftPage);
-            });
+            this._listen("click", levelView, () => this._activateLevelHandler(index));
+            levelView.updateModifier("enabled", this._isLevelEnabled(index));
             this._levelsViews.push(levelView);
             this._levelsHolder.addChild(levelView);
-        })
+        });
     }
 
-    _createLevelView(level: Level, index: number): Component {
+    private _createLevelView(level: Level, index: number): Component {
         const levelView = new Component({
             blockName: "level",
         });
@@ -66,6 +71,18 @@ class LevelsPage extends BasePage {
         }
         levelView.addChild(startHolder);
         return levelView;
+    }
+
+    private _activateLevelHandler(index: number) {
+        if (this._isLevelEnabled(index)) {
+            this._gameContext.setCurrentLevel(index);
+            this._sendChangePageRequest(PagesType.DraftPage);
+        }
+    }
+
+    private _isLevelEnabled(index: number): boolean {
+        const prevLevel = this._gameContext.getLevelByIndex(index - 1);
+        return !prevLevel || prevLevel.isLevelPassed()
     }
 
     _gameContext: GameContext;

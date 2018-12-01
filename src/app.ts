@@ -1,7 +1,9 @@
+import {polyfills} from "./common/utils/polyfill"; polyfills();
 import {GameContext} from "./model/GameContext";
 import {Game} from "./Game";
 import {Messages} from "./common/lng/Messages";
 import {Level} from "./model/Level";
+
 
 const gameContext = new GameContext([
     new Level("Построить сопряжнеие двух линий",

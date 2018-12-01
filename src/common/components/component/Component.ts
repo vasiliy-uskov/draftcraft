@@ -44,10 +44,14 @@ class Component extends Disposable {
         this._baseElement.innerHTML = content;
     }
 
-    removeChildren() {
-        const children = this._baseElement.children;
-        for (let i = 0; i < children.length; ++i) {
-            this.removeChild(children[i]);
+    public setTextContent(text: string) {
+        this.addChild(document.createTextNode(text));
+    }
+
+    public removeChildren() {
+        const children = Array.from(this._baseElement.children);
+        for (const child of children) {
+            this.removeChild(child);
         }
     }
 
@@ -69,10 +73,6 @@ class Component extends Disposable {
 
     public y(): number {
         return this._baseElement.offsetTop;
-    }
-
-    setTextContent(text: string) {
-        this.addChild(document.createTextNode(text));
     }
 
     public setWidth(width: number) {

@@ -22,6 +22,15 @@ class Icons {
     public static cross():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/cross.svg").toString();
     }
+    public static next():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/next.svg").toString();
+    }
+    public static restart():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/restart.svg").toString();
+    }
+    public static home():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/home.svg").toString();
+    }
 }
 
 export {Icons};
