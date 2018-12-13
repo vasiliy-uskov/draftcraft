@@ -38,7 +38,7 @@
       margin-top: 10px;
 
       .button {
-        margin-left: 5px;
+        margin-left: 1px;
       }
 
       .home-button, .next-button {
@@ -46,13 +46,13 @@
       }
 
       .next-button {
-        top: 8px;
-        left: 17px;
+        top: 9px;
+        left: 13px;
       }
 
       .home-button {
-        top: 7px;
-        left: 15px;
+        top: 12px;
+        left: 8px;
       }
     }
 
@@ -69,5 +69,10 @@
         }
       }
     }
+  }
+
+  .icon-button {
+    width: 60px;
+    height: 60px;
   }
 }

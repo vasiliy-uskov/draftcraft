@@ -1,6 +1,10 @@
 @mixin richText() {
   color: #4A4A4A;
 
+  * {
+    line-height: 25px;
+  }
+
   h1 {
     font-size: 32px;
   }
@@ -16,5 +20,23 @@
 
   ul {
     list-style: decimal;
+  }
+
+  b {
+    font-weight: bold;
+  }
+
+  i {
+    font-style: italic;
+  }
+
+  sub {
+    vertical-align: sub;
+    font-size: smaller;
+  }
+
+  sup {
+    vertical-align: super;
+    font-size: large;
   }
 }
