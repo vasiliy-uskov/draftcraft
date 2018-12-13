@@ -43,7 +43,11 @@ class ResultPage extends BasePage {
             blockName: "next-button"
         });
         this._addDisposable(this._nextButton);
-        this._addHandler(this._nextButton.clickEvent(), () => this._sendChangePageRequest(PagesType.DraftPage));
+        this._addHandler(this._nextButton.clickEvent(), () => {
+            if (!this._lastLevelSelect()) {
+                this._sendChangePageRequest(PagesType.DraftPage);
+            }
+        });
         controls.addChild(this._nextButton);
     }
 
@@ -53,7 +57,7 @@ class ResultPage extends BasePage {
 
     protected _beforeClose() {
         const currentLevel = this._gameContext.currentLevel();
-        if (currentLevel.isLevelPassed()) {
+        if (currentLevel.isLevelPassed() && !this._lastLevelSelect()) {
             this._gameContext.setCurrentLevel(this._gameContext.currentLevelIndex() + 1);
         }
 
@@ -66,6 +70,7 @@ class ResultPage extends BasePage {
         this._score.setContent(verify(currentLevel.score()).toString());
         this._message.setContent(this._getMessage(isLevelPassed ? "successMessage" : "failMessage"));
         this._nextButton.setContent(isLevelPassed ? Icons.next() : Icons.restart());
+        this._nextButton.setStyle("display", this._lastLevelSelect() ? "none" : "");
         this._startHolder.removeChildren();
         let starsCount = currentLevel.starsCount();
         while (starsCount) {
@@ -75,6 +80,10 @@ class ResultPage extends BasePage {
             }));
             --starsCount;
         }
+    }
+
+    private _lastLevelSelect():boolean {
+        return this._gameContext.currentLevelIndex() == this._gameContext.getLevels().length - 1;
     }
 
     private _resultCard = new Component({ blockName: "result-card" });

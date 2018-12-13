@@ -28,9 +28,6 @@ const gameContext = new GameContext([
     new Level(
         `<b>Упражнение 7:</b> построить недостающую проекцию выреза`,
         `<h2>Проекция точек на плоскость</h2>\n`, "./build/task6.png"),
-    new Level("Task", "Level", ""),
-    new Level("Task", "Level", ""),
-    new Level("Task", "Level", ""),
 ]);
 const messages = new Messages();
 const game = new Game(gameContext, messages);
