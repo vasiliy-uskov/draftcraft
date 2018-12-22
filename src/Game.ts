@@ -5,7 +5,7 @@ import {StartPage} from "./startpage/StartPage";
 import {LevelsPage} from "./levelspage/LevelsPage";
 import {ResultPage} from "./resultpage/ResultPage";
 import {DraftPage} from "./draftpage/DraftPage";
-import {GameContext} from "./model/GameContext";
+import {GameContext} from "./GameContext";
 import {Messages} from "./common/lng/Messages";
 
 class Game extends Disposable {

@@ -3,6 +3,7 @@ import {PagesType} from "./PagesType";
 import {EventDispatcher} from "../disposable/EventDispatcher";
 import {Messages} from "../lng/Messages";
 import {Fade} from "../effects/transition/Fade";
+import {eventToPromise} from "../utils/asynctools";
 
 class BasePage extends Component {
     constructor(container: HTMLElement, messages: Messages, pageType: PagesType) {
@@ -14,34 +15,28 @@ class BasePage extends Component {
         this._pageType = pageType;
     }
 
-    public open(): Promise<void> {
+    public async open() {
         this.setStyle("opacity", 0);
         this.setStyle("display", "block");
-        return new Promise((resolve, reject) => {
-            this._beforeOpen();
-            const animation = new Fade(this, true);
-            this._addDisposable(animation);
-            this._addHandlerCallOnce(animation.endEvent(), () => {
-                this._removeDisposable(animation);
-                this._afterOpen();
-                resolve();
-            });
-            animation.play();
+        await this._beforeOpen();
+        const animation = new Fade(this, true);
+        this._addDisposable(animation);
+        animation.play();
+        return eventToPromise(animation.endEvent()).then(() => {
+            this._removeDisposable(animation);
+            return this._afterOpen();
         });
     }
 
-    public close(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this._beforeClose();
-            const animation = new Fade(this, false);
-            this._addDisposable(animation);
-            this._addHandlerCallOnce(animation.endEvent(), () => {
-                this._removeDisposable(animation);
-                requestAnimationFrame(() => this.setStyle("display", "none"));
-                this._afterClose();
-                resolve();
-            });
-            animation.play();
+    public async close() {
+        await this._beforeClose();
+        const animation = new Fade(this, false);
+        this._addDisposable(animation);
+        animation.play();
+        return eventToPromise(animation.endEvent()).then(() => {
+            this._removeDisposable(animation);
+            requestAnimationFrame(() => this.setStyle("display", "none"));
+            return this._afterClose();
         });
     }
 
@@ -50,13 +45,13 @@ class BasePage extends Component {
         return this._changePageRequestEvent;
     }
 
-    protected _beforeOpen(): void {}
+    protected async _beforeOpen() {}
 
-    protected _afterOpen(): void {}
+    protected async _afterOpen() {}
 
-    protected _beforeClose(): void {}
+    protected async _beforeClose() {}
 
-    protected _afterClose(): void {}
+    protected async _afterClose() {}
 
     /** @final */
     protected _sendChangePageRequest(page: PagesType) {

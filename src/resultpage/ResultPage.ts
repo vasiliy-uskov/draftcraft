@@ -1,5 +1,5 @@
 import {BasePage} from "../common/page/BasePage";
-import {GameContext} from "../model/GameContext";
+import {GameContext} from "../GameContext";
 import {Messages} from "../common/lng/Messages";
 import {PagesType} from "../common/page/PagesType";
 import {Component} from "../common/components/component/Component";
@@ -38,39 +38,38 @@ class ResultPage extends BasePage {
         controls.addChild(homeButton);
         this._addHandler(homeButton.clickEvent(), () => this._sendChangePageRequest(PagesType.StartPage));
 
-        this._nextButton = new Button({
-            icon: Icons.next(),
-            blockName: "next-button"
-        });
         this._addDisposable(this._nextButton);
-        this._addHandler(this._nextButton.clickEvent(), () => {
-            if (!this._lastLevelSelect()) {
+        this._addHandler(this._nextButton.clickEvent(), async () => {
+            if (!await this._gameContext.lastLevelSelected()) {
                 this._sendChangePageRequest(PagesType.DraftPage);
             }
         });
         controls.addChild(this._nextButton);
     }
 
-    protected _beforeOpen() {
-        this._invalidateContent();
+    protected async _beforeOpen() {
+        await this._invalidateContent();
     }
 
-    protected _beforeClose() {
-        const currentLevel = this._gameContext.currentLevel();
-        if (currentLevel.isLevelPassed() && !this._lastLevelSelect()) {
-            this._gameContext.setCurrentLevel(this._gameContext.currentLevelIndex() + 1);
+    protected async _beforeClose() {
+        await this._iterateLevel();
+    }
+
+    private async _iterateLevel() {
+        const currentLevel = await this._gameContext.currentLevel();
+        if (currentLevel.isLevelPassed() && !(await this._gameContext.lastLevelSelected())) {
+            return this._gameContext.selectNextLevel();
         }
-
     }
 
-    private _invalidateContent() {
-        const currentLevel = this._gameContext.currentLevel();
+    private async _invalidateContent() {
+        const currentLevel = await this._gameContext.currentLevel();
         const isLevelPassed = currentLevel.isLevelPassed();
         this._resultCard.updateModifier("result", isLevelPassed ? "good" : "bad");
         this._score.setContent(verify(currentLevel.score()).toString());
         this._message.setContent(this._getMessage(isLevelPassed ? "successMessage" : "failMessage"));
         this._nextButton.setContent(isLevelPassed ? Icons.next() : Icons.restart());
-        this._nextButton.setStyle("display", this._lastLevelSelect() ? "none" : "");
+        this._nextButton.setStyle("display", await this._gameContext.lastLevelSelected() ? "none" : "");
         this._startHolder.removeChildren();
         let starsCount = currentLevel.starsCount();
         while (starsCount) {
@@ -82,15 +81,11 @@ class ResultPage extends BasePage {
         }
     }
 
-    private _lastLevelSelect():boolean {
-        return this._gameContext.currentLevelIndex() == this._gameContext.getLevels().length - 1;
-    }
-
     private _resultCard = new Component({ blockName: "result-card" });
     private _score = new Component({bemInfo: this._resultCard.createChildBemInfo("score")});
     private _message = new Component({bemInfo: this._resultCard.createChildBemInfo("message")});
     private _startHolder = new Component({bemInfo: this._resultCard.createChildBemInfo("stars-holder")});
-    private _nextButton: Button;
+    private _nextButton: Button = new Button({icon: Icons.next(), blockName: "next-button"});
     private _gameContext: GameContext;
 }
 

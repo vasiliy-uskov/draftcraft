@@ -5,6 +5,18 @@ function verify<T>(a: T): T {
     throw new Error("Unexpected null");
 }
 
+function verifyObject<T>(a: T): T {
+    return verifyType(a, "object");
+}
+
+function verifyString<T>(a: T): T {
+    return verifyType(a, "string");
+}
+
+function verifyBoolean<T>(a: T): T {
+    return verifyType(a, "boolean");
+}
+
 function verifyNumber<T>(a: T): T {
     return verifyType(a, "number");
 }
@@ -32,4 +44,4 @@ function isFunction(a: any): boolean {
     return typeof a == "function";
 }
 
-export {verify, verifyNumber, isBool, isNumber, isString, isFunction};
+export {verify, verifyNumber, verifyBoolean, verifyObject, verifyString, isBool, isNumber, isString, isFunction};

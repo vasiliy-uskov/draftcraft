@@ -1,9 +1,8 @@
 import {BasePage} from "../common/page/BasePage";
-import {GameContext} from "../model/GameContext";
+import {GameContext} from "../GameContext";
 import {Messages} from "../common/lng/Messages";
 import {PagesType} from "../common/page/PagesType";
 import {Component} from "../common/components/component/Component";
-import {Direction} from "../common/effects/transition/Direction";
 import {Level} from "../model/Level";
 import {BackButton} from "../common/components/button/BackButton";
 import {Icons} from "../common/components/Icons";
@@ -22,11 +21,11 @@ class LevelsPage extends BasePage {
         this.addChild(this._levelsHolder);
     }
 
-    protected _beforeOpen() {
-        this._invalidateLevelsList();
+    protected async _beforeOpen() {
+        await this._invalidateLevelsList();
     }
 
-    protected _beforeClose() {
+    protected async _beforeClose() {
         this._cleanLevelsList();
     }
 
@@ -38,19 +37,27 @@ class LevelsPage extends BasePage {
         this._levelsViews = [];
     }
 
-    private _invalidateLevelsList() {
-        const levels = this._gameContext.getLevels();
-        levels.forEach((level, index) => {
-            const levelView = this._createLevelView(level, index + 1);
-            this._addDisposable(levelView);
-            this._listen("click", levelView, () => this._activateLevelHandler(index));
-            levelView.updateModifier("enabled", this._isLevelEnabled(index));
+    private async _invalidateLevelsList() {
+        const levels = await this._gameContext.getLevels();
+        levels.forEach(async (level, index) => {
+            const levelView = LevelsPage._createLevelView(level, index + 1);
             this._levelsViews.push(levelView);
             this._levelsHolder.addChild(levelView);
+            this._addDisposable(levelView);
+            this._listen("click", levelView, () => this._activateLevelHandler(level.id()));
+            const levelEnabled = await this._gameContext.isLevelEnabled(level.id());
+            levelView.updateModifier("enabled", levelEnabled);
         });
     }
 
-    private _createLevelView(level: Level, index: number): Component {
+    private _activateLevelHandler(id: string) {
+        if (this._gameContext.isLevelEnabled(id)) {
+            this._gameContext.setCurrentLevel(id);
+            this._sendChangePageRequest(PagesType.DraftPage);
+        }
+    }
+
+    private static _createLevelView(level: Level, index: number): Component {
         const levelView = new Component({
             blockName: "level",
         });
@@ -71,18 +78,6 @@ class LevelsPage extends BasePage {
         }
         levelView.addChild(startHolder);
         return levelView;
-    }
-
-    private _activateLevelHandler(index: number) {
-        if (this._isLevelEnabled(index)) {
-            this._gameContext.setCurrentLevel(index);
-            this._sendChangePageRequest(PagesType.DraftPage);
-        }
-    }
-
-    private _isLevelEnabled(index: number): boolean {
-        const prevLevel = this._gameContext.getLevelByIndex(index - 1);
-        return !prevLevel || prevLevel.isLevelPassed()
     }
 
     _gameContext: GameContext;

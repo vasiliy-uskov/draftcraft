@@ -1,5 +1,5 @@
 import {BasePage} from "../common/page/BasePage";
-import {GameContext} from "../model/GameContext";
+import {GameContext} from "../GameContext";
 import {Messages} from "../common/lng/Messages";
 import {PagesType} from "../common/page/PagesType";
 import {Workplace} from "./workplace/Workplace";
@@ -50,27 +50,26 @@ class DraftPage extends BasePage {
         this._addDisposable(finishButton);
         this.addChild(finishButton);
         this._addHandler(finishButton.clickEvent(), () => {
-            const data = [];
-            for (const change of this._changes) {
-                data.push(change.serialize())
-            }
-            this._gameContext.setCurrentLevelAnswer(JSON.stringify(data));
             this._sendChangePageRequest(PagesType.ResultPage)
         });
     }
 
-    protected _beforeOpen() {
-        const currentLevel = this._gameContext.currentLevel();
+    protected async _beforeOpen() {
+        const currentLevel = await this._gameContext.currentLevel();
         this._workplace.setBackgroundImage(currentLevel.img());
         this._taskPopup.setTextContent(currentLevel.task());
         this._helpPopup.setTextContent(currentLevel.help());
         this._taskPopup.setActivated(true);
     }
 
-    protected _beforeClose() {
+    protected async _beforeClose() {
         this._taskPopup.setActivated(false);
         this._helpPopup.setActivated(false);
         this._changes = [];
+    }
+
+    protected async _afterClose() {
+        await this._gameContext.setCurrentLevelAnswer(this._getAnswer());
     }
 
     private _setCurrentTool(tool: ITool): void {
@@ -79,6 +78,14 @@ class DraftPage extends BasePage {
         }
         this._currentTool = tool;
         this._currentTool.activate();
+    }
+
+    private _getAnswer(): string {
+        const data = [];
+        for (const change of this._changes) {
+            data.push(change.serialize())
+        }
+        return JSON.stringify(data);
     }
 
     private _createTools(): Array<{icon: string, tool: ITool}> {
