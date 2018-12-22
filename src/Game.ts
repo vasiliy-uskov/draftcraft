@@ -7,10 +7,13 @@ import {ResultPage} from "./resultpage/ResultPage";
 import {DraftPage} from "./draftpage/DraftPage";
 import {GameContext} from "./GameContext";
 import {Messages} from "./common/lng/Messages";
+import {Spinner} from "./common/page/Spinner";
 
 class Game extends Disposable {
     constructor(gameContext: GameContext, messages: Messages) {
         super();
+        new Spinner(verify<HTMLElement>(document.getElementById("spinner")));
+
         this._startPage = new StartPage(verify<HTMLElement>(document.getElementById("start-page")), messages);
         this._addHandler(this._startPage.changePageRequestEvent(), (page) => {
             this._changePage(page);

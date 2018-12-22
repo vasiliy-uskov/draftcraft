@@ -1,5 +1,6 @@
 import {Level, LevelConfig} from "./model/Level";
 import {AjaxHelper} from "./common/http/AjaxHelper";
+import {ApiUrls} from "./ApiUrls";
 
 type SetAnswerJson = {
     sessionId: string,
@@ -17,7 +18,7 @@ class ServerApiHelper {
         this._sessionId = sessionId;
     }
     public getLevels(): Promise<Level[]> {
-        return AjaxHelper.post(ApiRouting.getLevels, this._getData()).then((data: Object) => {
+        return AjaxHelper.post(ApiUrls.getLevels, this._getData()).then((data: Object) => {
             const levels: Level[] = [];
             let dataJSON = data as Array<LevelConfig>;
             for (const levelJson of dataJSON) {
@@ -33,7 +34,7 @@ class ServerApiHelper {
 
     public setLevelAnswer(levelId: string, answer: string): Promise<void> {
         const data = this._getData({levelId, answer}) as SetAnswerJson;
-        return AjaxHelper.post(ApiRouting.addAnswer, data).then(({status}: {status: number}) => {
+        return AjaxHelper.post(ApiUrls.addAnswer, data).then(({status}: {status: number}) => {
             if (status != SetAnswerStatus.ok) {
                 throw new Error("Bad level answer")
             }
