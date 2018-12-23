@@ -49,8 +49,9 @@ class DraftPage extends BasePage {
         });
         this._addDisposable(finishButton);
         this.addChild(finishButton);
-        this._addHandler(finishButton.clickEvent(), () => {
-            this._sendChangePageRequest(PagesType.ResultPage)
+        this._addHandler(finishButton.clickEvent(), async () => {
+            await this._gameContext.setCurrentLevelAnswer(this._getAnswer());
+            this._sendChangePageRequest(PagesType.ResultPage);
         });
     }
 
@@ -66,10 +67,6 @@ class DraftPage extends BasePage {
         this._taskPopup.setActivated(false);
         this._helpPopup.setActivated(false);
         this._changes = [];
-    }
-
-    protected async _afterClose() {
-        await this._gameContext.setCurrentLevelAnswer(this._getAnswer());
     }
 
     private _setCurrentTool(tool: ITool): void {

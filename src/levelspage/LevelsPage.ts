@@ -44,8 +44,10 @@ class LevelsPage extends BasePage {
             this._levelsViews.push(levelView);
             this._levelsHolder.addChild(levelView);
             this._addDisposable(levelView);
-            this._listen("click", levelView, () => this._activateLevelHandler(level.id()));
             const levelEnabled = await this._gameContext.isLevelEnabled(level.id());
+            if (levelEnabled) {
+                this._listen("click", levelView, () => this._activateLevelHandler(level.id()));
+            }
             levelView.updateModifier("enabled", levelEnabled);
         });
     }

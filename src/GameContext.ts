@@ -15,19 +15,16 @@ class GameContext {
         });
     }
 
-    public setCurrentLevelAnswer(answer: string) {
-        this._serverRequestPromise = this.currentLevel().then((level) => {
-            return this._api.setLevelAnswer(level.id(), answer)
-                .then(() => this._updateLevels())
-                .catch(() => Promise.resolve());
-        })
+    public async setCurrentLevelAnswer(answer: string) {
+        this._serverRequestPromise = this._api.setLevelAnswer(this._currentLevel.id(), answer).then(() => this._updateLevels());
+        return this._serverRequestPromise;
     }
 
     public selectNextLevel(): Promise<void> {
         return this._synchronizeAction(() => {
             let prevLevel: Level|null = null;
             for (const level of this._levels.values()) {
-                if (prevLevel.id() == this._currentLevel.id()) {
+                if (prevLevel && prevLevel.id() == this._currentLevel.id()) {
                     this._currentLevel = level;
                     return;
                 }
@@ -43,7 +40,7 @@ class GameContext {
     }
 
     public getLevels(): Promise<Array<Level>> {
-        return this._synchronizeAction(() => Array(this._levels.values()).map((itr) => itr.return().value));
+        return this._synchronizeAction(() => Array(...this._levels.values()));
     }
 
     public isLevelEnabled(id: string): Promise<boolean> {
@@ -64,10 +61,11 @@ class GameContext {
                 this._levels.set(level.id(), level);
             }
             if (!this._currentLevel) {
-                this._currentLevel = this._levels.values().return().value;
+                this._currentLevel = Array(...this._levels.values())[0];
             }
-        }).catch(() => {
-            return Promise.resolve();
+        }).catch((err) => {
+            console.error(err);
+            return this._updateLevels();
         });
     }
 
