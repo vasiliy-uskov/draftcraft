@@ -11,8 +11,8 @@ class DrawChange implements IChange {
         this._shape.draw(drawingContext);
     }
 
-    public serialize(): string {
-        return this._shape.toString();
+    public serialize(): Object {
+        return this._shape.serialize();
     }
 
     private _shape: IShape;

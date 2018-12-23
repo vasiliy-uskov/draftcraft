@@ -6,10 +6,11 @@ import {Component} from "../common/components/component/Component";
 import {Level} from "../model/Level";
 import {BackButton} from "../common/components/button/BackButton";
 import {Icons} from "../common/components/Icons";
+import {HotKeyBinder} from "../common/hotkeys/HotKeysBinder";
 
 class LevelsPage extends BasePage {
-    constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
-        super(container, messages, PagesType.LevelsPage);
+    constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
+        super(container, messages, PagesType.LevelsPage, hotKeyBinder);
         this._gameContext = gameContext;
         const startButton = new BackButton();
         this.addChild(startButton);

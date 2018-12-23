@@ -2,7 +2,7 @@ import {IDrawingContext} from "../workplace/drawingcontext/IDrawingContext";
 
 interface IShape {
     draw(drawingContext: IDrawingContext): void;
-    toString(): string;
+    serialize(): Object;
 }
 
 export {IShape};

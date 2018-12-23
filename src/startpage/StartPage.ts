@@ -4,10 +4,11 @@ import {TagsName} from "../common/components/TagsName";
 import {PagesType} from "../common/page/PagesType";
 import {Messages} from "../common/lng/Messages";
 import {Button} from "../common/components/button/Button";
+import {HotKeyBinder} from "../common/hotkeys/HotKeysBinder";
 
 class StartPage extends BasePage {
-    constructor(container: HTMLElement, messages: Messages) {
-        super(container, messages, PagesType.StartPage);
+    constructor(container: HTMLElement, messages: Messages, hotKeyBinder: HotKeyBinder) {
+        super(container, messages, PagesType.StartPage, hotKeyBinder);
         const menu = new Component({
             blockName: "game-menu",
         });

@@ -1,14 +1,14 @@
-import {Component} from "../components/component/Component";
+import {IListenable} from "./IListenable";
 
 class BrowserEventsHandlersHolder {
-    constructor(target: Component) {
+    constructor(target: IListenable) {
         this._target = target;
     }
 
     addHandler(eventType: string, handler: (event: Event) => void, id: number) {
-        this._target.element().addEventListener(eventType, handler);
+        this._target.eventTarget().addEventListener(eventType, handler);
         this._handlersCleaner.set(id, () =>
-            this._target.element().removeEventListener(eventType, handler)
+            this._target.eventTarget().removeEventListener(eventType, handler)
         );
     }
 
@@ -27,7 +27,7 @@ class BrowserEventsHandlersHolder {
     }
 
     private _handlersCleaner: Map<number, () => void> = new Map();
-    private _target: Component;
+    private _target: IListenable;
 }
 
 export {BrowserEventsHandlersHolder}

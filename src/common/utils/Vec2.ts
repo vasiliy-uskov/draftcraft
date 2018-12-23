@@ -16,13 +16,6 @@ class Vec2 {
         return Math.hypot(this.x, this.y);
     }
 
-    public toString(): string {
-        return JSON.stringify({
-            x: this.x,
-            y: this.y
-        })
-    }
-
     public clone(): Vec2 {
         return new Vec2(this.x, this.y);
     }
@@ -39,11 +32,8 @@ class Vec2 {
         return this;
     }
 
-    static load(json: string): Vec2 {
-        const data = JSON.parse(json) as {x: number, y: number};
-        verifyNumber(data.x);
-        verifyNumber(data.y);
-        return  new Vec2(data.x, data.y)
+    public toString(): string {
+        return `{x: ${this.x}, y: ${this.y}}`;
     }
 
     public x: number;

@@ -1,17 +1,20 @@
 import {Disposable} from "../../common/disposable/Disposable";
 import {EventDispatcher} from "../../common/disposable/EventDispatcher";
 import {Component} from "../../common/components/component/Component";
+import {ListenableWindow} from "../../common/disposable/ListenableWindow";
 
 class MouseEventDispatcher extends Disposable {
     constructor(component: Component) {
         super();
+        const listenableWindow = new ListenableWindow();
+        this._addDisposable(listenableWindow);
         this._listen("mousedown", component, (event: Event) => {
             this._mouseDownEvent.dispatch(this._modifyCords(event as MouseEvent, component));
         });
-        this._listen("mouseup", component, (event: Event) => {
+        this._listen("mouseup", listenableWindow, (event: Event) => {
             this._mouseUpEvent.dispatch(this._modifyCords(event as MouseEvent, component));
         });
-        this._listen("mousemove", component, (event: Event) => {
+        this._listen("mousemove", listenableWindow, (event: Event) => {
             this._mouseMoveEvent.dispatch(this._modifyCords(event as MouseEvent, component));
         });
     }

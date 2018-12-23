@@ -14,12 +14,12 @@ class BoundingRect {
     }
 
     public toString(): string {
-        return JSON.stringify({
-            x: this.x,
-            y: this.y,
-            width: this.width,
-            height: this.height
-        })
+        return `{
+            x: ${this.x},
+            y: ${this.y},
+            width: ${this.width},
+            height: ${this.height}
+        }`;
     }
 
     public x: number;

@@ -15,11 +15,11 @@ class CleanArea implements IShape {
         drawingContext.clean(this._rect);
     }
 
-    toString(): string {
-        return JSON.stringify({
+    serialize(): Object {
+        return {
             model: "eraser",
             data: this._rect,
-        })
+        }
     }
 
     private _rect: BoundingRect;

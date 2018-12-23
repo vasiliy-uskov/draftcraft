@@ -5,10 +5,11 @@ import {PagesType} from "../common/page/PagesType";
 import {Component} from "../common/components/component/Component";
 import {Icons} from "../common/components/Icons";
 import {Button} from "../common/components/button/Button";
+import {HotKeyBinder} from "../common/hotkeys/HotKeysBinder";
 
 class ResultPage extends BasePage {
-    constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
-        super(container, messages, PagesType.ResultPage);
+    constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
+        super(container, messages, PagesType.ResultPage, hotKeyBinder);
         this._gameContext = gameContext;
         const cardContent = new Component({
             bemInfo: this._resultCard.createChildBemInfo("content"),

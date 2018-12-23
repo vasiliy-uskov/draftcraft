@@ -30,14 +30,14 @@ class Line implements IShape {
         drawingContext.stroke();
     }
 
-    public toString(): string {
-        return JSON.stringify({
+    public serialize(): Object {
+        return {
             model: "line",
             data: {
                 start: this._start,
                 end: this._end,
             }
-        })
+        };
     }
 
     private _start: Vec2;

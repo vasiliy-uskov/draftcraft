@@ -4,15 +4,17 @@ import {EventDispatcher} from "../disposable/EventDispatcher";
 import {Messages} from "../lng/Messages";
 import {Fade} from "../effects/transition/Fade";
 import {eventToPromise} from "../utils/asynctools";
+import {HotKeyBinder} from "../hotkeys/HotKeysBinder";
 
 class BasePage extends Component {
-    constructor(container: HTMLElement, messages: Messages, pageType: PagesType) {
+    constructor(container: HTMLElement, messages: Messages, pageType: PagesType, hotKeyBinder: HotKeyBinder) {
         super({
             baseElement: container,
             blockName: "page",
         });
         this._messages = messages;
         this._pageType = pageType;
+        this._hotKeyBinder = hotKeyBinder;
     }
 
     public async open() {
@@ -22,9 +24,11 @@ class BasePage extends Component {
         const animation = new Fade(this, true);
         this._addDisposable(animation);
         animation.play();
-        return eventToPromise(animation.endEvent()).then(() => {
+        return eventToPromise(animation.endEvent()).then(async () => {
             this._removeDisposable(animation);
-            return this._afterOpen();
+            await this._afterOpen();
+            this._hotKeyBinder.clean();
+            this._initHotKeyBinder(this._hotKeyBinder);
         });
     }
 
@@ -53,6 +57,8 @@ class BasePage extends Component {
 
     protected async _afterClose() {}
 
+    protected _initHotKeyBinder(hotKeyBinder: HotKeyBinder) {}
+
     /** @final */
     protected _sendChangePageRequest(page: PagesType) {
         this._changePageRequestEvent.dispatch(page);
@@ -66,6 +72,7 @@ class BasePage extends Component {
     private _changePageRequestEvent: EventDispatcher<PagesType> = this._createEventDispatcher<PagesType>();
     private _messages: Messages;
     private _pageType: PagesType;
+    private _hotKeyBinder: HotKeyBinder;
 }
 
 export {BasePage};

@@ -35,7 +35,7 @@ class LineTool extends BaseTool {
         }
     }
 
-    private _line: (Line|null) = null;
+    private _line: Line|null = null;
 }
 
 export {LineTool}

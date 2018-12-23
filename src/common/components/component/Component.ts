@@ -2,8 +2,9 @@ import {Disposable} from "../../disposable/Disposable";
 import {BemInfo} from "./BemInfo";
 import {TagsName} from "../TagsName";
 import {toCamelCase} from "../../utils/stringutils";
+import {IListenable} from "../../disposable/IListenable";
 
-class Component extends Disposable {
+class Component extends Disposable implements IListenable {
     constructor(config: {
         baseElement?: HTMLElement,
         tagName?: TagsName,
@@ -53,6 +54,10 @@ class Component extends Disposable {
         for (const child of children) {
             this.removeChild(child);
         }
+    }
+
+    public eventTarget(): EventTarget {
+        return this._baseElement;
     }
 
     public element(): HTMLElement {

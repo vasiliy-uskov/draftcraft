@@ -1,8 +1,8 @@
 import {EventDispatcher} from "./EventDispatcher";
 import {IDisposable} from "./IDisposable";
-import {Component} from "../components/component/Component";
 import {BrowserEventsHandlersHolder} from "./BrowserEventsHandlersHolder";
 import {EventsHandlersHolder} from "./EnventsHanldersHolder";
+import {IListenable} from "./IListenable";
 
 class Disposable {
     public dispose() {
@@ -70,7 +70,7 @@ class Disposable {
         }
     }
 
-    protected _listen(type: string, target: Component, handler: (event: Event) => void): number /*event id*/  {
+    protected _listen(type: string, target: IListenable, handler: (event: Event) => void): number /*event id*/  {
         this._handlersId++;
         if (!this._eventsHandlersHolders.has(target)) {
             this._browserEventsHandlersHolders.set(target, new BrowserEventsHandlersHolder(target));
@@ -79,7 +79,7 @@ class Disposable {
         return this._handlersId;
     }
 
-    protected _listenOnce(type: string, target: Component, handler: (event: Event) => void): number /*event id*/  {
+    protected _listenOnce(type: string, target: IListenable, handler: (event: Event) => void): number /*event id*/  {
         const id = this._listen(type, target,(arg: Event) => {
             handler(arg);
             this._unlisten(id);

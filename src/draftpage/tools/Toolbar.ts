@@ -1,47 +1,64 @@
 import {Component} from "../../common/components/component/Component";
 import {EventDispatcher} from "../../common/disposable/EventDispatcher";
+import {ITool} from "./ITool";
+import {ChangeToolAction} from "../action/ChangeToolAction";
 
-class Toolbar<T> extends Component {
+
+class Toolbar extends Component {
     constructor() {
-        super({
-            blockName: "toolbar",
-        });
+        super({ blockName: "toolbar" });
     }
 
-    public initTools(tools: Array<{icon: string, tool: T}>) {
-        for (const toolView of this._tools) {
-            this.removeChild(toolView);
-            this._removeDisposable(toolView);
-        }
-        for (const {icon, tool} of tools) {
+    public toolChoseEvent(): EventDispatcher<ChangeToolAction> {
+        return this._toolChoseEvent;
+    }
+
+    public initTools(tools: Array<{icon: string, tool: ITool}>) {
+        this._cleanToolbar();
+        this._createTools(tools);
+        this._activateTool(Array(...this._tools.keys())[0]);
+    }
+
+    private _createTools(tools: Array<{icon: string, tool: ITool}>) {
+        tools.forEach(({icon, tool}) => {
             const toolView = new Component({
                 bemInfo: this.createChildBemInfo("tool"),
                 content: icon
             });
-            this._listen("click", toolView, () => this._setToolSelected(toolView, tool));
+            this._listen("click", toolView, () => {
+                this._toolChoseEvent.dispatch(this._createChangeToolAction(tool));
+            });
             this._addDisposable(toolView);
             this.addChild(toolView);
-            this._tools.push(toolView);
-        }
-        if (this._tools[0] && tools[0]) {
-            this._setToolSelected(this._tools[0], tools[0].tool);
-        }
+            this._tools.set(tool, toolView);
+        })
     }
 
-    public toolChoseEvent(): EventDispatcher<T> {
-        return this._toolChoseEvent;
+    private _cleanToolbar() {
+        for (const toolView of this._tools.values()) {
+            this.removeChild(toolView);
+            this._removeDisposable(toolView);
+        }
+        this._tools.clear();
     }
 
-    private _setToolSelected(toolView: Component, tool: T) {
-        for (const toolView of this._tools) {
+    private _activateTool(tool: ITool) {
+        for (const [tool, toolView] of this._tools) {
+            tool.deactivate();
             toolView.updateModifier("selected", false);
         }
-        toolView.updateModifier("selected", true);
-        this._toolChoseEvent.dispatch(tool);
+        this._activeTool = tool;
+        tool.activate();
+        this._tools.get(tool).updateModifier("selected", true)
     }
 
-    private _tools: Array<Component> = [];
-    private _toolChoseEvent: EventDispatcher<T> = this._createEventDispatcher();
+    private _createChangeToolAction(tool: ITool): ChangeToolAction {
+        return new ChangeToolAction(this._activateTool.bind(this), this._activeTool, tool);
+    }
+
+    private _activeTool?: ITool;
+    private _tools: Map<ITool, Component> = new Map();
+    private _toolChoseEvent: EventDispatcher<ChangeToolAction> = this._createEventDispatcher();
 }
 
 export {Toolbar};

@@ -57,8 +57,8 @@ class Arc implements IShape {
         drawingContext.stroke();
     }
 
-    public toString(): string {
-        return JSON.stringify({
+    public serialize(): Object {
+        return {
             model: "arc",
             data: {
                 center: this.center(),
@@ -66,7 +66,7 @@ class Arc implements IShape {
                 radius: this.radius(),
                 startAngle: this.startAngle(),
             }
-        })
+        }
     }
 
     private _angle: number = 0;

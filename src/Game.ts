@@ -7,33 +7,37 @@ import {DraftPage} from "./draftpage/DraftPage";
 import {GameContext} from "./GameContext";
 import {Messages} from "./common/lng/Messages";
 import {Spinner} from "./common/page/Spinner";
+import {ActionController} from "./common/action/ActionController";
+import {HotKeyBinder} from "./common/hotkeys/HotKeysBinder";
 
 class Game extends Disposable {
     constructor(gameContext: GameContext, messages: Messages) {
         super();
+        const hotKeyBinder = new HotKeyBinder();
+
         const spinnerContainer = document.getElementById("spinner") as HTMLElement;
         this._spinner = new Spinner(spinnerContainer);
 
         const startPageContainer = document.getElementById("start-page") as HTMLElement;
-        this._startPage = new StartPage(startPageContainer, messages);
+        this._startPage = new StartPage(startPageContainer, messages, hotKeyBinder);
         this._addHandler(this._startPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
         const levelsPageContainer = document.getElementById("levels-page") as HTMLElement;
-        this._levelsPage = new LevelsPage(levelsPageContainer, gameContext, messages);
+        this._levelsPage = new LevelsPage(levelsPageContainer, gameContext, messages, hotKeyBinder);
         this._addHandler(this._levelsPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
         const resultPageContainer = document.getElementById("result-page") as HTMLElement;
-        this._resultPage = new ResultPage(resultPageContainer, gameContext, messages);
+        this._resultPage = new ResultPage(resultPageContainer, gameContext, messages, hotKeyBinder);
         this._addHandler(this._resultPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
         const draftPageContainer = document.getElementById("draft-page") as HTMLElement;
-        this._draftPage = new DraftPage(draftPageContainer, gameContext, messages);
+        this._draftPage = new DraftPage(draftPageContainer, gameContext, messages, hotKeyBinder);
         this._addHandler(this._draftPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });

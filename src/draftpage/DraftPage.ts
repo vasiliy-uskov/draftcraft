@@ -10,24 +10,35 @@ import {LineTool} from "./tools/line/LineTool";
 import {IChange} from "./tools/IChange";
 import {CompassTool} from "./tools/compass/CompassTool";
 import {EraserTool} from "./tools/eraser/EraserTool";
-import {InfoPopup} from "./popup/InfoPopup";
 import {HelpPopup} from "./popup/HelpPopup";
 import {TaskPopup} from "./popup/TaskPopup";
 import {BackButton} from "../common/components/button/BackButton";
 import {Button} from "../common/components/button/Button";
+import {ChangesHolder} from "./ChangesHolder";
+import {ActionController} from "../common/action/ActionController";
+import {AddChangeAction} from "./action/AddChangeAction";
+import {HotKeyBinder} from "../common/hotkeys/HotKeysBinder";
+import {ChangeToolAction} from "./action/ChangeToolAction";
 
 class DraftPage extends BasePage {
-    constructor(container: HTMLElement, gameContext: GameContext, messages: Messages) {
-        super(container, messages, PagesType.DraftPage);
+    constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
+        super(container, messages, PagesType.DraftPage, hotKeyBinder);
 
         this._gameContext =  gameContext;
 
+        this._addHandler(this._changes.invalidateRequestEvent(), this._invalidateResultCanvas.bind(this));
+
         this._addDisposable(this._toolbar);
         this.addChild(this._toolbar);
-        this._addHandler(this._toolbar.toolChoseEvent(), (tool: ITool) => this._setCurrentTool(tool));
+        this._addHandler(this._toolbar.toolChoseEvent(), (action: ChangeToolAction) => this._actionController.execute(action));
         const tools = this._createTools();
         this._toolbar.initTools(tools);
-        this._addToolsHandler(tools.map((el) => el.tool));
+        tools.forEach(({tool}) => {
+            this._addDisposable(tool);
+            this._addHandler(tool.changeEvent(), (change: IChange) => {
+                this._actionController.execute(new AddChangeAction(this._changes, change));
+            })
+        });
 
         this._addDisposable(this._workplace);
         this.addChild(this._workplace);
@@ -55,33 +66,31 @@ class DraftPage extends BasePage {
         });
     }
 
+    protected _initHotKeyBinder(hotKeyBinder: HotKeyBinder) {
+        hotKeyBinder.setActionController(this._actionController);
+    }
+
     protected async _beforeOpen() {
         const currentLevel = await this._gameContext.currentLevel();
         this._workplace.setBackgroundImage(currentLevel.img());
         this._taskPopup.setTextContent(currentLevel.task());
         this._helpPopup.setTextContent(currentLevel.help());
         this._taskPopup.setActivated(true);
+        this._actionController.clean();
     }
 
     protected async _beforeClose() {
         this._taskPopup.setActivated(false);
         this._helpPopup.setActivated(false);
-        this._changes = [];
-    }
-
-    private _setCurrentTool(tool: ITool): void {
-        if (this._currentTool) {
-            this._currentTool.deactivate();
-        }
-        this._currentTool = tool;
-        this._currentTool.activate();
+        this._changes.clean();
     }
 
     private _getAnswer(): string {
         const data = [];
-        for (const change of this._changes) {
+        for (const change of this._changes.toArray()) {
             data.push(change.serialize())
         }
+        console.log(data, JSON.stringify(data));
         return JSON.stringify(data);
     }
 
@@ -104,30 +113,21 @@ class DraftPage extends BasePage {
         }];
     }
 
-    private _addToolsHandler(tools: Array<ITool>) {
-        for (const tool of tools) {
-            this._addHandler(tool.changeEvent(), (change: IChange) => {
-                this._changes.push(change);
-                this._invalidateResultCanvas();
-            })
-        }
-    }
-
-    private _invalidateResultCanvas() {
+    private _invalidateResultCanvas(changes: Array<IChange>) {
         const resultCanvasContext = this._workplace.resultsCanvasContext();
         resultCanvasContext.clean();
-        for (const change of this._changes) {
+        for (const change of changes) {
             change.execute(resultCanvasContext);
         }
     }
 
-    private _currentTool?: ITool;
     private _gameContext: GameContext;
-    private _changes: Array<IChange> = [];
-    private _workplace: Workplace = new Workplace();
-    private _helpPopup: InfoPopup = new HelpPopup(this._getMessage("help"));
-    private _taskPopup: InfoPopup = new TaskPopup(this._getMessage("task"));
-    private _toolbar: Toolbar<ITool> = new Toolbar();
+    private _actionController = new ActionController();
+    private _changes = new ChangesHolder();
+    private _workplace = new Workplace();
+    private _helpPopup = new HelpPopup(this._getMessage("help"));
+    private _taskPopup = new TaskPopup(this._getMessage("task"));
+    private _toolbar = new Toolbar();
 }
 
 export {DraftPage};

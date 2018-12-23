@@ -2,7 +2,7 @@ import {IDrawingContext} from "../workplace/drawingcontext/IDrawingContext";
 
 interface IChange {
     execute(drawingContext: IDrawingContext): void;
-    serialize(): string
+    serialize(): Object;
 }
 
 export {IChange}
