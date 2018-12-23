@@ -16,13 +16,9 @@ gulp.task("compile-ts", () => {
 	.plugin(tsify)
 	.transform("brfs")
 	.transform("babelify", {
-		"presets": [
-			"@babel/env",
-			"@babel/es2015",
-			"@babel/es2016",
-			"@babel/es2017"
-		],
-		"extensions": [".js", ".ts"]
+		presets: ["@babel/env"],
+		extensions: ['.ts'],
+		minified: true,
 	})
 	.bundle()
 	.on('error', (error) => {
@@ -30,7 +26,7 @@ gulp.task("compile-ts", () => {
 	})
 	.pipe(source('index.js'))
 	.pipe(buffer())
-//	.pipe(uglify())
+	.pipe(uglify())
 	.pipe(gulp.dest("bin/build"));
 });
 

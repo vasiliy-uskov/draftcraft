@@ -8,7 +8,7 @@ const TEXT_FILL = "#343434";
 const ZOOM_SCALE = 0.25;
 
 class AnnotationDrawer {
-    static drawLineAnnotation(context: IDrawingContext, line: Line) {
+    public static drawLineAnnotation(context: IDrawingContext, line: Line) {
         const textTranslate = 25;
         const dirVector = AnnotationDrawer._getLineDir(line);
         const length = AnnotationDrawer._getLineLength(dirVector);

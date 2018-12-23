@@ -29,7 +29,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
-    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.2.3",
     "@types/node": "^10.12.0",
     "babelify": "^10.0.0",
     "brfs": "^2.0.1",

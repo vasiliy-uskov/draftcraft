@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import {GameContext} from "./GameContext";
 import {Game} from "./Game";
 import {Messages} from "./common/lng/Messages";

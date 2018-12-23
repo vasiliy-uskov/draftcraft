@@ -12,7 +12,7 @@ class Component extends Disposable {
         content?: string,
     }) {
         super();
-        this._baseElement = this._initBaseElement(config.tagName, config.baseElement);
+        this._baseElement = Component._initBaseElement(config.tagName, config.baseElement);
         if (config.blockName) {
             this._bemInfo.push(new BemInfo(config.blockName));
         }
