@@ -1,7 +1,6 @@
 import {BaseTool} from "../BaseTool";
 import {ICompassState} from "./ICompassState";
 import {NullState} from "./NullState";
-import {verify} from "../../../common/utils/typetools";
 import {DrawChange} from "../DrawChange";
 
 class CompassTool extends BaseTool {
@@ -11,7 +10,11 @@ class CompassTool extends BaseTool {
             this._currentState = newState;
         }
         else {
-            const change = new DrawChange(verify(this._currentState.arc()));
+            const arc = this._currentState.arc();
+            if (!arc) {
+                throw new Error("Invalid result tool for compass");
+            }
+            const change = new DrawChange(arc);
             this._dispatchChangeEvent(change);
             this._currentState = new NullState();
         }

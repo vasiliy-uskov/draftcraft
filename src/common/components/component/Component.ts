@@ -12,7 +12,7 @@ class Component extends Disposable {
         content?: string,
     }) {
         super();
-        this._initBaseElement(config.tagName, config.baseElement);
+        this._baseElement = this._initBaseElement(config.tagName, config.baseElement);
         if (config.blockName) {
             this._bemInfo.push(new BemInfo(config.blockName));
         }
@@ -134,21 +134,19 @@ class Component extends Disposable {
         this._baseElement.setAttribute("class", className)
     }
 
-    private _initBaseElement(tagName?: TagsName, baseElement?: HTMLElement) {
-        if (baseElement && tagName) {
-            throw new Error("Undefined behavior: tagName and baseElement is set");
-        }
+    private static _initBaseElement(tagName?: TagsName, baseElement?: HTMLElement): HTMLElement {
         if (baseElement) {
-            this._baseElement = baseElement;
+            return baseElement;
         }
         if (tagName || !baseElement) {
             tagName = tagName ? tagName : TagsName.div;
-            this._baseElement = document.createElement(tagName);
+            return document.createElement(tagName);
         }
+        throw new Error("Undefined behavior: tagName and baseElement is set");
     }
 
-    _bemInfo: Array<BemInfo> = [];
-    _baseElement: HTMLElement;
+    private _bemInfo: Array<BemInfo> = [];
+    private _baseElement: HTMLElement;
 }
 
 export {Component}

@@ -1,0 +1,9 @@
+{
+  "presets": [
+    "@babel/env",
+    "@babel/es2015",
+    "@babel/es2016",
+    "@babel/es2017"
+  ],
+  "extensions": [".js", ".ts"]
+}

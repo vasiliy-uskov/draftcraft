@@ -34,7 +34,7 @@ class Level {
         return startCount > 0 ? startCount : 0;
     }
 
-    public img(): string|null {
+    public img(): string {
         return this._img;
     }
 
@@ -50,7 +50,7 @@ class Level {
         return this._id;
     }
 
-    public score(): number|null {
+    public score(): number {
         return this._score ? this._score : 0;
     }
 
@@ -73,7 +73,7 @@ class Level {
         }
     }
 
-    private readonly _score: number|null;
+    private readonly _score?: number;
     private readonly _enable: boolean;
     private readonly _img: string;
     private readonly _help: string;

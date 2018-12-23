@@ -3,7 +3,6 @@ import {GameContext} from "../GameContext";
 import {Messages} from "../common/lng/Messages";
 import {PagesType} from "../common/page/PagesType";
 import {Component} from "../common/components/component/Component";
-import {verify} from "../common/utils/typetools";
 import {Icons} from "../common/components/Icons";
 import {Button} from "../common/components/button/Button";
 
@@ -66,7 +65,7 @@ class ResultPage extends BasePage {
         const currentLevel = await this._gameContext.currentLevel();
         const isLevelPassed = currentLevel.isLevelPassed();
         this._resultCard.updateModifier("result", isLevelPassed ? "good" : "bad");
-        this._score.setContent(verify(currentLevel.score()).toString());
+        this._score.setContent(currentLevel.score().toString());
         this._message.setContent(this._getMessage(isLevelPassed ? "successMessage" : "failMessage"));
         this._nextButton.setContent(isLevelPassed ? Icons.next() : Icons.restart());
         this._nextButton.setStyle("display", await this._gameContext.lastLevelSelected() ? "none" : "");

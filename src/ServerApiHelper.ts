@@ -5,7 +5,7 @@ import {ApiUrls} from "./ApiUrls";
 type SetAnswerJson = {
     sessionId: string,
     levelId: string,
-    answer: string, //JSON
+    answer: string, //stringified JSON
 }
 
 enum SetAnswerStatus {

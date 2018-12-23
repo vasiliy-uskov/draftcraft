@@ -64,9 +64,9 @@ abstract class BaseTool extends Disposable implements ITool {
     protected _drawingContext: IDrawingContext;
 
     private _activated = false;
-    private _mouseDownHandlerKey?: number = null;
-    private _mouseMoveHandlerKey?: number = null;
-    private _mouseUpHandlerKey?: number = null;
+    private _mouseDownHandlerKey?: number;
+    private _mouseMoveHandlerKey?: number;
+    private _mouseUpHandlerKey?: number;
     private _changeEvent: EventDispatcher<IChange> = this._createEventDispatcher();
     private _mouseEventDispatcher: MouseEventDispatcher;
 }

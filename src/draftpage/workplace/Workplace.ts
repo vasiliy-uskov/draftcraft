@@ -3,7 +3,6 @@ import {TagsName} from "../../common/components/TagsName";
 import {CanvasDrawingContext} from "./drawingcontext/CanvasDrawingContext";
 import {IDrawingContext} from "./drawingcontext/IDrawingContext";
 import {MouseEventDispatcher} from "./MouseEventDispatcher";
-import {Size} from "../../common/utils/Size";
 import {ResizeObserver} from "../../common/utils/ResizeObserver";
 
 class Workplace extends Component {
@@ -17,11 +16,13 @@ class Workplace extends Component {
             bemInfo: this.createChildBemInfo("background"),
         });
         this.addChild(this._background);
-        this._resultsCanvasContext = this._createCanvas("results-canvas");
-        this._workingCanvasContext = this._createCanvas("working-canvas", (canvas: Component) => {
-            this._canvasMouseEventDispatcher = new MouseEventDispatcher(canvas);
-            this._addDisposable(this._canvasMouseEventDispatcher);
-        });
+        const {context: resultsCanvasContext} = this._createCanvas("results-canvas");
+        this._resultsCanvasContext = resultsCanvasContext;
+        const {context: workingCanvasContext, canvas: workingCanvas} = this._createCanvas("working-canvas");
+        this._workingCanvasContext = workingCanvasContext;
+        this._canvasMouseEventDispatcher = new MouseEventDispatcher(workingCanvas);
+        this._addDisposable(this._canvasMouseEventDispatcher);
+
     }
 
     public resultsCanvasContext(): IDrawingContext {
@@ -40,16 +41,13 @@ class Workplace extends Component {
         this._background.setAttribute("src", src);
     }
 
-    _createCanvas(elementName: string, canvasCreationHandler?: (canvas: Component) => void): IDrawingContext {
+    private _createCanvas(elementName: string): {context: IDrawingContext, canvas: Component} {
         const canvas = new Component({
             tagName: TagsName.canvas,
             bemInfo: this.createChildBemInfo(elementName),
         });
         this.addChild(canvas);
         const canvasElement = canvas.element() as HTMLCanvasElement;
-        if (canvasCreationHandler) {
-            canvasCreationHandler(canvas);
-        }
         const canvasResizeObserver = new ResizeObserver(canvas);
         this._addDisposable(canvasResizeObserver);
         this._addHandler(canvasResizeObserver.resizeEvent(), () => {
@@ -59,7 +57,7 @@ class Workplace extends Component {
                 canvasElement.height = canvasRect.height;
             })
         });
-        return new CanvasDrawingContext(canvasElement);
+        return {context: new CanvasDrawingContext(canvasElement), canvas};
     }
 
     private _background: Component;

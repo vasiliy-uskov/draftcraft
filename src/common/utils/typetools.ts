@@ -1,10 +1,3 @@
-function verify<T>(a: T): T {
-    if (a) {
-        return a;
-    }
-    throw new Error("Unexpected null");
-}
-
 function verifyObject<T>(a: T): T {
     return verifyType(a, "object");
 }
@@ -44,4 +37,4 @@ function isFunction(a: any): boolean {
     return typeof a == "function";
 }
 
-export {verify, verifyNumber, verifyBoolean, verifyObject, verifyString, isBool, isNumber, isString, isFunction};
+export {verifyNumber, verifyBoolean, verifyObject, verifyString, isBool, isNumber, isString, isFunction};

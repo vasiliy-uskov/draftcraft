@@ -126,7 +126,7 @@ abstract class InfoPopup extends Component {
     private _invalidatePopupContent() {
         this._contentContainer.setContent(this._activated ? this._content : this._title);
     }
-    
+
     private _invalidateControl() {
         this._control.setContent(this._activated ? Icons.cross() : Icons.arrow());
         this._control.updateModifier("state", this._activated ? "cross" : "arrow")
@@ -145,7 +145,7 @@ abstract class InfoPopup extends Component {
     private _control: Component;
     private _overlay: Component;
     private _activated: boolean = false;
-    private _currentAnimation?: IAnimation = null;
+    private _currentAnimation?: IAnimation;
     private _content = "";
     private _title = "";
 }

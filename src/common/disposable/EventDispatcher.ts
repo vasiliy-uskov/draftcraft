@@ -12,7 +12,7 @@ class EventDispatcher<T> implements IDisposable {
         this._handlers.delete(handler);
     }
 
-    public dispatch(data?: T) {
+    public dispatch(data: T) {
         for (const handler of this._handlers.values()) {
             handler(data);
         }
@@ -27,7 +27,7 @@ class EventDispatcher<T> implements IDisposable {
     }
 
     private _handlers: Set<(arg: T) => void> = new Set();
-    private _eventOwner: IDisposable = null;
+    private _eventOwner: IDisposable;
 }
 
 export {EventDispatcher};

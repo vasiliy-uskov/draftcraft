@@ -7,14 +7,12 @@ class GameContext {
         this._serverRequestPromise = this._updateLevels();
     }
 
-    public setCurrentLevel(id: string) {
-        const iterator = this._levels.values();
-        while (!iterator.return().done && iterator.return().value.id() != id) {
-            iterator.next();
-        }
-        if (!iterator.return().done) {
-            this._currentLevel = iterator;
-        }
+    public setCurrentLevel(id: string): Promise<void> {
+        return this._synchronizeAction(() => {
+            if (this._levels.has(id)) {
+                this._currentLevel = this._levels.get(id);
+            }
+        });
     }
 
     public setCurrentLevelAnswer(answer: string) {
@@ -27,12 +25,21 @@ class GameContext {
 
     public selectNextLevel(): Promise<void> {
         return this._synchronizeAction(() => {
-            this._currentLevel.next()
+            let prevLevel: Level|null = null;
+            for (const level of this._levels.values()) {
+                if (prevLevel.id() == this._currentLevel.id()) {
+                    this._currentLevel = level;
+                    return;
+                }
+                prevLevel = level;
+            }
         });
     }
 
     public lastLevelSelected(): Promise<boolean> {
-        return this._synchronizeAction(() => this._currentLevel.return().done);
+        return this._synchronizeAction(() => {
+            return Array(...this._levels.values()).reverse()[0] == this._currentLevel;
+        });
     }
 
     public getLevels(): Promise<Array<Level>> {
@@ -44,7 +51,7 @@ class GameContext {
     }
 
     public currentLevel(): Promise<Level> {
-        return this._synchronizeAction(() => this._currentLevel.return().value);
+        return this._synchronizeAction(() => this._currentLevel);
     }
 
     private _synchronizeAction<T>(action: () => T): Promise<T> {
@@ -57,16 +64,16 @@ class GameContext {
                 this._levels.set(level.id(), level);
             }
             if (!this._currentLevel) {
-                this._currentLevel = this._levels.values();
+                this._currentLevel = this._levels.values().return().value;
             }
         }).catch(() => {
-            return this._updateLevels();
+            return Promise.resolve();
         });
     }
 
     private _api: ServerApiHelper;
     private _levels: Map<string, Level> = new Map();
-    private _currentLevel: IterableIterator<Level>;
+    private _currentLevel?: Level;
     private _serverRequestPromise: Promise<void>;
 }
 

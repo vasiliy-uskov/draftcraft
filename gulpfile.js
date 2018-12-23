@@ -5,30 +5,32 @@ gulp.task("compile-ts", () => {
 	const browserify = require("browserify");
 	const source = require('vinyl-source-stream');
 	const tsify = require("tsify");
-	const brfs = require("brfs");
-	const sourcemaps = require('gulp-sourcemaps');
 	const buffer = require('vinyl-buffer');
-	const babelify = require("babelify");
 	return browserify({
 		debug: false,
 		entries: ['src/app.ts'],
-		extensions: ['.js', '.ts'],
+		extensions: ['.babel'],
 		cache: {},
 		packageCache: {},
 	})
 	.plugin(tsify)
-	.transform(brfs)
-	.transform(babelify.configure({
-		presets: ["es2015"],
-		extensions: ['.js', '.ts'],
-	})).bundle().on('error', (error) => {
-			console.log(error.message);
-		})
+	.transform("brfs")
+	.transform("babelify", {
+		"presets": [
+			"@babel/env",
+			"@babel/es2015",
+			"@babel/es2016",
+			"@babel/es2017"
+		],
+		"extensions": [".js", ".ts"]
+	})
+	.bundle()
+	.on('error', (error) => {
+		console.log(error.message);
+	})
 	.pipe(source('index.js'))
 	.pipe(buffer())
-	.pipe(sourcemaps.init({loadMaps: true}))
-	.pipe(uglify())
-	.pipe(sourcemaps.write('./'))
+//	.pipe(uglify())
 	.pipe(gulp.dest("bin/build"));
 });
 

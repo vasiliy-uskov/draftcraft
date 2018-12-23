@@ -5,7 +5,7 @@ import {TextAlign} from "./TextAlign";
 
 class CanvasDrawingContext implements IDrawingContext {
     constructor(canvasElement: HTMLCanvasElement) {
-        this._context = canvasElement.getContext("2d");
+        this._context = canvasElement.getContext("2d") as CanvasRenderingContext2D;
         this._context.textBaseline = "middle";
         this._canvasElement = canvasElement;
     }

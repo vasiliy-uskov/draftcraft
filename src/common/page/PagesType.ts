@@ -1,8 +1,8 @@
 enum PagesType {
-    LevelsPage,
-    ResultPage,
-    DraftPage,
-    StartPage,
+    LevelsPage = "levels",
+    ResultPage = "result",
+    DraftPage = "draft",
+    StartPage = "start",
 }
 
 export {PagesType};

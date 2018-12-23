@@ -52,8 +52,9 @@ class LevelsPage extends BasePage {
 
     private _activateLevelHandler(id: string) {
         if (this._gameContext.isLevelEnabled(id)) {
-            this._gameContext.setCurrentLevel(id);
-            this._sendChangePageRequest(PagesType.DraftPage);
+            this._gameContext.setCurrentLevel(id).then(() => {
+                this._sendChangePageRequest(PagesType.DraftPage);
+            });
         }
     }
 

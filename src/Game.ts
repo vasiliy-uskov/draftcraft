@@ -1,5 +1,4 @@
 import {Disposable} from "./common/disposable/Disposable";
-import {verify} from "./common/utils/typetools";
 import {PagesType} from "./common/page/PagesType";
 import {StartPage} from "./startpage/StartPage";
 import {LevelsPage} from "./levelspage/LevelsPage";
@@ -12,26 +11,28 @@ import {Spinner} from "./common/page/Spinner";
 class Game extends Disposable {
     constructor(gameContext: GameContext, messages: Messages) {
         super();
-        new Spinner(verify<HTMLElement>(document.getElementById("spinner")));
+        const spinnerContainer = document.getElementById("spinner") as HTMLElement;
+        this._spinner = new Spinner(spinnerContainer);
 
-        this._startPage = new StartPage(verify<HTMLElement>(document.getElementById("start-page")), messages);
+        const startPageContainer = document.getElementById("start-page") as HTMLElement;
+        this._startPage = new StartPage(startPageContainer, messages);
         this._addHandler(this._startPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
-        const levelsPageContainer = verify<HTMLElement>(document.getElementById("levels-page"));
+        const levelsPageContainer = document.getElementById("levels-page") as HTMLElement;
         this._levelsPage = new LevelsPage(levelsPageContainer, gameContext, messages);
         this._addHandler(this._levelsPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
-        const resultPageContainer = verify<HTMLElement>(document.getElementById("result-page"));
+        const resultPageContainer = document.getElementById("result-page") as HTMLElement;
         this._resultPage = new ResultPage(resultPageContainer, gameContext, messages);
         this._addHandler(this._resultPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
         });
 
-        const draftPageContainer = verify<HTMLElement>(document.getElementById("draft-page"));
+        const draftPageContainer = document.getElementById("draft-page") as HTMLElement;
         this._draftPage = new DraftPage(draftPageContainer, gameContext, messages);
         this._addHandler(this._draftPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
@@ -76,6 +77,7 @@ class Game extends Disposable {
         throw new Error(`Unknown page type ${page}`);
     }
 
+    private _spinner: Spinner;
     private _startPage: StartPage;
     private _levelsPage: LevelsPage;
     private _resultPage: ResultPage;
