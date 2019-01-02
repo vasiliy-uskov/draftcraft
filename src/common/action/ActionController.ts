@@ -7,13 +7,17 @@ class ActionController {
     }
 
     public redo(): void {
-        this._currentAction.value().execute();
-        this._currentAction.next();
+        if (this._currentAction.value()) {
+            this._currentAction.value().execute();
+            this._currentAction.next();
+        }
     }
 
     public undo(): void {
         this._currentAction.prev();
-        this._currentAction.value() && this._currentAction.value().unexecute();
+        if (this._currentAction.value()) {
+            this._currentAction.value().unexecute();
+        }
     }
 
     public clean(): void {
