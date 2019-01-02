@@ -1,9 +1,9 @@
 import {clamp} from "../utils/mathutils";
 
 class ArrIterator<T> {
-    constructor(index: number, changes: Array<T>) {
+    constructor(index: number, entities: Array<T>) {
         this._index = index;
-        this._entities = changes;
+        this._entities = entities;
         this._validateIndex();
     }
 
