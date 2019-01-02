@@ -6,17 +6,12 @@ import {ResultPage} from "./resultpage/ResultPage";
 import {DraftPage} from "./draftpage/DraftPage";
 import {GameContext} from "./GameContext";
 import {Messages} from "./common/lng/Messages";
-import {Spinner} from "./common/page/Spinner";
-import {ActionController} from "./common/action/ActionController";
 import {HotKeyBinder} from "./common/hotkeys/HotKeysBinder";
 
 class Game extends Disposable {
     constructor(gameContext: GameContext, messages: Messages) {
         super();
         const hotKeyBinder = new HotKeyBinder();
-
-        const spinnerContainer = document.getElementById("spinner") as HTMLElement;
-        this._spinner = new Spinner(spinnerContainer);
 
         const startPageContainer = document.getElementById("start-page") as HTMLElement;
         this._startPage = new StartPage(startPageContainer, messages, hotKeyBinder);
@@ -81,7 +76,6 @@ class Game extends Disposable {
         throw new Error(`Unknown page type ${page}`);
     }
 
-    private _spinner: Spinner;
     private _startPage: StartPage;
     private _levelsPage: LevelsPage;
     private _resultPage: ResultPage;

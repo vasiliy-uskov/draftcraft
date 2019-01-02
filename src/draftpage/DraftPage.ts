@@ -61,7 +61,8 @@ class DraftPage extends BasePage {
         this._addDisposable(finishButton);
         this.addChild(finishButton);
         this._addHandler(finishButton.clickEvent(), async () => {
-            await this._gameContext.setCurrentLevelAnswer(this._getAnswer());
+            const addAnswerFn = () => this._gameContext.setCurrentLevelAnswer(this._getAnswer());
+            this._addClosingParallelTask(addAnswerFn);
             this._sendChangePageRequest(PagesType.ResultPage);
         });
     }

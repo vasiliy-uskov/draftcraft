@@ -21,27 +21,29 @@ class BasePage extends Component {
         this.setStyle("opacity", 0);
         this.setStyle("display", "block");
         await this._beforeOpen();
+        const parallelTasksPromise = BasePage._executeParallelsTasks(this._openingParallelsTasks);
         const animation = new Fade(this, true);
         this._addDisposable(animation);
         animation.play();
-        return eventToPromise(animation.endEvent()).then(async () => {
-            this._removeDisposable(animation);
-            await this._afterOpen();
-            this._hotKeyBinder.clean();
-            this._initHotKeyBinder(this._hotKeyBinder);
-        });
+        await eventToPromise(animation.endEvent());
+        this._removeDisposable(animation);
+        await this._afterOpen();
+        this._hotKeyBinder.clean();
+        this._initHotKeyBinder(this._hotKeyBinder);
+        await parallelTasksPromise;
     }
 
     public async close() {
         await this._beforeClose();
+        const parallelTasksPromise = BasePage._executeParallelsTasks(this._closingParallelsTasks);
         const animation = new Fade(this, false);
         this._addDisposable(animation);
         animation.play();
-        return eventToPromise(animation.endEvent()).then(() => {
-            this._removeDisposable(animation);
-            requestAnimationFrame(() => this.setStyle("display", "none"));
-            return this._afterClose();
-        });
+        await eventToPromise(animation.endEvent());
+        this._removeDisposable(animation);
+        requestAnimationFrame(() => this.setStyle("display", "none"));
+        await this._afterClose();
+        await parallelTasksPromise;
     }
 
     /** @final */
@@ -69,10 +71,30 @@ class BasePage extends Component {
         return this._messages.getMessage(this._pageType, id);
     }
 
+    /** @final */
+    protected _addOpeningParallelTask(task: () => Promise<void>): void {
+        this._openingParallelsTasks.push(task);
+    }
+
+    /** @final */
+    protected _addClosingParallelTask(task: () => Promise<void>): void {
+        this._closingParallelsTasks.push(task);
+    }
+
+    private static _executeParallelsTasks(tasks: Array<() => Promise<void>>): Promise<void[]> {
+        const promises: Array<Promise<void>> = [];
+        while (tasks.length) {
+            promises.push(tasks.pop()());
+        }
+        return Promise.all(promises);
+    }
+
     private _changePageRequestEvent: EventDispatcher<PagesType> = this._createEventDispatcher<PagesType>();
     private _messages: Messages;
     private _pageType: PagesType;
     private _hotKeyBinder: HotKeyBinder;
+    private _closingParallelsTasks: Array<() => Promise<void>> = [];
+    private _openingParallelsTasks: Array<() => Promise<void>> = [];
 }
 
 export {BasePage};
