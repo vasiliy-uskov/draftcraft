@@ -9,7 +9,7 @@ const buffer = require('vinyl-buffer');
 
 
 const path = {
-	outPath: "bin/build",
+	out: "bin/build",
 	tsEntryPoint: "src/app.ts",
 	scssEntryPoint: "res/styles/styles.scss",
 };
@@ -46,14 +46,14 @@ gulp.task("compile-ts", () => {
 		.pipe(source('index.js'))
 		.pipe(buffer())
 		.pipe(uglify())
-		.pipe(gulp.dest(path.outPath));
+		.pipe(gulp.dest(path.out));
 });
 
 gulp.task("compile-scss", () => {
 	gulp.src(path.scssEntryPoint)
 		.pipe(scss(config.scss))
 		.pipe(base64Inline())
-		.pipe(gulp.dest(path.outPath));
+		.pipe(gulp.dest(path.out));
 });
 
 gulp.task("build", ["compile-ts", "compile-scss"]);
