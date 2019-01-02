@@ -8,7 +8,7 @@ const tsify = require("tsify");
 const buffer = require('vinyl-buffer');
 
 
-const paths = {
+const path = {
 	outPath: "bin/build",
 	tsEntryPoint: "src/app.ts",
 	scssEntryPoint: "res/styles/styles.scss",
@@ -27,7 +27,7 @@ const config = {
 	},
 	browserify: {
 		debug: false,
-		entries: [paths.tsEntryPoint],
+		entries: [path.tsEntryPoint],
 		extensions: ['.babel'],
 		cache: {},
 		packageCache: {},
@@ -46,14 +46,14 @@ gulp.task("compile-ts", () => {
 		.pipe(source('index.js'))
 		.pipe(buffer())
 		.pipe(uglify())
-		.pipe(gulp.dest(paths.outPath));
+		.pipe(gulp.dest(path.outPath));
 });
 
 gulp.task("compile-scss", () => {
-	gulp.src(paths.scssEntryPoint)
+	gulp.src(path.scssEntryPoint)
 		.pipe(scss(config.scss))
 		.pipe(base64Inline())
-		.pipe(gulp.dest(paths.outPath));
+		.pipe(gulp.dest(path.outPath));
 });
 
 gulp.task("build", ["compile-ts", "compile-scss"]);
