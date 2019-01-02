@@ -17,13 +17,13 @@ const path = {
 const config = {
 	scss: {
 		noCache: true,
-			tmpPath: "",
-			style: "compressed"
+		tmpPath: "",
+		style: "compressed"
 	},
 	babel: {
 		presets: ["@babel/env"],
-			extensions: ['.ts'],
-			minified: true,
+		extensions: ['.ts'],
+		minified: true,
 	},
 	browserify: {
 		debug: false,

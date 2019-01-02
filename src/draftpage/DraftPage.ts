@@ -90,7 +90,6 @@ class DraftPage extends BasePage {
         for (const change of this._changes.toArray()) {
             data.push(change.serialize())
         }
-        console.log(data, JSON.stringify(data));
         return JSON.stringify(data);
     }
 

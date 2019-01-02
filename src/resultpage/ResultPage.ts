@@ -42,7 +42,7 @@ class ResultPage extends BasePage {
         this._addHandler(this._nextButton.clickEvent(), async () => {
             if (!await this._gameContext.lastLevelSelected()) {
                 this._sendChangePageRequest(PagesType.DraftPage);
-                await this._iterateLevel();
+                await this._incrementLevel();
             }
         });
         controls.addChild(this._nextButton);
@@ -52,7 +52,7 @@ class ResultPage extends BasePage {
         await this._invalidateContent();
     }
 
-    private async _iterateLevel() {
+    private async _incrementLevel() {
         const currentLevel = await this._gameContext.currentLevel();
         if (currentLevel.isLevelPassed() && !(await this._gameContext.lastLevelSelected())) {
             return this._gameContext.selectNextLevel();
