@@ -11,11 +11,11 @@ class CleanArea implements IShape {
         this._rect = new BoundingRect(center, size)
     }
 
-    draw(drawingContext: IDrawingContext) {
+    public draw(drawingContext: IDrawingContext) {
         drawingContext.clean(this._rect);
     }
 
-    serialize(): Object {
+    public serialize(): Object {
         return {
             model: "eraser",
             data: this._rect,

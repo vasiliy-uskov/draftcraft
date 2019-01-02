@@ -1,9 +1,10 @@
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
 
-app.use(express.static("bin"));
-app.use(express.static("images"));
+const app = express();
+
+app.use(express.static(__dirname + "/bin"));
+app.use(express.static(__dirname  + "/images"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
