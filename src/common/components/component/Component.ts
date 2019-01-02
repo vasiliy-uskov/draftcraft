@@ -56,6 +56,14 @@ class Component extends Disposable implements IListenable {
         }
     }
 
+    public focus() {
+        this._baseElement.focus();
+    }
+
+    public blur() {
+        this._baseElement.blur();
+    }
+
     public eventTarget(): EventTarget {
         return this._baseElement;
     }

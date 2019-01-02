@@ -8,16 +8,20 @@ const TEXT_FILL = "#343434";
 const ZOOM_SCALE = 0.25;
 
 class AnnotationDrawer {
+    public static drawLabel(context: IDrawingContext, label: string, position: Vec2) {
+        context.setFont(FONT);
+        context.setFill(TEXT_FILL);
+        context.text(label, position)
+    }
+
     public static drawLineAnnotation(context: IDrawingContext, line: Line) {
         const textTranslate = 25;
         const dirVector = AnnotationDrawer._getLineDir(line);
         const length = AnnotationDrawer._getLineLength(dirVector);
         dirVector.scale(textTranslate / dirVector.radius());
         const textPosition = line.end().add(dirVector);
-        context.setFont(FONT);
-        context.setFill(TEXT_FILL);
         context.setTextAlign(TextAlign.center);
-        context.text(length.toString(), textPosition)
+        AnnotationDrawer.drawLabel(context, length.toString(), textPosition)
     }
 
     private static _getLineLength(line: Vec2): number {

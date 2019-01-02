@@ -19,6 +19,7 @@ import {ActionController} from "../common/action/ActionController";
 import {AddChangeAction} from "./action/AddChangeAction";
 import {HotKeyBinder} from "../common/hotkeys/HotKeysBinder";
 import {ChangeToolAction} from "./action/ChangeToolAction";
+import {DotTool} from "./tools/dot/DotTool";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
@@ -61,7 +62,11 @@ class DraftPage extends BasePage {
         this._addDisposable(finishButton);
         this.addChild(finishButton);
         this._addHandler(finishButton.clickEvent(), async () => {
-            const addAnswerFn = () => this._gameContext.setCurrentLevelAnswer(this._getAnswer());
+            const addAnswerFn = () => {
+                const answer = this._getAnswer();
+                this._changes.clean();
+                return this._gameContext.setCurrentLevelAnswer(answer);
+            };
             this._addClosingParallelTask(addAnswerFn);
             this._sendChangePageRequest(PagesType.ResultPage);
         });
@@ -83,7 +88,6 @@ class DraftPage extends BasePage {
     protected async _beforeClose() {
         this._taskPopup.setActivated(false);
         this._helpPopup.setActivated(false);
-        this._changes.clean();
     }
 
     private _getAnswer(): string {
@@ -101,6 +105,8 @@ class DraftPage extends BasePage {
         this._addDisposable(compassTool);
         const eraserTool =  new EraserTool(this._workplace.workingCanvasContext(), this._workplace.canvasMouseEventDispatcher());
         this._addDisposable(eraserTool);
+        const dotTool =  new DotTool(this._workplace.workingCanvasContext(), this._workplace.canvasMouseEventDispatcher());
+        this._addDisposable(dotTool);
         return [{
             icon: Icons.line(),
             tool: lineTool,
@@ -110,6 +116,9 @@ class DraftPage extends BasePage {
         }, {
             icon: Icons.eraser(),
             tool: eraserTool,
+        }, {
+            icon: Icons.dot(),
+            tool: dotTool,
         }];
     }
 

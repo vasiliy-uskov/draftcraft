@@ -24,8 +24,6 @@ class LineTool extends BaseTool {
         }
     }
 
-    protected _mouseUpHandler(event: MouseEvent): void {}
-
     private _invalidateLineView() {
         this._drawingContext.clean();
         if (this._line)

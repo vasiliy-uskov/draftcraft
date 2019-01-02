@@ -3,7 +3,7 @@ import {Disposable} from "./Disposable";
 
 class ListenableWindow extends Disposable implements IListenable{
     public eventTarget(): EventTarget {
-        return window
+        return window;
     }
 }
 

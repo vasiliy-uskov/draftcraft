@@ -48,9 +48,9 @@ abstract class BaseTool extends Disposable implements ITool {
         this._removeHandler(this._mouseUpHandlerKey);
     }
 
-    protected abstract _mouseDownHandler(event: MouseEvent): void;
-    protected abstract _mouseUpHandler(event: MouseEvent): void;
-    protected abstract _mouseMoveHandler(event: MouseEvent): void;
+    protected _mouseDownHandler(event: MouseEvent): void {}
+    protected _mouseUpHandler(event: MouseEvent): void {}
+    protected _mouseMoveHandler(event: MouseEvent): void {}
 
     /** @final */
     protected _dispatchChangeEvent(change: IChange) {

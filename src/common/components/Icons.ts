@@ -34,6 +34,9 @@ class Icons {
     public static gear():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/gear.svg").toString();
     }
+    public static dot():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/dot.svg").toString();
+    }
 }
 
 export {Icons};

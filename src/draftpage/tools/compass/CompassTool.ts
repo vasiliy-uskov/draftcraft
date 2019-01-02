@@ -26,8 +26,6 @@ class CompassTool extends BaseTool {
         this._currentState.redrawState(this._drawingContext);
     }
 
-    protected _mouseUpHandler(event: MouseEvent): void {}
-
     private _currentState: ICompassState = new NullState;
 }
 

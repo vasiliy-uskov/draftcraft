@@ -4,6 +4,7 @@ enum TagsName {
     button = "button",
     img = "img",
     canvas = "canvas",
+    input = "input",
 }
 
 export {TagsName};

@@ -5,3 +5,9 @@ body {
   height: 100vh;
   background: inline("../images/grid.png");
 }
+
+.hidden-input {
+  display: block;
+  position: absolute;
+  transform: translate(-100%, -100%);
+}

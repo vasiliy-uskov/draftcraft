@@ -31,7 +31,7 @@ class MouseEventDispatcher extends Disposable {
         return this._mouseMoveEvent;
     }
 
-    _modifyCords(event: MouseEvent, component: Component): MouseEvent {
+    private _modifyCords(event: MouseEvent, component: Component): MouseEvent {
         const boundingBox = component.getClientRect();
         return new MouseEvent(event.type, {
             clientX: event.clientX - boundingBox.left,
