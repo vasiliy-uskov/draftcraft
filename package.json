@@ -20,10 +20,7 @@
     "browserify": "^16.2.3",
     "gulp": "^3.9.1",
     "gulp-base64-inline": "^1.0.4",
-    "gulp-scss": "^1.4.0",
-    "gulp-uglify": "^3.0.1",
     "modulename": "0.0.4",
-    "scss": "^0.2.4",
     "through2": "^2.0.3",
     "typescript": "^3.1.1"
   },
@@ -35,6 +32,7 @@
     "babelify": "^10.0.0",
     "brfs": "^2.0.1",
     "express": "^4.16.4",
+    "gulp-sass": "^4.0.2",
     "gulp-util": "^3.0.8",
     "tsify": "^4.0.0",
     "typescript": "^3.1.3",
