@@ -9,6 +9,14 @@ class Toolbar extends Component {
         super({ blockName: "toolbar" });
     }
 
+    public activate() {
+        this._active = true;
+    }
+
+    public deactivate() {
+        this._active = false;
+    }
+
     public toolChoseEvent(): EventDispatcher<ChangeToolAction> {
         return this._toolChoseEvent;
     }
@@ -26,6 +34,9 @@ class Toolbar extends Component {
                 content: icon
             });
             this._listen("click", toolView, () => {
+                if (!this._active) {
+                    return;
+                }
                 this._toolChoseEvent.dispatch(this._createChangeToolAction(tool));
             });
             this._addDisposable(toolView);
@@ -58,7 +69,8 @@ class Toolbar extends Component {
 
     private _activeTool?: ITool;
     private _tools: Map<ITool, Component> = new Map();
-    private _toolChoseEvent: EventDispatcher<ChangeToolAction> = this._createEventDispatcher();
+    private _toolChoseEvent = this._createEventDispatcher<ChangeToolAction>();
+    private _active = false;
 }
 
 export {Toolbar};

@@ -83,9 +83,11 @@ class DraftPage extends BasePage {
         this._helpPopup.setTextContent(currentLevel.help());
         this._taskPopup.setActivated(true);
         this._actionController.clean();
+        this._toolbar.activate();
     }
 
     protected async _beforeClose() {
+        this._toolbar.deactivate();
         this._taskPopup.setActivated(false);
         this._helpPopup.setActivated(false);
     }

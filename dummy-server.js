@@ -66,7 +66,7 @@ app.post("/get_levels_ajax", function (req, res) {
 
 app.post("/add_answer_to_level_ajax", function (req, res) {
 	const levelId = req.body.levelId;
-	console.log(JSON.parse(req.body.answer));
+	console.log(req.body.answer);
 	const level = levels.find((level) => level.id == levelId);
 	level.score = 1000;
 	const levelIndex = levels.indexOf(level);
