@@ -112,13 +112,16 @@ class DraftPage extends BasePage {
         return [{
             icon: Icons.line(),
             tool: lineTool,
-        }, {
+        },
+        {
             icon: Icons.compass(),
             tool: compassTool,
-        }, {
-            icon: Icons.eraser(),
-            tool: eraserTool,
-        }, {
+        },
+        // {
+        //     icon: Icons.eraser(),
+        //     tool: eraserTool,
+        // },
+        {
             icon: Icons.dot(),
             tool: dotTool,
         }];
