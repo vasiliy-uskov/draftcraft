@@ -22,6 +22,13 @@ class DotTool extends BaseTool {
         return Icons.dot();
     }
 
+    public reset(): void {
+        this._removeDependency(this._labelInput);
+        this._drawingContext.clean();
+        this._labelInput.hide();
+        this._dot = null;
+    }
+
     protected _mouseUpHandler({relativeCors}: MouseEventData): void {
         this._dot = new Dot(relativeCors);
         this._dot.draw(this._drawingContext);
@@ -29,14 +36,8 @@ class DotTool extends BaseTool {
         this._labelInput.show(labelPosition);
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
             this._dispatchChangeEvent(new DrawChange(new LabeledDot(this._dot, label)));
-            this._reset();
+            this.reset();
         });
-    }
-
-    protected _reset(): void {
-        this._drawingContext.clean();
-        this._labelInput.hide();
-        this._dot = null;
     }
 
     private _labelInput: LabelInput;

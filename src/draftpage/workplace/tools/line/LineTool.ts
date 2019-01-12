@@ -10,6 +10,11 @@ class LineTool extends BaseTool {
         return Icons.line();
     }
 
+    public reset(): void {
+        this._drawingContext.clean();
+        this._line = null;
+    }
+
     protected _mouseDownHandler({relativeCors}: MouseEventData): void {
         if (!this._line) {
             this._line = new Line(relativeCors, relativeCors);
@@ -17,7 +22,7 @@ class LineTool extends BaseTool {
         }
         else {
             this._dispatchChangeEvent(new DrawChange(this._line));
-            this._reset();
+            this.reset();
         }
     }
 
@@ -26,11 +31,6 @@ class LineTool extends BaseTool {
             this._line.setEnd(relativeCors);
             this._invalidateLineView();
         }
-    }
-
-    protected _reset(): void {
-        this._drawingContext.clean();
-        this._line = null;
     }
 
     private _invalidateLineView() {

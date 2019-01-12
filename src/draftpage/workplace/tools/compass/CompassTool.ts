@@ -10,6 +10,11 @@ class CompassTool extends BaseTool {
         return Icons.compass();
     }
 
+    public reset() {
+        this._currentState = new NullState();
+        this._drawingContext.clean();
+    }
+
     protected _mouseDownHandler(data: MouseEventData): void {
         const newState = this._currentState.mouseDownHandler(data.relativeCors);
         if (newState) {
@@ -22,7 +27,7 @@ class CompassTool extends BaseTool {
             }
             const change = new DrawChange(arc);
             this._dispatchChangeEvent(change);
-            this._reset();
+            this.reset();
         }
         this._currentState.redrawState(this._drawingContext);
     }
@@ -30,11 +35,6 @@ class CompassTool extends BaseTool {
     protected _mouseMoveHandler(data: MouseEventData): void {
         this._currentState.mouseMoveHandler(data.relativeCors);
         this._currentState.redrawState(this._drawingContext);
-    }
-
-    protected _reset() {
-        this._drawingContext.clean();
-        this._currentState = new NullState();
     }
 
     private _currentState: ICompassState = new NullState;

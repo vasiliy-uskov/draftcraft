@@ -4,7 +4,7 @@ import {ListenableWindow} from "../disposable/ListenableWindow";
 
 const REDO_KEY = "y";
 const UNDO_KEY = "z";
-const RESET_KEY = "Esc";
+const RESET_KEY = "Escape";
 
 class HotKeyBinder extends Disposable {
     constructor() {
@@ -31,9 +31,6 @@ class HotKeyBinder extends Disposable {
     }
 
     private _handleKeyDown(event: KeyboardEvent) {
-        if (!event.ctrlKey) {
-            return;
-        }
         switch (event.key) {
             case UNDO_KEY:
                 return event.ctrlKey && this._undoHandler && this._undoHandler();
