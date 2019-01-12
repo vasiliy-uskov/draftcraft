@@ -27,10 +27,10 @@ class BasePage extends Component {
         animation.play();
         await eventToPromise(animation.endEvent());
         this._removeDisposable(animation);
+        await parallelTasksPromise;
         await this._afterOpen();
         this._hotKeyBinder.clean();
         this._initHotKeyBinder(this._hotKeyBinder);
-        await parallelTasksPromise;
     }
 
     public async close() {
@@ -42,8 +42,8 @@ class BasePage extends Component {
         await eventToPromise(animation.endEvent());
         this._removeDisposable(animation);
         requestAnimationFrame(() => this.setStyle("display", "none"));
-        await this._afterClose();
         await parallelTasksPromise;
+        await this._afterClose();
     }
 
     /** @final */

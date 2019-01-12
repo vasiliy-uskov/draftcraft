@@ -3,6 +3,7 @@ import {BemInfo} from "./BemInfo";
 import {TagsName} from "../TagsName";
 import {toCamelCase} from "../../utils/stringutils";
 import {IListenable} from "../../disposable/IListenable";
+import {Vec2} from "../../utils/Vec2";
 
 class Component extends Disposable implements IListenable {
     constructor(config: {
@@ -94,6 +95,19 @@ class Component extends Disposable implements IListenable {
 
     public setHeight(height: number) {
         this.setStyle("height", `${height}px`);
+    }
+
+    public setX(width: number) {
+        this.setStyle("left", `${width}px`);
+    }
+
+    public setY(height: number) {
+        this.setStyle("top", `${height}px`);
+    }
+
+    public move(position: Vec2) {
+        this.setX(position.x);
+        this.setY(position.y);
     }
 
     public getClientRect(): ClientRect {

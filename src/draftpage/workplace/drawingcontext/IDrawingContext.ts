@@ -17,7 +17,7 @@ interface IDrawingContext {
     arc(center: Vec2, radius: number, startAngle: number, angle: number): void;
     clean(rect?: BoundingRect): void;
     rect(rect: BoundingRect): void;
-    text(str: string, pos1: Vec2, pos2?: Vec2): void // pos1 and pos2 set direction vector direction
+    text(str: string, pos1: Vec2, pos2?: Vec2): void; // pos1 and pos2 set direction vector direction
 }
 
 export {IDrawingContext};

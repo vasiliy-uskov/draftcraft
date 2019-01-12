@@ -21,8 +21,8 @@ class ActionController {
     }
 
     public clean(): void {
-        this._actions.splice(0, this._actions.length);
         this._currentAction = new ArrIterator<IAction>(0, this._actions);
+        this._currentAction.deleteTail();
     }
 
     private readonly _actions: Array<IAction> = [];

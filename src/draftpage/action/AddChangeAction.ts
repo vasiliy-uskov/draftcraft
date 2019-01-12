@@ -1,5 +1,5 @@
-import {IChange} from "../tools/IChange";
-import {ChangesHolder} from "../ChangesHolder";
+import {IChange} from "../workplace/tools/IChange";
+import {ChangesHolder} from "../workplace/ChangesHolder";
 
 class AddChangeAction implements IAction {
     constructor(changes: ChangesHolder, newChange: IChange) {

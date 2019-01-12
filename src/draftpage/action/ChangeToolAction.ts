@@ -1,26 +1,23 @@
-import {ITool} from "../tools/ITool";
+import {ToolView} from "../toolbar/ToolView";
 
 class ChangeToolAction {
-    constructor(activateFn: (tool: ITool) => void, oldTool: (ITool|null), newTool: ITool) {
-        this._oldTool = oldTool;
+    constructor(tools: Array<ToolView>, newTool: ToolView) {
+        this._tools = tools.filter((tool) => tool.activated());
         this._newTool = newTool;
-        this._activateFn = activateFn;
     }
 
     public execute() {
-        this._activateFn(this._newTool);
+        this._tools.forEach((tool) => tool.deactivate());
+        this._newTool.activate();
     }
-
 
     public unexecute() {
-        if (this._oldTool) {
-            this._activateFn(this._oldTool);
-        }
+        this._newTool.deactivate();
+        this._tools.forEach((tool) => tool.activate());
     }
 
-    private readonly _oldTool?: ITool;
-    private readonly _newTool: ITool;
-    private readonly _activateFn: (tool: ITool) => void;
+    private readonly _tools: Array<ToolView>;
+    private readonly _newTool: ToolView;
 }
 
 export {ChangeToolAction}
