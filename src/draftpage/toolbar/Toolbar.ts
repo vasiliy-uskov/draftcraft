@@ -18,7 +18,10 @@ class Toolbar extends Component {
             this.addChild(toolView);
             return toolView;
         });
-        this._toolChangedEvent.dispatch(new ChangeToolAction(this._tools, this._tools[0]));
+    }
+
+    public activateFirstTool() {
+        this._tools[0].activate();
     }
 
     public toolChangedEvent(): EventDispatcher<ChangeToolAction> {

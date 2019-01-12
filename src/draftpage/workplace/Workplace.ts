@@ -20,7 +20,6 @@ class Workplace extends Component {
         super({
             blockName: "workplace",
         });
-        this.setAttribute("tabindex", "1");
 
         this._background = new Component({
             tagName: TagsName.img,
@@ -124,7 +123,6 @@ class Workplace extends Component {
     private _changes = new ChangesHolder();
     private _resultsCanvasContext: IDrawingContext;
     private _workingCanvasContext: IDrawingContext;
-    private _canvasMouseEventDispatcher: MouseEventDispatcher;
     private _changeCreatedEvent = this._createEventDispatcher<AddChangeAction>();
 }
 

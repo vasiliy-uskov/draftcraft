@@ -74,6 +74,7 @@ class DraftPage extends BasePage {
         this._taskPopup.setTextContent(currentLevel.task());
         this._helpPopup.setTextContent(currentLevel.help());
         this._taskPopup.setActivated(true);
+        this._toolbar.activateFirstTool();
     }
 
     protected async _beforeClose() {
