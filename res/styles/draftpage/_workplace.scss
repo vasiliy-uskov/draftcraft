@@ -1,18 +1,17 @@
 .workplace {
   background: #FFFFFF;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 2px 10px rgba(#000000, 0.3);
-  width: 700px;
-  height: 400px;
   overflow: hidden;
+  cursor: crosshair;
 
   &__background {
     padding: 20px;
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   &__results-canvas {
@@ -38,5 +37,5 @@
   background: rgba(0, 0, 0, 0);
   width: 100%;
   transform: translateY(-24px);
-  outline: solid 1px #2196F3;
+  outline: 0;
 }

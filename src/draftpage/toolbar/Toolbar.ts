@@ -21,6 +21,7 @@ class Toolbar extends Component {
     }
 
     public activateFirstTool() {
+        this._tools.forEach((tool) => tool.deactivate());
         this._tools[0].activate();
     }
 
