@@ -114,7 +114,7 @@ class Workplace extends Component {
         tools.push(new LineTool(this._workingCanvasContext, mouseEventDispatcher));
         tools.push(new CompassTool(this._workingCanvasContext, mouseEventDispatcher));
         tools.push(new DotTool(this._workingCanvasContext, mouseEventDispatcher, this));
-        tools.push(new EraserTool(this._workingCanvasContext, mouseEventDispatcher));
+        //tools.push(new EraserTool(this._workingCanvasContext, mouseEventDispatcher));
         return tools;
     }
 
