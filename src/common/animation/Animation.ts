@@ -1,7 +1,6 @@
 import {Disposable} from "../disposable/Disposable";
 import {EventDispatcher} from "../disposable/EventDispatcher";
-import {IFrameHandler} from "./FramesController";
-import {FramesController} from "./FramesController";
+import {FramesController, IFrameHandler} from "./FramesController";
 import {IDisposable} from "../disposable/IDisposable";
 
 interface IAnimation extends IDisposable {

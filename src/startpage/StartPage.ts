@@ -1,6 +1,5 @@
 import {BasePage} from "../common/page/BasePage";
 import {Component} from "../common/components/component/Component";
-import {TagsName} from "../common/components/TagsName";
 import {PagesType} from "../common/page/PagesType";
 import {Messages} from "../common/lng/Messages";
 import {Button} from "../common/components/button/Button";

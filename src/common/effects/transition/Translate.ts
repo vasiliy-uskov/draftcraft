@@ -1,4 +1,4 @@
-import {createAnimation, IAnimation} from "../../animation/Animation";
+import {createAnimation} from "../../animation/Animation";
 import {Component} from "../../components/component/Component";
 import {Disposable} from "../../disposable/Disposable";
 import {EventDispatcher} from "../../disposable/EventDispatcher";

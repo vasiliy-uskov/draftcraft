@@ -4,7 +4,6 @@ import {MouseEventData, MouseEventDispatcher} from "../MouseEventDispatcher";
 import {Disposable} from "../../../common/disposable/Disposable";
 import {EventDispatcher} from "../../../common/disposable/EventDispatcher";
 import {IChange} from "./IChange";
-import {Vec2} from "../../../common/utils/Vec2";
 
 abstract class BaseTool extends Disposable implements ITool {
     constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher) {

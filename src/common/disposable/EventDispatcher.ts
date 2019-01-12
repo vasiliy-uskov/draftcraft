@@ -1,4 +1,5 @@
 import {IDisposable} from "./IDisposable";
+
 class EventDispatcher<T> implements IDisposable {
     constructor(eventOwner: IDisposable) {
         this._eventOwner = eventOwner;

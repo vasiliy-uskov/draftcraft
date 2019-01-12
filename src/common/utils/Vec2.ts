@@ -1,4 +1,3 @@
-import {verifyNumber} from "./typetools";
 import {normalizeAngle} from "./mathutils";
 
 class Vec2 {
