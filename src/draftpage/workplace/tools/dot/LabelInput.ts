@@ -19,9 +19,12 @@ class LabelInput extends Component {
         });
         this._parent = parent;
         this._listen("keydown", this, (event) => this._keyDownHandler(event as KeyboardEvent));
-        this._listen("focusin", new ListenableWindow(), () => this.focus());
         this._listen("focusout", this, () => this.focus());
         this._listen("mousedown", new ListenableWindow(), () => this._dispatchInputEvent());
+    }
+
+    public inputEndEvent(): EventDispatcher<Label> {
+        return this._inputEndEvent;
     }
 
     public show(position: Vec2) {
@@ -38,10 +41,6 @@ class LabelInput extends Component {
         this.element().parentNode && this._parent.removeChild(this);
     }
 
-    public inputEndEvent(): EventDispatcher<Label> {
-        return this._inputEndEvent;
-    }
-
     public createLabel(): Label {
         return new Label(new Vec2(this.x(), this.y()), this._getInputElement().value);
     }
@@ -56,8 +55,12 @@ class LabelInput extends Component {
     }
 
     private _keyDownHandler(event: KeyboardEvent) {
-        const keyPattern = /(^[\w -]$)|Backspace|Delete|Esc|^Arrow.*/;
-        if (!keyPattern.test(event.key)) {
+        const isSymbol = /(^[\w -]$)/.test(event.key);
+        const isSpecialKeyPattern = /Backspace|Delete|Esc|Shift|Control|^Arrow.*/.test(event.key);
+        const ctrlOrShiftPressed = event.ctrlKey || event.shiftKey;
+        const isValidInput = (ctrlOrShiftPressed && isSpecialKeyPattern)
+            || (!ctrlOrShiftPressed && (isSymbol || isSpecialKeyPattern));
+        if (!isValidInput) {
             this._dispatchInputEvent();
         }
     }
