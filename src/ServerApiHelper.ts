@@ -4,7 +4,7 @@ import {ApiUrls} from "./ApiUrls";
 
 type SetAnswerJson = {
     sessionId: string,
-    levelId: string,
+    taskId: string,
     answer: string, //stringified JSON
 }
 
@@ -32,8 +32,8 @@ class ServerApiHelper {
         })
     }
 
-    public setLevelAnswer(levelId: string, answer: string): Promise<void> {
-        const data = this._getData({levelId, answer}) as SetAnswerJson;
+    public setLevelAnswer(taskId: string, answer: string): Promise<void> {
+        const data = this._getData({taskId, answer}) as SetAnswerJson;
         return AjaxHelper.post(ApiUrls.addAnswer, data).then(({status}: {status: number}) => {
             if (status != SetAnswerStatus.ok) {
                 throw new Error("Bad level answer")
