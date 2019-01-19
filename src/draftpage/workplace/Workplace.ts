@@ -44,7 +44,8 @@ class Workplace extends Component {
             this._addHandler(tool.changeCreatedEvent(), (change) => {
                 this._dispatchChangeCreatedEvent(change)
             })
-        })
+        });
+        this._listen("scroll", this, () => this.element().scrollLeft = 0);
     }
 
     public changeCreatedEvent(): EventDispatcher<AddChangeAction> {
