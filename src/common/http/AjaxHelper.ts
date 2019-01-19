@@ -47,7 +47,6 @@ class AjaxHelper {
                     data = JSON.parse(answerData);
                 }
                 catch {
-                    console.log(answerData);
                     reject(new WrongAnswerDataType);
                 }
                 if (data) {
