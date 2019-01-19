@@ -1,7 +1,8 @@
 .toaster {
   position: absolute;
-  right: 80px;
   top: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .toast {
@@ -15,6 +16,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   will-change: opacity;
   margin-top: 20px;
+  display: inline-block;
 
   &_shown {
     opacity: 1;

@@ -61,7 +61,7 @@ let levels = [
 ];
 
 app.post("/get_levels_ajax", function (req, res) {
-	res.json("")//levels);
+	res.json(levels);
 });
 
 app.post("/add_answer_to_level_ajax", function (req, res) {

@@ -2,17 +2,14 @@ import {Level} from "./model/Level";
 import {ServerApiHelper} from "./ServerApiHelper";
 import {BaseCustomError} from "./common/exceptions/Exceptions";
 import {Disposable} from "./common/disposable/Disposable";
-import {EventDispatcher} from "./common/disposable/EventDispatcher";
+import {ServerErrorsHandler} from "./ServerErrorsHandler";
 
 class GameContext extends Disposable {
-    constructor(api: ServerApiHelper) {
+    constructor(api: ServerApiHelper, errorHandler: ServerErrorsHandler) {
         super();
         this._api = api;
+        this._errorsHandler = errorHandler;
         this._serverRequestPromise = this._updateLevels();
-    }
-
-    public errorEvent(): EventDispatcher<BaseCustomError> {
-        return this._errorEvent;
     }
 
     public async setCurrentLevel(id: string): Promise<void> {
@@ -76,7 +73,7 @@ class GameContext extends Disposable {
     }
 
     private _errorHandler(error: BaseCustomError): Promise<void> {
-        this._errorEvent.dispatch(error);
+        this._errorsHandler.handleError(error);
         if (error.code < 500) {
             return this._updateLevels();
         }
@@ -84,10 +81,10 @@ class GameContext extends Disposable {
     }
 
     private _api: ServerApiHelper;
+    private _errorsHandler: ServerErrorsHandler;
     private _levels: Map<string, Level> = new Map();
     private _currentLevel?: Level;
     private _serverRequestPromise: Promise<void>;
-    private _errorEvent = this._createEventDispatcher<BaseCustomError>();
 }
 
 export {GameContext};
