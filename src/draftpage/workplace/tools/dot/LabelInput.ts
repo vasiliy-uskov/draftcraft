@@ -56,11 +56,7 @@ class LabelInput extends Component {
 
     private _keyDownHandler(event: KeyboardEvent) {
         const isSymbol = /(^[\w -]$)/.test(event.key);
-        const isSpecialKeyPattern = /Backspace|Delete|Esc|Shift|Control|^Arrow.*/.test(event.key);
-        const ctrlOrShiftPressed = event.ctrlKey || event.shiftKey;
-        const isValidInput = (ctrlOrShiftPressed && isSpecialKeyPattern)
-            || (!ctrlOrShiftPressed && (isSymbol || isSpecialKeyPattern));
-        if (!isValidInput) {
+        if (event.ctrlKey && isSymbol || event.key == "Enter") {
             this._dispatchInputEvent();
         }
     }
