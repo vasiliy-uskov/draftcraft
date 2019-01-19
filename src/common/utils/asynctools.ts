@@ -10,4 +10,10 @@ function eventToPromise<T>(eventDispatcher: EventDispatcher<T>) {
     });
 }
 
-export {eventToPromise};
+function promisify<T>(fn: (fn: () => void, ...other: any) => T, ...other: any) {
+    return new Promise((resolve: () => void) => {
+        fn(resolve, other);
+    });
+}
+
+export {eventToPromise, promisify};

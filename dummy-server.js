@@ -61,11 +61,11 @@ let levels = [
 ];
 
 app.post("/get_levels_ajax", function (req, res) {
-	res.json(levels);
+	res.json("")//levels);
 });
 
 app.post("/add_answer_to_level_ajax", function (req, res) {
-	const levelId = req.body.levelId;
+	const levelId = req.body.taskId;
 	console.log(req.body.answer);
 	const level = levels.find((level) => level.id == levelId);
 	level.score = 1000;

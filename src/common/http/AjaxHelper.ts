@@ -1,4 +1,4 @@
-import {HttpRequestFail, RequestAbortedError, TimeoutRequestFail, UnrecognizedHttpRequestError, WrongAnswerDataType} from "../exception/Exceptions";
+import {HttpRequestFail, RequestAbortedError, TimeoutRequestFail, UnrecognizedHttpRequestError, WrongAnswerDataType} from "../exceptions/Exceptions";
 
 enum RequestType {
     POST = "POST",
@@ -42,12 +42,16 @@ class AjaxHelper {
             };
             loadHandler = () => {
                 removeHandlers();
+                let data;
                 try {
-                    let data = JSON.parse(answerData);
-                    resolve(data);
+                    data = JSON.parse(answerData);
                 }
                 catch {
+                    console.log(answerData);
                     reject(new WrongAnswerDataType);
+                }
+                if (data) {
+                    resolve(data);
                 }
             };
 

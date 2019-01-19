@@ -7,6 +7,7 @@ import {DraftPage} from "./draftpage/DraftPage";
 import {GameContext} from "./GameContext";
 import {Messages} from "./common/lng/Messages";
 import {HotKeyBinder} from "./common/hotkeys/HotKeysBinder";
+import {Toaster} from "./common/toasts/Toaster";
 
 class Game extends Disposable {
     constructor(gameContext: GameContext, messages: Messages) {
@@ -35,6 +36,16 @@ class Game extends Disposable {
         this._draftPage = new DraftPage(draftPageContainer, gameContext, messages, hotKeyBinder);
         this._addHandler(this._draftPage.changePageRequestEvent(), (page) => {
             this._changePage(page);
+        });
+
+        const toastContainer = document.getElementById("toasts-container") as HTMLElement;
+        const toaster = new Toaster(toastContainer);
+        this._addDisposable(toaster);
+        this._addHandler(gameContext.errorEvent(), (error) => {
+            if (error.messageId) {
+                const message = messages.getMessage(PagesType.Common, error.messageId);
+                toaster.showErrorToast(message);
+            }
         });
     }
 

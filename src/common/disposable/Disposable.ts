@@ -7,6 +7,8 @@ import {IListenable} from "./IListenable";
 class Disposable {
     public dispose() {
         this._destruct();
+        this._clearTimeouts();
+        this._clearIntervals();
         for (const holder of this._browserEventsHandlersHolders.values()) {
             holder.clean();
         }
@@ -23,7 +25,7 @@ class Disposable {
     protected _destruct() {}
 
     /** @final */
-    protected _createEventDispatcher<T>(parentEvent?: EventDispatcher<T>): EventDispatcher<T> {
+    protected _createEventDispatcher<T = void>(parentEvent?: EventDispatcher<T>): EventDispatcher<T> {
         const dispatcher = new EventDispatcher<T>(this);
         this._addDisposable(dispatcher);
         if (parentEvent) {
@@ -55,7 +57,8 @@ class Disposable {
         return this._handlersId;
     }
 
-    _addHandlerCallOnce<T>(event: EventDispatcher<T>, handler: (arg: T) => void): number /*event id*/ {
+    /** @final */
+    protected _addHandlerCallOnce<T>(event: EventDispatcher<T>, handler: (arg: T) => void): number /*event id*/ {
         const id = this._addHandler<T>(event, (arg: T) => {
             handler(arg);
             this._removeHandler(id);
@@ -88,6 +91,35 @@ class Disposable {
     }
 
     /** @final */
+    protected _setTimeout(fn: () => void, timeout: number): any {
+        const key = setTimeout(fn, timeout);
+        this._timeoutsKeys.push(key);
+        return key;
+    }
+
+    /** @final */
+    protected _setInterval(fn: () => void, timeout: number): any {
+        const key = setInterval(fn, timeout);
+        this._intervalsKeys.push(key);
+        return key;
+    }
+
+    /** @final */
+    protected _clearTimeouts() {
+        for (const key of this._timeoutsKeys) {
+            clearTimeout(key);
+        }
+    }
+
+    /** @final */
+    protected _clearIntervals() {
+        for (const key of this._intervalsKeys) {
+            clearInterval(key);
+        }
+    }
+
+
+    /** @final */
     protected _unlisten(id: number) {
         for (const handlersHolder of this._browserEventsHandlersHolders.values()) {
             handlersHolder.removeHandler(id);
@@ -106,6 +138,8 @@ class Disposable {
         }
     }
 
+    private _timeoutsKeys: Array<any> = [];
+    private _intervalsKeys: Array<any> = [];
     private _dependentObjects: Set<IDisposable> = new Set();
     private _browserEventsHandlersHolders: Map<IDisposable, BrowserEventsHandlersHolder> = new Map();
     private _eventsHandlersHolders: Map<IDisposable, EventsHandlersHolder> = new Map();

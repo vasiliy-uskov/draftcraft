@@ -13,7 +13,9 @@ class BemInfo {
     public getClassName(): string {
         let className = this._getClassNameWithoutModifiers();
         for (const modifier of this._modifiers.keys()) {
-            className += " " + this._getClassNameWithoutModifiers() + this._getModifier(modifier);
+            if (this._getModifier(modifier)) {
+                className += " " + this._getClassNameWithoutModifiers() + this._getModifier(modifier);
+            }
         }
         return className;
     }

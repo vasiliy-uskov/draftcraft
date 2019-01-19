@@ -1,0 +1,55 @@
+.toaster {
+  position: absolute;
+  right: 80px;
+  top: 0;
+}
+
+.toast {
+  padding: 20px;
+  font: normal 15px/20px $FONT_FAMILY;
+  border-radius: 4px;
+  color: #FFFFFF;
+  background: #3598DB;
+  opacity: 0;
+  transition: opacity 300ms, transform 10ms;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  will-change: opacity;
+  margin-top: 20px;
+
+  &_shown {
+    opacity: 1;
+  }
+
+  &_type_error {
+    background: #E84C3D;
+  }
+
+  &_type_info {
+    background: #00BC8C;
+  }
+
+  &__content {
+    display: inline-block;
+  }
+
+  &__close {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: top;
+    margin: 2px 0 2px 20px;
+    line-height: 0;
+    opacity: 0.5;
+    transition: opacity 200ms;
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    & svg path {
+      stroke: #FFFFFF;
+      stroke-width: 10px;
+    }
+  }
+}

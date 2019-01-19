@@ -3,6 +3,7 @@ enum PagesType {
     ResultPage = "result",
     DraftPage = "draft",
     StartPage = "start",
+    Common = "common",
 }
 
 export {PagesType};

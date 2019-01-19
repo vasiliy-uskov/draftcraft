@@ -1,10 +1,18 @@
 import {Level} from "./model/Level";
 import {ServerApiHelper} from "./ServerApiHelper";
+import {BaseCustomError} from "./common/exceptions/Exceptions";
+import {Disposable} from "./common/disposable/Disposable";
+import {EventDispatcher} from "./common/disposable/EventDispatcher";
 
-class GameContext {
+class GameContext extends Disposable {
     constructor(api: ServerApiHelper) {
+        super();
         this._api = api;
         this._serverRequestPromise = this._updateLevels();
+    }
+
+    public errorEvent(): EventDispatcher<BaseCustomError> {
+        return this._errorEvent;
     }
 
     public async setCurrentLevel(id: string): Promise<void> {
@@ -16,7 +24,7 @@ class GameContext {
 
     public async setCurrentLevelAnswer(answer: string) {
         await this._serverRequestPromise;
-        await this._api.setLevelAnswer(this._currentLevel.id(), answer);
+        await this._api.setLevelAnswer(this._currentLevel.id(), answer).catch(this._errorHandler.bind(this));
         this._serverRequestPromise = this._updateLevels();
         return this._serverRequestPromise;
     }
@@ -64,16 +72,22 @@ class GameContext {
             else {
                 this._currentLevel = this._levels.get(this._currentLevel.id());
             }
-        }).catch((err) => {
-            console.error(err);
+        }).catch(this._errorHandler.bind(this));
+    }
+
+    private _errorHandler(error: BaseCustomError): Promise<void> {
+        this._errorEvent.dispatch(error);
+        if (error.code < 500) {
             return this._updateLevels();
-        });
+        }
+        return Promise.resolve();
     }
 
     private _api: ServerApiHelper;
     private _levels: Map<string, Level> = new Map();
     private _currentLevel?: Level;
     private _serverRequestPromise: Promise<void>;
+    private _errorEvent = this._createEventDispatcher<BaseCustomError>();
 }
 
 export {GameContext};

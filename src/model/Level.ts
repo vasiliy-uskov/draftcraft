@@ -1,5 +1,5 @@
 import {verifyBoolean, verifyObject, verifyString} from "../common/utils/typetools";
-import {ValidationError} from "../common/exception/Exceptions";
+import {ValidationError} from "../common/exceptions/Exceptions";
 
 const MAX_STARS_COUNT = 3;
 const MAX_SCORE = 1000;

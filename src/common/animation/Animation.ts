@@ -80,8 +80,8 @@ class Animation extends Disposable implements IAnimation, IFrameHandler {
         FramesController.removeFrameHandler(this);
     }
 
-    private _startEvent = this._createEventDispatcher<void>();
-    private _endEvent = this._createEventDispatcher<void>();
+    private _startEvent = this._createEventDispatcher();
+    private _endEvent = this._createEventDispatcher();
     private _frameEvent = this._createEventDispatcher<Array<number>>();
     private _progress = 0; //from 0 to 1
     private _startTime = 0;

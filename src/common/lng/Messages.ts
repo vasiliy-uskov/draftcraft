@@ -2,25 +2,31 @@ import {PagesType} from "../page/PagesType";
 
 class Messages {
     constructor() {
-        const startPageMap = new Map<string, string>();
-        startPageMap.set("startButton", "play");
-        startPageMap.set("levelsButton", "levels");
-        startPageMap.set("logo", "DraftCraft");
-        this._messages.set(PagesType.StartPage, startPageMap);
+
+        const common = new Map<string, string>();
+        common.set("serverIsNotResponse", "Sorry, there is some server`s troubles. Come later.");
+        common.set("sessionFailed", "Sorry, but your session is lost. Try to restart on mooped.");
+        this._messages.set(PagesType.Common, common);
+
+        const startPage = new Map<string, string>();
+        startPage.set("startButton", "play");
+        startPage.set("levelsButton", "levels");
+        startPage.set("logo", "DraftCraft");
+        this._messages.set(PagesType.StartPage, startPage);
 
         this._messages.set(PagesType.LevelsPage, new Map<string, string>());
 
-        const resultPageMap = new Map<string, string>();
-        resultPageMap.set("levelsButton", "levels");
-        resultPageMap.set("successMessage", "Good job");
-        resultPageMap.set("failMessage", "Try again");
-        this._messages.set(PagesType.ResultPage, resultPageMap);
+        const resultPage = new Map<string, string>();
+        resultPage.set("levelsButton", "levels");
+        resultPage.set("successMessage", "Good job");
+        resultPage.set("failMessage", "Try again");
+        this._messages.set(PagesType.ResultPage, resultPage);
 
-        const draftPageMap = new Map<string, string>();
-        draftPageMap.set("task", "Task");
-        draftPageMap.set("help", "Help");
-        draftPageMap.set("finishButton", "Submit");
-        this._messages.set(PagesType.DraftPage, draftPageMap);
+        const draftPage = new Map<string, string>();
+        draftPage.set("task", "Task");
+        draftPage.set("help", "Help");
+        draftPage.set("finishButton", "Submit");
+        this._messages.set(PagesType.DraftPage, draftPage);
     }
 
     getMessage(page: PagesType, messageId: string) : string {

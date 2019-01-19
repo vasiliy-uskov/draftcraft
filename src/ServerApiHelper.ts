@@ -1,7 +1,7 @@
 import {Level, LevelConfig} from "./model/Level";
 import {AjaxHelper} from "./common/http/AjaxHelper";
 import {ApiUrls} from "./ApiUrls";
-import {IncorrectRequestParams} from "./common/exception/Exceptions";
+import {IncorrectRequestParams} from "./common/exceptions/Exceptions";
 
 type SetAnswerJson = {
     sessionId: string,
