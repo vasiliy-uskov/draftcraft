@@ -1,6 +1,7 @@
 import {Level, LevelConfig} from "./model/Level";
 import {AjaxHelper} from "./common/http/AjaxHelper";
 import {ApiUrls} from "./ApiUrls";
+import {IncorrectRequestParams} from "./common/exception/Exceptions";
 
 type SetAnswerJson = {
     sessionId: string,
@@ -10,7 +11,6 @@ type SetAnswerJson = {
 
 enum SetAnswerStatus {
     ok = 200,
-    error = 400,
 }
 
 class ServerApiHelper {
@@ -36,7 +36,9 @@ class ServerApiHelper {
         const data = this._getData({taskId, answer}) as SetAnswerJson;
         return AjaxHelper.post(ApiUrls.addAnswer, data).then(({status}: {status: number}) => {
             if (status != SetAnswerStatus.ok) {
-                throw new Error("Bad level answer")
+                const error = new IncorrectRequestParams();
+                console.error(error);
+                throw error;
             }
         });
     }

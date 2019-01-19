@@ -1,4 +1,5 @@
 import {verifyBoolean, verifyObject, verifyString} from "../common/utils/typetools";
+import {ValidationError} from "../common/exception/Exceptions";
 
 const MAX_STARS_COUNT = 3;
 const MAX_SCORE = 1000;
@@ -68,8 +69,7 @@ class Level {
             verifyBoolean(levelConfig.enable);
         }
         catch (err) {
-            console.error(`[Invalid level config], got ${JSON.stringify(levelConfig)}`);
-            console.error(err);
+            throw new ValidationError(`Invalid level config ${err}`);
         }
     }
 

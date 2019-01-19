@@ -1,38 +1,9 @@
+import {HttpRequestFail, RequestAbortedError, TimeoutRequestFail, UnrecognizedHttpRequestError, WrongAnswerDataType} from "../exception/Exceptions";
+
 enum RequestType {
     POST = "POST",
     GET = "GET",
 }
-
-class HttpRequestFail extends Error {
-    constructor(reason: string) {
-        super(`Bad http request: ${reason}`);
-    }
-}
-
-class WrongAnswerDataType extends HttpRequestFail {
-    constructor() {
-        super("Wrong answer data type");
-    }
-}
-
-class UnrecognizedHttpRequestError extends HttpRequestFail {
-    constructor() {
-        super("Error");
-    }
-}
-
-class RequestAbortedError extends HttpRequestFail {
-    constructor() {
-        super("Request abort");
-    }
-}
-
-class TimeoutRequestFail extends HttpRequestFail {
-    constructor() {
-        super("Timeout");
-    }
-}
-
 
 class AjaxHelper {
     public static post(url: string, data: Object): Promise<Object> {
@@ -52,7 +23,7 @@ class AjaxHelper {
             let progressHandler: () => void;
             let loadHandler: () => void;
             let baseErrHandler: (err: HttpRequestFail) => void;
-            let errHandler = () => baseErrHandler(new UnrecognizedHttpRequestError());
+            let errHandler = () => baseErrHandler(new UnrecognizedHttpRequestError(xhr.status));
             let abortHandler = () => baseErrHandler(new RequestAbortedError());
             let timeoutHandler = () => baseErrHandler(new TimeoutRequestFail());
             const removeHandlers = () => {
@@ -80,9 +51,9 @@ class AjaxHelper {
                 }
             };
 
-            xhr.addEventListener("error", () => errHandler);
-            xhr.addEventListener("abort", () => abortHandler);
-            xhr.addEventListener("timeout", () => timeoutHandler);
+            xhr.addEventListener("error", errHandler);
+            xhr.addEventListener("abort", abortHandler);
+            xhr.addEventListener("timeout", timeoutHandler);
             xhr.addEventListener("progress", progressHandler);
             xhr.addEventListener("load", loadHandler);
             xhr.send(JSON.stringify(data));
