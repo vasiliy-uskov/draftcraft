@@ -1,16 +1,11 @@
 import {Level, LevelConfig} from "./model/Level";
 import {AjaxHelper} from "./common/http/AjaxHelper";
 import {ApiUrls} from "./ApiUrls";
-import {IncorrectRequestParams} from "./common/exceptions/Exceptions";
 
 type SetAnswerJson = {
     sessionId: string,
     taskId: string,
     answer: string, //stringified JSON
-}
-
-enum SetAnswerStatus {
-    ok = 200,
 }
 
 class ServerApiHelper {
@@ -32,15 +27,9 @@ class ServerApiHelper {
         })
     }
 
-    public setLevelAnswer(taskId: string, answer: string): Promise<void> {
+    public setLevelAnswer(taskId: string, answer: string): Promise<Object> {
         const data = this._getData({taskId, answer}) as SetAnswerJson;
-        return AjaxHelper.post(ApiUrls.addAnswer, data).then(({status}: {status: number}) => {
-            if (status != SetAnswerStatus.ok) {
-                const error = new IncorrectRequestParams();
-                console.error(error);
-                throw error;
-            }
-        });
+        return AjaxHelper.post(ApiUrls.addAnswer, data);
     }
 
     private _getData(args?: Object): Object {

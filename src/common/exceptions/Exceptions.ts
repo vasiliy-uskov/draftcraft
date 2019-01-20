@@ -1,3 +1,13 @@
+function getMessageId(status: number): string|null {
+    switch (Math.floor(status / 100) * 100) {
+        case 400:
+            return "sessionFailed";
+        case 500:
+            return "serverIsNotResponse";
+    }
+    return null
+}
+
 class BaseCustomError extends Error {
     constructor(reason: string, code: number, messageId?: string) {
         super(reason);
@@ -10,38 +20,32 @@ class BaseCustomError extends Error {
 }
 
 class HttpRequestFail extends BaseCustomError {
-    constructor(reason: string, code: number, messageId?: string) {
-        super(`Bad http request ${reason}`, code, messageId);
+    constructor(reason: string, code: number) {
+        super(`Bad http request ${reason}`, code, getMessageId(code));
     }
 }
 
 class WrongAnswerDataType extends HttpRequestFail {
     constructor() {
-        super("Wrong answer data type", 500, "serverIsNotResponse");
+        super("Wrong answer data type", 500);
     }
 }
 
 class UnrecognizedHttpRequestError extends HttpRequestFail {
-    constructor(status: number) {
-        super("Error", status, "serverIsNotResponse");
+    constructor(code: number) {
+        super("Error", code);
     }
 }
 
 class RequestAbortedError extends HttpRequestFail {
-    constructor() {
-        super("Request abort", 300, null);
+    constructor(code: number) {
+        super("Request abort", code);
     }
 }
 
 class TimeoutRequestFail extends HttpRequestFail {
-    constructor() {
-        super("Timeout", 300, null);
-    }
-}
-
-class IncorrectRequestParams extends BaseCustomError {
-    constructor() {
-        super("Incorrect request params", 400, "sessionFailed");
+    constructor(code: number) {
+        super("Timeout", code);
     }
 }
 
@@ -58,6 +62,5 @@ export {
     UnrecognizedHttpRequestError,
     RequestAbortedError,
     TimeoutRequestFail,
-    IncorrectRequestParams,
     ValidationError
 }

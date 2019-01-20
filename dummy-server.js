@@ -72,7 +72,8 @@ app.post("/add_answer_to_level_ajax", function (req, res) {
 	const levelIndex = levels.indexOf(level);
 	levels[levelIndex + 1].enable = true;
 
-	res.json({status: 200});
+	res.status(200);
+	res.send();
 });
 
 app.listen(3000, function () {

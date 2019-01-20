@@ -24,8 +24,8 @@ class AjaxHelper {
             let loadHandler: () => void;
             let baseErrHandler: (err: HttpRequestFail) => void;
             let errHandler = () => baseErrHandler(new UnrecognizedHttpRequestError(xhr.status));
-            let abortHandler = () => baseErrHandler(new RequestAbortedError());
-            let timeoutHandler = () => baseErrHandler(new TimeoutRequestFail());
+            let abortHandler = () => baseErrHandler(new RequestAbortedError(xhr.status));
+            let timeoutHandler = () => baseErrHandler(new TimeoutRequestFail(xhr.status));
             const removeHandlers = () => {
                 xhr.removeEventListener("error", errHandler);
                 xhr.removeEventListener("abort", abortHandler);
@@ -42,12 +42,15 @@ class AjaxHelper {
             };
             loadHandler = () => {
                 removeHandlers();
+                if (Math.floor(xhr.status / 100) != 2) {
+                    reject(new UnrecognizedHttpRequestError(xhr.status));
+                }
                 let data;
                 try {
                     data = JSON.parse(answerData);
                 }
                 catch {
-                    reject(new WrongAnswerDataType);
+                    reject(new WrongAnswerDataType());
                 }
                 if (data) {
                     resolve(data);
