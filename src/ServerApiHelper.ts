@@ -21,9 +21,6 @@ class ServerApiHelper {
                 levels.push(new Level(levelJson));
             }
             return levels;
-        }).catch((err) => {
-            console.error(err);
-            throw err;
         })
     }
 

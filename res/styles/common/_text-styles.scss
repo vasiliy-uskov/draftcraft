@@ -1,9 +1,8 @@
-@mixin richText() {
+@mixin styledText() {
   color: #4A4A4A;
-
-  * {
-    line-height: 25px;
-  }
+  font-family: $FONT_FAMILY;
+  font-size: 18px;
+  line-height: 23px;
 
   h1 {
     font-size: 32px;

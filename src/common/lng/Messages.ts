@@ -26,6 +26,7 @@ class Messages {
         draftPage.set("task", "Task");
         draftPage.set("help", "Help");
         draftPage.set("finishButton", "Submit");
+        draftPage.set("helpButtonHint", "Help");
         this._messages.set(PagesType.DraftPage, draftPage);
     }
 

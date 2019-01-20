@@ -4,14 +4,14 @@ import {Messages} from "../common/lng/Messages";
 import {PagesType} from "../common/page/PagesType";
 import {Workplace} from "./workplace/Workplace";
 import {Toolbar} from "./toolbar/Toolbar";
-import {HelpPopup} from "./popup/HelpPopup";
-import {TaskPopup} from "./popup/TaskPopup";
 import {BackButton} from "../common/components/button/BackButton";
 import {Button} from "../common/components/button/Button";
 import {ActionController} from "../common/action/ActionController";
 import {HotKeyBinder} from "../common/hotkeys/HotKeysBinder";
 import {ChangeToolAction} from "./action/ChangeToolAction";
 import {AddChangeAction} from "./action/AddChangeAction";
+import {InfoPopup} from "../common/popup/InfoPopup";
+import {TaskView} from "./TaskView";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
@@ -31,9 +31,9 @@ class DraftPage extends BasePage {
             this._actionController.execute(action)
         });
 
-
-        this._addDisposable(this._taskPopup);
-        this.addChild(this._taskPopup);
+        this._addDisposable(this._taskView);
+        this.addChild(this._taskView);
+        this._addHandler(this._taskView.helpRequestEvent(), () => this._helpPopup.open());
 
         this._addDisposable(this._helpPopup);
         this.addChild(this._helpPopup);
@@ -71,14 +71,12 @@ class DraftPage extends BasePage {
         this._actionController.clean();
         const currentLevel = await this._gameContext.currentLevel();
         this._workplace.setBackgroundImage(currentLevel.img());
-        this._taskPopup.setTextContent(currentLevel.task());
-        this._helpPopup.setTextContent(currentLevel.help());
-        this._taskPopup.setActivated(true);
+        this._taskView.setContent(currentLevel.task());
+        this._helpPopup.setContent(currentLevel.help());
         this._toolbar.activateFirstTool();
     }
 
     protected async _beforeClose() {
-        this._taskPopup.setActivated(false);
         this._helpPopup.setActivated(false);
     }
 
@@ -88,9 +86,9 @@ class DraftPage extends BasePage {
 
     private _gameContext: GameContext;
     private _actionController = new ActionController();
-    private _helpPopup = new HelpPopup(this._getMessage("help"));
-    private _taskPopup = new TaskPopup(this._getMessage("task"));
+    private _helpPopup = new InfoPopup({blockName: "help-popup"});
     private _workplace = new Workplace();
+    private _taskView = new TaskView(this._getMessage("helpButtonHint"));
     private _toolbar = new Toolbar(this._workplace.tools());
 }
 

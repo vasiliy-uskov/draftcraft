@@ -12,6 +12,7 @@ class ServerErrorsHandler extends Disposable {
         this._addDisposable(this._toaster);
     }
     public handleError(error: BaseCustomError) {
+        console.error(error);
         const message = error.messageId ? this._messages.getMessage(PagesType.Common, error.messageId) : "";
         if (error.code <  400) {
             this._toaster.showErrorToast(message);

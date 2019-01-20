@@ -45,6 +45,9 @@ class AjaxHelper {
                 if (Math.floor(xhr.status / 100) != 2) {
                     reject(new UnrecognizedHttpRequestError(xhr.status));
                 }
+                if (answerData === "") {
+                    resolve({});
+                }
                 let data;
                 try {
                     data = JSON.parse(answerData);

@@ -37,6 +37,9 @@ class Icons {
     public static dot():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/dot.svg").toString();
     }
+    public static question():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/question.svg").toString();
+    }
 }
 
 export {Icons};
