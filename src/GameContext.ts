@@ -74,7 +74,7 @@ class GameContext extends Disposable {
 
     private _errorHandler(error: BaseCustomError): Promise<void> {
         this._errorsHandler.handleError(error);
-        if (error.code < 500) {
+        if (error.code < 400) {
             return this._updateLevels();
         }
         return Promise.resolve();
