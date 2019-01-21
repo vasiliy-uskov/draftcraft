@@ -66,7 +66,7 @@ class Level {
             verifyString(levelConfig.task);
             verifyString(levelConfig.help);
             verifyString(levelConfig.img);
-            verifyBoolean(levelConfig.enable);
+            verifyBoolean(!!levelConfig.enable);
         }
         catch (err) {
             throw new ValidationError(`Invalid level config ${err}`);
