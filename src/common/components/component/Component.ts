@@ -126,7 +126,10 @@ class Component extends Disposable implements IListenable {
 
     public setStyle(style: string, value: string|number) {
         style = toCamelCase(style);
-        const setStyle = (style: string, value: string|number) => this._baseElement.style.setProperty(style, value.toString());
+        const setStyle = (style: string, value: string|number) => {
+            const styles = this._baseElement.style as any as {[key:string]: string}; //setProperty process pointer-events incorrect
+            styles[style] = value.toString();
+        };
         const stylesToSet = [style];
         if (!this._baseElement.style.hasOwnProperty(style)) {
             stylesToSet.push("Webkit" + style.substr(0, 1).toUpperCase() + style.substr(1, style.length));

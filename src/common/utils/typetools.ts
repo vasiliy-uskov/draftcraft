@@ -1,17 +1,21 @@
-function verifyObject<T>(a: T): T {
-    return verifyType(a, "object");
+function verifyObject<T>(a: T): Object {
+    return verifyType(a, "object") as any as Object;
 }
 
-function verifyString<T>(a: T): T {
-    return verifyType(a, "string");
+function verifyString<T>(a: T): string {
+    return verifyType(a, "string") as any as string;
 }
 
-function verifyBoolean<T>(a: T): T {
-    return verifyType(a, "boolean");
+function verifyBoolean<T>(a: T): boolean {
+    return verifyType(a, "boolean") as any as boolean;
 }
 
-function verifyNumber<T>(a: T): T {
-    return verifyType(a, "number");
+function verifyNumber<T>(a: T): number {
+    const numb = verifyType(a, "number") as any as number;
+    if (isNaN(numb)) {
+        throw new Error("Unexpected not a number number");
+    }
+    return numb;
 }
 
 function verifyType<T>(a: T, type: string): T {
@@ -37,4 +41,11 @@ function isFunction(a: any): boolean {
     return typeof a == "function";
 }
 
-export {verifyNumber, verifyBoolean, verifyObject, verifyString, isBool, isNumber, isString, isFunction};
+function verify<T>(a: T) {
+    if (a) {
+        return a;
+    }
+    throw new Error(`Verify fail`);
+}
+
+export {verify, verifyNumber, verifyBoolean, verifyObject, verifyString, isBool, isNumber, isString, isFunction};

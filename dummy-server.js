@@ -70,10 +70,13 @@ app.post("/add_answer_to_level_ajax", function (req, res) {
 	const level = levels.find((level) => level.id == levelId);
 	level.score = 1000;
 	const levelIndex = levels.indexOf(level);
-	levels[levelIndex + 1].enable = true;
+	if (levels[levelIndex + 1])
+	{
+		levels[levelIndex + 1].enable = true;
+	}
 
 	res.status(200);
-	res.send();
+	res.send({score: Math.random() * 1000});
 });
 
 app.listen(3000, function () {

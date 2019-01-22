@@ -10,7 +10,7 @@ function getMessageId(status: number): string|null {
 
 class BaseCustomError extends Error {
     constructor(reason: string, code: number, messageId?: string) {
-        super(reason);
+        super("\n" + reason);
         this.code = code;
         this.messageId = messageId;
     }
@@ -20,32 +20,33 @@ class BaseCustomError extends Error {
 }
 
 class HttpRequestFail extends BaseCustomError {
-    constructor(reason: string, code: number) {
-        super(`Bad http request ${reason}`, code, getMessageId(code));
+    constructor(reason: string, code: number, url: string) {
+        super(`${url}\nBad http request "${reason}"`, code, getMessageId(code));
+        console.trace();
     }
 }
 
 class WrongAnswerDataType extends HttpRequestFail {
-    constructor() {
-        super("Wrong answer data type", 500);
+    constructor(data: string, url: string) {
+        super(`wrong answer data type: ${data}`, 500, url);
     }
 }
 
 class UnrecognizedHttpRequestError extends HttpRequestFail {
-    constructor(code: number) {
-        super("Error", code);
+    constructor(code: number, url: string) {
+        super("error", code, url);
     }
 }
 
 class RequestAbortedError extends HttpRequestFail {
-    constructor(code: number) {
-        super("Request abort", code);
+    constructor(code: number, url: string) {
+        super("request abort", code, url);
     }
 }
 
 class TimeoutRequestFail extends HttpRequestFail {
-    constructor(code: number) {
-        super("Timeout", code);
+    constructor(code: number, url: string) {
+        super("timeout", code, url);
     }
 }
 

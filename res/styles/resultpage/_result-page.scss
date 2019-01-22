@@ -1,7 +1,6 @@
 #result-page {
   .result-card {
-    width: 100%;
-    max-width: 400px;
+    width: 450px;
     margin: 0 auto;
     transform: translate(0, -50%);
     position: relative;
@@ -13,15 +12,29 @@
     }
 
     &__message {
-      font: normal 32px/32px Tahoma;
+      font: normal 32px/32px $FONT_FAMILY;
       text-align: center;
       margin-top: 80px;
     }
 
     &__score {
-      font: normal 65px/116px Tahoma;
+      padding: 40px 0 20px;
       text-align: center;
+    }
+
+    &__score-wrapper {
+      display: inline-block;
       color: #FFFFFF;
+      text-align: left;
+    }
+
+    &__awarded-score {
+      padding-top: 5px;
+      font: normal 30px $FONT_FAMILY;
+    }
+
+    &__current-score {
+      font: normal 65px $FONT_FAMILY;
     }
 
     &__stars-holder {
@@ -37,23 +50,24 @@
     &__controls {
       margin-top: 10px;
       text-align: center;
+      width: 110%;
+      left: -5%;
+      position: relative;
 
       .button {
         margin-left: 1px;
       }
 
-      .home-button, .next-button {
+      .restart-button, .next-button {
         position: relative;
       }
 
       .next-button {
-        top: 9px;
-        left: 13px;
+        margin-left: 10px;
       }
 
-      .home-button {
-        top: 12px;
-        left: 8px;
+      .restart-button {
+        margin-left: 30px;
       }
     }
 
@@ -73,7 +87,12 @@
   }
 
   .icon-button {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
+    vertical-align: top;
+
+    & svg {
+      vertical-align: middle;
+    }
   }
 }

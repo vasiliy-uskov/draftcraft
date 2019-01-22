@@ -18,8 +18,11 @@ class BasePage extends Component {
     }
 
     public async open() {
-        this.setStyle("opacity", 0);
-        this.setStyle("display", "block");
+        this.applyStyles({
+            "opacity": "0",
+            "display": "block",
+            "pointer-events": "initial",
+        });
         await this._beforeOpen();
         const parallelTasksPromise = BasePage._executeParallelsTasks(this._openingParallelsTasks);
         const animation = new Fade(this, true);
@@ -34,6 +37,7 @@ class BasePage extends Component {
     }
 
     public async close() {
+        this.setStyle("pointer-events", "");
         await this._beforeClose();
         const parallelTasksPromise = BasePage._executeParallelsTasks(this._closingParallelsTasks);
         const animation = new Fade(this, false);
@@ -41,7 +45,10 @@ class BasePage extends Component {
         animation.play();
         await eventToPromise(animation.endEvent());
         this._removeDisposable(animation);
-        requestAnimationFrame(() => this.setStyle("display", "none"));
+        requestAnimationFrame(() => this.applyStyles({
+            "opacity": "",
+            "display": "",
+        }));
         await parallelTasksPromise;
         await this._afterClose();
     }
@@ -67,8 +74,8 @@ class BasePage extends Component {
     }
 
     /** @final */
-    protected _getMessage(id: string): string {
-        return this._messages.getMessage(this._pageType, id);
+    protected _getMessage(id: string, ...params: Array<string|number>): string {
+        return this._messages.getMessage(this._pageType, id, ...params);
     }
 
     /** @final */

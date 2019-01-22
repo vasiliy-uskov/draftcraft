@@ -12,7 +12,7 @@ class GameContext extends Disposable {
         this._serverRequestPromise = this._updateLevels();
     }
 
-    public async setCurrentLevel(id: string): Promise<void> {
+    public async setCurrentLevel(id: string) {
         await this._serverRequestPromise;
         if (this._levels.has(id)) {
             this._currentLevel = this._levels.get(id);
@@ -21,26 +21,26 @@ class GameContext extends Disposable {
 
     public async setCurrentLevelAnswer(answer: string) {
         await this._serverRequestPromise;
-        await this._api.setLevelAnswer(this._currentLevel.id(), answer).catch(this._errorHandler.bind(this));
-        this._serverRequestPromise = this._updateLevels();
-        return this._serverRequestPromise;
+        const score = await this._api.setLevelAnswer(this._currentLevel.id(), answer).catch(this._errorHandler.bind(this));
+        this._currentLevel.setLastScore(score);
+        await this._updateLevels();
     }
 
-    public async selectNextLevel(): Promise<void> {
+    public async selectNextLevel() {
+        await this._serverRequestPromise;
+        this._currentLevel = (await this.nextLevel()) || this._currentLevel;
+    }
+
+    public async nextLevel(): Promise<Level|null> {
         await this._serverRequestPromise;
         let prevLevel: Level|null = null;
         for (const level of this._levels.values()) {
             if (prevLevel && prevLevel.id() == this._currentLevel.id()) {
-                this._currentLevel = level;
-                return;
+                return level;
             }
             prevLevel = level;
         }
-    }
-
-    public async lastLevelSelected(): Promise<boolean> {
-        await this._serverRequestPromise;
-        return Array(...this._levels.values()).reverse()[0] == this._currentLevel;
+        return null;
     }
 
     public async getLevels(): Promise<Array<Level>> {
@@ -61,7 +61,12 @@ class GameContext extends Disposable {
     private _updateLevels(): Promise<void> {
         return this._api.getLevels().then((levels: Array<Level>) => {
             for (const level of levels) {
+                const oldLevel = this._levels.get(level.id());
                 this._levels.set(level.id(), level);
+                if (oldLevel) {
+                    this._levels.get(level.id()).setLastScore(oldLevel.lastScore());
+                }
+
             }
             if (!this._currentLevel) {
                 this._currentLevel = Array(...this._levels.values())[0];

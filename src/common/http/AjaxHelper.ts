@@ -19,22 +19,16 @@ class AjaxHelper {
             const xhr = new XMLHttpRequest();
             xhr.open(requestType, url, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            let answerData = "";
-            let progressHandler: () => void;
             let loadHandler: () => void;
             let baseErrHandler: (err: HttpRequestFail) => void;
-            let errHandler = () => baseErrHandler(new UnrecognizedHttpRequestError(xhr.status));
-            let abortHandler = () => baseErrHandler(new RequestAbortedError(xhr.status));
-            let timeoutHandler = () => baseErrHandler(new TimeoutRequestFail(xhr.status));
+            let errHandler = () => baseErrHandler(new UnrecognizedHttpRequestError(xhr.status, url));
+            let abortHandler = () => baseErrHandler(new RequestAbortedError(xhr.status, url));
+            let timeoutHandler = () => baseErrHandler(new TimeoutRequestFail(xhr.status, url));
             const removeHandlers = () => {
                 xhr.removeEventListener("error", errHandler);
                 xhr.removeEventListener("abort", abortHandler);
                 xhr.removeEventListener("timeout", timeoutHandler);
-                xhr.removeEventListener("progress", progressHandler);
                 xhr.removeEventListener("load", loadHandler);
-            };
-            progressHandler = () => {
-                answerData += xhr.responseText;
             };
             baseErrHandler = (err: HttpRequestFail) => {
                 removeHandlers();
@@ -43,17 +37,17 @@ class AjaxHelper {
             loadHandler = () => {
                 removeHandlers();
                 if (Math.floor(xhr.status / 100) != 2) {
-                    reject(new UnrecognizedHttpRequestError(xhr.status));
+                    reject(new UnrecognizedHttpRequestError(xhr.status, url));
                 }
-                if (answerData === "") {
+                if (xhr.responseText === "") {
                     resolve({});
                 }
                 let data;
                 try {
-                    data = JSON.parse(answerData);
+                    data = JSON.parse(xhr.responseText);
                 }
                 catch {
-                    reject(new WrongAnswerDataType());
+                    reject(new WrongAnswerDataType(xhr.responseText, url));
                 }
                 if (data) {
                     resolve(data);
@@ -63,7 +57,6 @@ class AjaxHelper {
             xhr.addEventListener("error", errHandler);
             xhr.addEventListener("abort", abortHandler);
             xhr.addEventListener("timeout", timeoutHandler);
-            xhr.addEventListener("progress", progressHandler);
             xhr.addEventListener("load", loadHandler);
             xhr.send(JSON.stringify(data));
         })

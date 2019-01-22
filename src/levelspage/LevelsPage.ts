@@ -72,7 +72,7 @@ class LevelsPage extends BasePage {
         const startHolder = new Component({
             bemInfo: levelView.createChildBemInfo("stars-holder"),
         });
-        let starsCount = level.starsCount();
+        let starsCount = Level.calculateStarsCount(level.awardedScore());
         while (starsCount) {
             startHolder.addChild(new Component({
                 bemInfo: levelView.createChildBemInfo("star"),

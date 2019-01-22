@@ -16,36 +16,37 @@ class Game extends Disposable {
         const startPageContainer = document.getElementById("start-page") as HTMLElement;
         this._startPage = new StartPage(startPageContainer, messages, hotKeyBinder);
         this._addHandler(this._startPage.changePageRequestEvent(), (page) => {
-            this._changePage(page);
+            this._currentPage = this._changePage(page);
         });
 
         const levelsPageContainer = document.getElementById("levels-page") as HTMLElement;
         this._levelsPage = new LevelsPage(levelsPageContainer, gameContext, messages, hotKeyBinder);
         this._addHandler(this._levelsPage.changePageRequestEvent(), (page) => {
-            this._changePage(page);
+            this._currentPage = this._changePage(page);
         });
 
         const resultPageContainer = document.getElementById("result-page") as HTMLElement;
         this._resultPage = new ResultPage(resultPageContainer, gameContext, messages, hotKeyBinder);
         this._addHandler(this._resultPage.changePageRequestEvent(), (page) => {
-            this._changePage(page);
+            this._currentPage = this._changePage(page);
         });
 
         const draftPageContainer = document.getElementById("draft-page") as HTMLElement;
         this._draftPage = new DraftPage(draftPageContainer, gameContext, messages, hotKeyBinder);
         this._addHandler(this._draftPage.changePageRequestEvent(), (page) => {
-            this._changePage(page);
+            this._currentPage = this._changePage(page);
         });
     }
 
-    public start() {
-        this._openPage(PagesType.StartPage);
-        this._currentPage = PagesType.StartPage;
+    public start(page: PagesType = PagesType.StartPage) {
+        this._currentPage = this._openPage(page).then(() => page);
     }
 
-    private _changePage(page: PagesType) {
-        this._closePage(this._currentPage).then(() => this._openPage(page));
-        this._currentPage = page;
+    private _changePage(page: PagesType): Promise<PagesType> {
+        return this._currentPage
+                .then(this._closePage.bind(this))
+                .then(this._openPage.bind(this, page))
+                .then(() => page);
     }
 
     private _openPage(page: PagesType): Promise<void> {
@@ -80,7 +81,7 @@ class Game extends Disposable {
     private _levelsPage: LevelsPage;
     private _resultPage: ResultPage;
     private _draftPage: DraftPage;
-    private _currentPage: PagesType = PagesType.StartPage;
+    private _currentPage = Promise.resolve(PagesType.StartPage);
 }
 
 export {Game};
