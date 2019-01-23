@@ -8,9 +8,6 @@ class TaskView extends Component {
             blockName: "task"
         });
 
-        this._addDisposable(this._content);
-        this.addChild(this._content);
-
         const infoButton = new Component({
             bemInfo: this.createChildBemInfo("info-button"),
             content: Icons.question(),
@@ -19,6 +16,10 @@ class TaskView extends Component {
         this._addDisposable(infoButton);
         this.addChild(infoButton);
         this._listen("click", infoButton, () => this._helpRequestEvent.dispatch());
+
+        this._addDisposable(this._content);
+        this.addChild(this._content);
+
 
     }
 
