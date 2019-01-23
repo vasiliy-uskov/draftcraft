@@ -15,9 +15,9 @@ class LineTool extends BaseTool {
         this._line = null;
     }
 
-    protected _mouseDownHandler({relativeCors}: MouseEventData): void {
+    protected _mouseDownHandler({relativeCords}: MouseEventData): void {
         if (!this._line) {
-            this._line = new Line(relativeCors, relativeCors);
+            this._line = new Line(relativeCords, relativeCords);
             this._invalidateLineView();
         }
         else {
@@ -26,9 +26,9 @@ class LineTool extends BaseTool {
         }
     }
 
-    protected _mouseMoveHandler({relativeCors}: MouseEventData): void {
+    protected _mouseMoveHandler(data: MouseEventData): void {
         if (this._line) {
-            this._line.setEnd(relativeCors);
+            this._line.setEnd(data.relativeCords, data.shiftKey);
             this._invalidateLineView();
         }
     }

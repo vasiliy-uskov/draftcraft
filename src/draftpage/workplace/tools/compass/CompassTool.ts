@@ -16,7 +16,7 @@ class CompassTool extends BaseTool {
     }
 
     protected _mouseDownHandler(data: MouseEventData): void {
-        const newState = this._currentState.mouseDownHandler(data.relativeCors);
+        const newState = this._currentState.mouseDownHandler(data.relativeCords);
         if (newState) {
             this._currentState = newState;
         }
@@ -33,7 +33,7 @@ class CompassTool extends BaseTool {
     }
 
     protected _mouseMoveHandler(data: MouseEventData): void {
-        this._currentState.mouseMoveHandler(data.relativeCors);
+        this._currentState.mouseMoveHandler(data.relativeCords);
         this._currentState.redrawState(this._drawingContext);
     }
 

@@ -29,10 +29,10 @@ class DotTool extends BaseTool {
         this._dot = null;
     }
 
-    protected _mouseUpHandler({relativeCors}: MouseEventData): void {
-        this._dot = new Dot(relativeCors);
+    protected _mouseUpHandler({relativeCords}: MouseEventData): void {
+        this._dot = new Dot(relativeCords);
         this._dot.draw(this._drawingContext);
-        const labelPosition = relativeCors.clone().add(LABEL_PADDING);
+        const labelPosition = relativeCords.clone().add(LABEL_PADDING);
         this._labelInput.show(labelPosition);
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
             this._dispatchChangeEvent(new DrawChange(new LabeledDot(this._dot, label)));

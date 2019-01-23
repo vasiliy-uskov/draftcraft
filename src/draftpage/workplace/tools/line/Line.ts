@@ -1,7 +1,8 @@
-import {Vec2} from "../../../../common/utils/Vec2";
+import {createVec2ByPolar, Vec2} from "../../../../common/utils/Vec2";
 import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
 import {IShape} from "../IShape";
 import {DrawingParams} from "../DrawingParams";
+import {toDegrease, toRadians} from "../../../../common/utils/mathutils";
 
 class Line implements IShape {
     constructor(start: Vec2, end: Vec2) {
@@ -9,8 +10,17 @@ class Line implements IShape {
         this._end = end;
     }
 
-    public setEnd(end: Vec2) {
-        this._end = end;
+    public setEnd(end: Vec2, reduced: boolean = false) {
+        if (!reduced)
+        {
+            this._end = end;
+            return;
+        }
+        const reduceStep = 15;
+        const vec = end.clone().reduce(this._start);
+        const angle = toDegrease(vec.angle());
+        const reducedAngle = toRadians(Math.round(angle / reduceStep) * reduceStep);
+        this._end = this._start.clone().add(createVec2ByPolar(reducedAngle, vec.radius()));
     }
 
     public end(): Vec2 {

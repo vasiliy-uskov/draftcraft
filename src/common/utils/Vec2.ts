@@ -31,6 +31,11 @@ class Vec2 {
         return this;
     }
 
+    public reduce(vec: Vec2): Vec2 {
+        this.add(vec.clone().scale(-1));
+        return this;
+    }
+
     public toString(): string {
         return `{x: ${this.x}, y: ${this.y}}`;
     }
@@ -39,4 +44,11 @@ class Vec2 {
     public y: number;
 }
 
-export {Vec2}
+function createVec2ByPolar(angle: number, radius: number) {
+    return new Vec2(
+        Math.cos(angle) * radius,
+        Math.sin(angle) * radius
+    )
+}
+
+export {Vec2, createVec2ByPolar}

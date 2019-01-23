@@ -4,7 +4,10 @@ import {Component} from "../../common/components/component/Component";
 import {ListenableWindow} from "../../common/disposable/ListenableWindow";
 import {Vec2} from "../../common/utils/Vec2";
 
-type MouseEventData = {relativeCors: Vec2, absoluteCords: Vec2}
+class MouseEventData extends MouseEvent {
+    relativeCords: Vec2;
+    absoluteCords: Vec2;
+}
 
 class MouseEventDispatcher extends Disposable {
     constructor(component: Component) {
@@ -25,6 +28,14 @@ class MouseEventDispatcher extends Disposable {
         this._listen("mousemove", listenableWindow, (event: Event) => {
             this._mouseMoveEvent.dispatch(this._getEventData(event as MouseEvent, component));
         });
+        this._listen("keydown", listenableWindow, (event: KeyboardEvent) => {
+            this._ctrlPressed = this._ctrlPressed || event.key == "Control";
+            this._shiftPressed = this._shiftPressed || event.key == "Shift";
+        });
+        this._listen("keyup", listenableWindow, (event: KeyboardEvent) => {
+            this._ctrlPressed = this._ctrlPressed && event.key != "Control";
+            this._shiftPressed = this._shiftPressed && event.key != "Shift";
+        });
     }
 
     public mouseDownEvent(): EventDispatcher<MouseEventData> {
@@ -41,8 +52,11 @@ class MouseEventDispatcher extends Disposable {
 
     private _getEventData(event: MouseEvent, component: Component): MouseEventData {
         return {
-            relativeCors: this._getRelativeCords(event, component),
-            absoluteCords: new Vec2(event.clientX, event.clientY)
+            ...event,
+            shiftKey: this._shiftPressed,
+            ctrlKey: this._ctrlPressed,
+            relativeCords: this._getRelativeCords(event, component),
+            absoluteCords: new Vec2(event.clientX, event.clientY),
         }
     }
 
@@ -54,6 +68,8 @@ class MouseEventDispatcher extends Disposable {
         );
     }
 
+    private _shiftPressed = false;
+    private _ctrlPressed = false;
     private _mouseDownEvent: EventDispatcher<MouseEventData> = this._createEventDispatcher();
     private _mouseUpEvent: EventDispatcher<MouseEventData> = this._createEventDispatcher();
     private _mouseMoveEvent: EventDispatcher<MouseEventData> = this._createEventDispatcher();

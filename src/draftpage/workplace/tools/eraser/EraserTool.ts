@@ -11,14 +11,14 @@ class EraserTool extends BaseTool {
         return Icons.eraser();
     }
 
-    protected _mouseDownHandler({relativeCors}: MouseEventData): void {
+    protected _mouseDownHandler({relativeCords}: MouseEventData): void {
         this._active = true;
-        const shape = new CleanArea(this._getEraserPosition(relativeCors).clone());
+        const shape = new CleanArea(this._getEraserPosition(relativeCords).clone());
         this._dispatchChangeEvent(new DrawChange(shape));
     }
 
-    protected _mouseMoveHandler({relativeCors}: MouseEventData): void {
-        const mouseCord = this._getEraserPosition(relativeCors);
+    protected _mouseMoveHandler({relativeCords}: MouseEventData): void {
+        const mouseCord = this._getEraserPosition(relativeCords);
         this._drawEraser(mouseCord.clone());
         if (this._active) {
             const shape = new CleanArea(mouseCord.clone());

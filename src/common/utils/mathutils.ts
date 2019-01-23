@@ -6,4 +6,12 @@ function clamp(val: number, min: number, max: number): number {
     return Math.max(min, Math.min(val, max));
 }
 
-export {normalizeAngle, clamp}
+function toDegrease(angle: number): number {
+    return 180 * angle / Math.PI;
+}
+
+function toRadians(angle: number): number {
+    return angle / 180 * Math.PI;
+}
+
+export {normalizeAngle, clamp, toDegrease, toRadians}
