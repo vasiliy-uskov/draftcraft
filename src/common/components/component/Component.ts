@@ -1,6 +1,6 @@
 import {Disposable} from "../../disposable/Disposable";
 import {BemInfo} from "./BemInfo";
-import {TagsName} from "../TagsName";
+import {TagsName} from "./TagsName";
 import {toCamelCase} from "../../utils/stringutils";
 import {IListenable} from "../../disposable/IListenable";
 import {Vec2} from "../../utils/Vec2";

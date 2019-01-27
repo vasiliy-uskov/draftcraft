@@ -2,7 +2,7 @@ import {Component} from "../components/component/Component";
 import {PagesType} from "./PagesType";
 import {EventDispatcher} from "../disposable/EventDispatcher";
 import {Messages} from "../lng/Messages";
-import {Fade} from "../effects/transition/Fade";
+import {Fade} from "../animation/effects/Fade";
 import {eventToPromise} from "../utils/asynctools";
 import {HotKeyBinder} from "../hotkeys/HotKeysBinder";
 

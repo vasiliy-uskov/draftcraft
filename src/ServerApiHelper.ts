@@ -2,7 +2,7 @@ import {Level, LevelConfig} from "./model/Level";
 import {AjaxHelper} from "./common/http/AjaxHelper";
 import {ApiUrls} from "./ApiUrls";
 import {verifyBoolean, verifyNumber} from "./common/utils/typetools";
-import {ValidationError} from "./common/exceptions/Exceptions";
+import {ValidationError} from "./common/http/Exceptions";
 
 type SetAnswerJson = {
     sessionId: string,

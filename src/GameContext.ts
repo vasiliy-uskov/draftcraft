@@ -1,6 +1,6 @@
 import {Level} from "./model/Level";
 import {ServerApiHelper} from "./ServerApiHelper";
-import {BaseCustomError} from "./common/exceptions/Exceptions";
+import {BaseCustomError} from "./common/http/Exceptions";
 import {Disposable} from "./common/disposable/Disposable";
 import {ServerErrorsHandler} from "./ServerErrorsHandler";
 

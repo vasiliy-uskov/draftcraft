@@ -1,7 +1,7 @@
-import {createAnimation} from "../../animation/Animation";
-import {Component} from "../../components/component/Component";
-import {Disposable} from "../../disposable/Disposable";
-import {EventDispatcher} from "../../disposable/EventDispatcher";
+import {createAnimation} from "../../Animation";
+import {Component} from "../../../components/component/Component";
+import {Disposable} from "../../../disposable/Disposable";
+import {EventDispatcher} from "../../../disposable/EventDispatcher";
 import {Direction} from "./Direction";
 
 const LEAD_TIME = 600;

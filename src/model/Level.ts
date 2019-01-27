@@ -1,5 +1,5 @@
 import {verifyBoolean, verifyObject, verifyString} from "../common/utils/typetools";
-import {ValidationError} from "../common/exceptions/Exceptions";
+import {ValidationError} from "../common/http/Exceptions";
 
 type LevelConfig = {
     id: string,

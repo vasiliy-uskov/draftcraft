@@ -1,5 +1,5 @@
 import {Component} from "../component/Component";
-import {TagsName} from "../TagsName";
+import {TagsName} from "../component/TagsName";
 import {EventDispatcher} from "../../disposable/EventDispatcher";
 import {BemInfo} from "../component/BemInfo";
 

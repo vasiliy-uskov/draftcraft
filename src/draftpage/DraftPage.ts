@@ -10,7 +10,7 @@ import {ActionController} from "../common/action/ActionController";
 import {HotKeyBinder} from "../common/hotkeys/HotKeysBinder";
 import {ChangeToolAction} from "./action/ChangeToolAction";
 import {AddChangeAction} from "./action/AddChangeAction";
-import {InfoPopup} from "../common/popup/InfoPopup";
+import {InfoPopup} from "../common/components/popup/InfoPopup";
 import {TaskView} from "./TaskView";
 import {Component} from "../common/components/component/Component";
 

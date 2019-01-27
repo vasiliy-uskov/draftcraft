@@ -1,5 +1,5 @@
 import {Component} from "../../common/components/component/Component";
-import {TagsName} from "../../common/components/TagsName";
+import {TagsName} from "../../common/components/component/TagsName";
 import {CanvasDrawingContext} from "./drawingcontext/CanvasDrawingContext";
 import {IDrawingContext} from "./drawingcontext/IDrawingContext";
 import {MouseEventDispatcher} from "./MouseEventDispatcher";

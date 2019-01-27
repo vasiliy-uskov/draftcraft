@@ -1,7 +1,7 @@
-import {Toaster} from "./common/toasts/Toaster";
+import {Toaster} from "./common/components/toasts/Toaster";
 import {Disposable} from "./common/disposable/Disposable";
 import {Messages} from "./common/lng/Messages";
-import {BaseCustomError} from "./common/exceptions/Exceptions";
+import {BaseCustomError} from "./common/http/Exceptions";
 import {PagesType} from "./common/page/PagesType";
 import {ErrorPage} from "./errorpage/ErrorPage";
 

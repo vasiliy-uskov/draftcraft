@@ -1,4 +1,4 @@
-import {HttpRequestFail, RequestAbortedError, TimeoutRequestFail, UnrecognizedHttpRequestError, WrongAnswerDataType} from "../exceptions/Exceptions";
+import {HttpRequestFail, RequestAbortedError, TimeoutRequestFail, UnrecognizedHttpRequestError, WrongAnswerDataType} from "./Exceptions";
 
 enum RequestType {
     POST = "POST",

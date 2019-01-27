@@ -1,6 +1,6 @@
-import {Component} from "../components/component/Component";
-import {EventDispatcher} from "../disposable/EventDispatcher";
-import {Icons} from "../components/Icons";
+import {Component} from "../component/Component";
+import {EventDispatcher} from "../../disposable/EventDispatcher";
+import {Icons} from "../Icons";
 
 enum ToastType {
     error = "error",

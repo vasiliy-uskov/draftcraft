@@ -1,4 +1,4 @@
-import {Component} from "../components/component/Component";
+import {Component} from "../component/Component";
 import {Toast, ToastType} from "./Toast";
 
 class Toaster extends Component {

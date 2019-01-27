@@ -1,6 +1,6 @@
 import {EventDispatcher} from "../../../../common/disposable/EventDispatcher";
 import {Component} from "../../../../common/components/component/Component";
-import {TagsName} from "../../../../common/components/TagsName";
+import {TagsName} from "../../../../common/components/component/TagsName";
 import {Vec2} from "../../../../common/utils/Vec2";
 import {DrawingParams} from "../DrawingParams";
 import {Label} from "./Label";

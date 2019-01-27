@@ -1,6 +1,6 @@
-import {Component} from "../components/component/Component";
-import {Icons} from "../components/Icons";
-import {BemInfo} from "../components/component/BemInfo";
+import {Component} from "../component/Component";
+import {Icons} from "../Icons";
+import {BemInfo} from "../component/BemInfo";
 
 class InfoPopup extends Component {
     constructor(config: {
