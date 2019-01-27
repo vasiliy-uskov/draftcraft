@@ -1,7 +1,7 @@
 import {BaseTool} from "../BaseTool";
 import {ICompassState} from "./ICompassState";
 import {NullState} from "./NullState";
-import {DrawChange} from "../DrawChange";
+import {DrawableChange} from "../DrawableChange";
 import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
 
@@ -25,7 +25,7 @@ class CompassTool extends BaseTool {
             if (!arc) {
                 throw new Error("Invalid result tool for compass");
             }
-            const change = new DrawChange(arc);
+            const change = new DrawableChange(arc);
             this._dispatchChangeEvent(change);
             this.reset();
         }

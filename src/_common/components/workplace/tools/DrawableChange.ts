@@ -2,7 +2,7 @@ import {IChange} from "./IChange";
 import {IShape} from "./IShape";
 import {IDrawingContext} from "../drawingcontext/IDrawingContext";
 
-class DrawChange implements IChange {
+class DrawableChange implements IChange {
     constructor(shape: IShape) {
         this._shape = shape;
     }
@@ -18,4 +18,4 @@ class DrawChange implements IChange {
     private _shape: IShape;
 }
 
-export {DrawChange}
+export {DrawableChange}

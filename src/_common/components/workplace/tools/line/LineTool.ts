@@ -1,6 +1,6 @@
 import {BaseTool} from "../BaseTool";
 import {Line} from "./Line";
-import {DrawChange} from "../DrawChange";
+import {DrawableChange} from "../DrawableChange";
 import {AnnotationDrawer} from "../AnnotationDrawer";
 import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
@@ -21,7 +21,7 @@ class LineTool extends BaseTool {
             this._invalidateLineView();
         }
         else {
-            this._dispatchChangeEvent(new DrawChange(this._line));
+            this._dispatchChangeEvent(new DrawableChange(this._line));
             this.reset();
         }
     }

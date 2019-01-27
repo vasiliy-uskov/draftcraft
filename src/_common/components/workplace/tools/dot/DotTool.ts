@@ -1,6 +1,6 @@
 import {BaseTool} from "../BaseTool";
 import {Dot} from "./Dot";
-import {DrawChange} from "../DrawChange";
+import {DrawableChange} from "../DrawableChange";
 import {LabeledDot} from "./LabeledDot";
 import {Vec2} from "../../../../utils/Vec2";
 import {Icons} from "../../../Icons";
@@ -35,7 +35,7 @@ class DotTool extends BaseTool {
         const labelPosition = relativeCords.clone().add(LABEL_PADDING);
         this._labelInput.show(labelPosition);
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
-            this._dispatchChangeEvent(new DrawChange(new LabeledDot(this._dot, label)));
+            this._dispatchChangeEvent(new DrawableChange(new LabeledDot(this._dot, label)));
             this.reset();
         });
     }
