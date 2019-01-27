@@ -19,11 +19,8 @@ class Messages {
 
         const resultPage = new Map<string, string>();
         resultPage.set("levelsButton", "levels");
-        resultPage.set("markAMessage", "Good job");
-        resultPage.set("markBMessage", "Well done");
-        resultPage.set("markFMessage", "You can better");
-        resultPage.set("awardedScore", "Awarded score: $0");
-        resultPage.set("currentScore", "Score: $0");
+        resultPage.set("levelPassedMessage", "Good job!");
+        resultPage.set("levelFailMessage", "Try again");
         this._messages.set(PagesType.ResultPage, resultPage);
 
         const draftPage = new Map<string, string>();

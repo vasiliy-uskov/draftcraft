@@ -40,6 +40,12 @@ class Icons {
     public static question():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/question.svg").toString();
     }
+    public static sad():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/sad.svg").toString();
+    }
+    public static accept():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/accept.svg").toString();
+    }
 }
 
 export {Icons};

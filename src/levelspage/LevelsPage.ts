@@ -69,18 +69,13 @@ class LevelsPage extends BasePage {
             bemInfo: levelView.createChildBemInfo("index"),
             content: index.toString()
         }));
-        const startHolder = new Component({
-            bemInfo: levelView.createChildBemInfo("stars-holder"),
-        });
-        let starsCount = Level.calculateStarsCount(level.awardedScore());
-        while (starsCount) {
-            startHolder.addChild(new Component({
-                bemInfo: levelView.createChildBemInfo("star"),
-                content: Icons.star()
-            }));
-            --starsCount;
+        if (level.passed()) {
+            const passIcon = new Component({
+                bemInfo: levelView.createChildBemInfo("pass-icon"),
+                content: Icons.accept(),
+            });
+            levelView.addChild(passIcon);
         }
-        levelView.addChild(startHolder);
         return levelView;
     }
 

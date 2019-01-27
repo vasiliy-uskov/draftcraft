@@ -18,15 +18,10 @@ class ResultPage extends BasePage {
         });
         this._resultCard.addChild(cardContent);
 
-        const score = new Component({bemInfo: this._resultCard.createChildBemInfo("score")});
-        cardContent.addChild(score);
-        const scoreWrapper = new Component({bemInfo: this._resultCard.createChildBemInfo("score-wrapper")});
-        score.addChild(scoreWrapper);
-        scoreWrapper.addChild(this._currentScore);
-        scoreWrapper.addChild(this._awardedScore);
+        cardContent.addChild(this._markIcon);
 
         cardContent.addChild(this._message);
-        cardContent.addChild(this._startHolder);
+
         const controls = new Component({bemInfo: this._resultCard.createChildBemInfo("controls")});
         this._resultCard.addChild(controls);
 
@@ -60,51 +55,26 @@ class ResultPage extends BasePage {
 
     private async _incrementLevel() {
         const currentLevel = await this._gameContext.currentLevel();
-        if (currentLevel.isLevelPassed()) {
+        if (currentLevel.passed()) {
             await this._gameContext.selectNextLevel();
         }
     }
 
     private async _invalidateContent() {
         const currentLevel = await this._gameContext.currentLevel();
-        const starsCount = Level.calculateStarsCount(currentLevel.lastScore());
-        const isLevelPassed = currentLevel.isLevelPassed();
         const nextLevel = await this._gameContext.nextLevel();
-        this._resultCard.updateModifier("result", isLevelPassed ? "good" : "bad");
-        this._awardedScore.setContent(
-            this._getMessage("awardedScore", currentLevel.awardedScore())
-        );
-        this._currentScore.setContent(
-            this._getMessage("currentScore", currentLevel.lastScore())
-        );
+        this._resultCard.updateModifier("result", currentLevel.passed() ? "good" : "bad");
         const message = this._getMessage(
-            starsCount >= Level.maxStarsCount() ?
-                "markAMessage" :
-            starsCount > 0 ?
-                "markBMessage" :
-                "markFMessage"
+            currentLevel.passed() ? "levelPassedMessage" : "levelFailMessage"
         );
         this._message.setContent(message);
+        this._markIcon.setContent(currentLevel.passed() ? Icons.accept() : Icons.sad());
         this._nextButton.setStyle("display", nextLevel ? "" : "none");
-        this._invalidateStars(starsCount);
-    }
-
-    private _invalidateStars(starsCount: number) {
-        this._startHolder.removeChildren();
-        while (starsCount) {
-            this._startHolder.addChild(new Component({
-                bemInfo: this._resultCard.createChildBemInfo("star"),
-                content: Icons.star()
-            }));
-            --starsCount;
-        }
     }
 
     private _resultCard = new Component({ blockName: "result-card" });
-    private _awardedScore = new Component({bemInfo: this._resultCard.createChildBemInfo("awarded-score")});
-    private _currentScore = new Component({bemInfo: this._resultCard.createChildBemInfo("current-score")});
     private _message = new Component({bemInfo: this._resultCard.createChildBemInfo("message")});
-    private _startHolder = new Component({bemInfo: this._resultCard.createChildBemInfo("stars-holder")});
+    private _markIcon = new Component({bemInfo: this._resultCard.createChildBemInfo("mark-icon")});
     private _restartButton: Button = new Button({icon: Icons.restart(), blockName: "restart-button"});
     private _nextButton: Button = new Button({icon: Icons.next(), blockName: "next-button"});
     private _gameContext: GameContext;

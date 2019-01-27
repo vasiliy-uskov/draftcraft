@@ -1,7 +1,7 @@
 import {Level, LevelConfig} from "./model/Level";
 import {AjaxHelper} from "./common/http/AjaxHelper";
 import {ApiUrls} from "./ApiUrls";
-import {verifyNumber} from "./common/utils/typetools";
+import {verifyBoolean, verifyNumber} from "./common/utils/typetools";
 import {ValidationError} from "./common/exceptions/Exceptions";
 
 type SetAnswerJson = {
@@ -26,17 +26,8 @@ class ServerApiHelper {
         })
     }
 
-    public setLevelAnswer(taskId: string, answer: string): Promise<number> {
-        const data = this._getData({taskId, answer}) as SetAnswerJson;
-        return AjaxHelper.post(ApiUrls.addAnswer, data).then(({score}: {score: number}) => {
-            try {
-                verifyNumber(score)
-            }
-            catch (err) {
-                throw new ValidationError(`Invalid level score ${err}`);
-            }
-            return Math.floor(score);
-        });
+    public setLevelAnswer(taskId: string, answer: string): Promise<void> {
+        return AjaxHelper.post(ApiUrls.addAnswer, this._getData({taskId, answer})).then(() => {});
     }
 
     private _getData(args?: Object): Object {

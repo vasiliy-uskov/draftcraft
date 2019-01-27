@@ -20,10 +20,8 @@ class GameContext extends Disposable {
     }
 
     public async setCurrentLevelAnswer(answer: string) {
-        await this._serverRequestPromise;
-        const score = await this._api.setLevelAnswer(this._currentLevel.id(), answer).catch(this._errorHandler.bind(this));
-        this._currentLevel.setLastScore(score);
-        await this._updateLevels();
+        this._serverRequestPromise.then(() => this._api.setLevelAnswer(this._currentLevel.id(), answer));
+        this._serverRequestPromise.then(() => this._updateLevels());
     }
 
     public async selectNextLevel() {
@@ -61,12 +59,7 @@ class GameContext extends Disposable {
     private _updateLevels(): Promise<void> {
         return this._api.getLevels().then((levels: Array<Level>) => {
             for (const level of levels) {
-                const oldLevel = this._levels.get(level.id());
                 this._levels.set(level.id(), level);
-                if (oldLevel) {
-                    this._levels.get(level.id()).setLastScore(oldLevel.lastScore());
-                }
-
             }
             if (!this._currentLevel) {
                 this._currentLevel = Array(...this._levels.values())[0];
