@@ -4,6 +4,7 @@ import {Toolbar} from "../../_common/components/toolbar/Toolbar";
 import {ActionController} from "../../_common/action/ActionController";
 import {AddChangeAction} from "../../_common/components/workplace/action/AddChangeAction";
 import {ChangeToolAction} from "../../_common/components/toolbar/action/ChangeToolAction";
+import {HotKeyBinder} from "../../_common/hotkeys/HotKeysBinder";
 
 class DrawableArea extends Component{
     constructor(container: Element) {
@@ -11,17 +12,25 @@ class DrawableArea extends Component{
             blockName: "drawable-area",
         });
         container.appendChild(this.element());
+
+        const actionController = new ActionController();
+
         this._addDisposable(this._workplace);
         this.addChild(this._workplace);
         this._addHandler(this._workplace.changeCreatedEvent(), (action: AddChangeAction) => {
-            this._activated && this._actionController.execute(action)
+            this._activated && actionController.execute(action)
         });
+
         this._addDisposable(this._toolbar);
         this.addChild(this._toolbar);
         this._addHandler(this._toolbar.toolChangedEvent(), (action: ChangeToolAction) => {
-            this._activated && this._actionController.execute(action)
+            this._activated && actionController.execute(action)
         });
         this._toolbar.activateFirstTool();
+
+        const hotKeyBinder = new HotKeyBinder();
+        hotKeyBinder.setResetHandler(() => this._toolbar.resetTools());
+        hotKeyBinder.setActionController(actionController);
     }
 
     public activate() {
@@ -50,7 +59,6 @@ class DrawableArea extends Component{
 
     private _activated = true;
     private _workplace = new Workplace();
-    private _actionController = new ActionController();
     private _toolbar = new Toolbar(this._workplace.tools());
 }
 
