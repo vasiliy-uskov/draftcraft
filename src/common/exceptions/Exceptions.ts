@@ -22,7 +22,6 @@ class BaseCustomError extends Error {
 class HttpRequestFail extends BaseCustomError {
     constructor(reason: string, code: number, url: string) {
         super(`${url}\nBad http request "${reason}"`, code, getMessageId(code));
-        console.trace();
     }
 }
 
