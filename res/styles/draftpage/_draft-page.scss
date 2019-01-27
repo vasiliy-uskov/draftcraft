@@ -1,23 +1,28 @@
 #draft-page {
+  text-align: center;
+
+  & * {
+    text-align: initial;
+  }
+
   @import "workplace";
   @import "toolbar";
   @import "task";
 
   .workplace {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     box-shadow: 0 2px 10px rgba(#000000, 0.3);
     max-width: 700px;
     max-height: 400px;
     height: calc(100% - 5px);
     width: calc(100% - 5px);
+    margin: 0 auto;
   }
 
   .back-button {
-    margin: 1% 0 0 4%;
     display: block;
+    position: absolute;
+    top: 20px;
+    left: 75px;
   }
 
   .finish-button {

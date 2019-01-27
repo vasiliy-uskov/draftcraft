@@ -12,6 +12,7 @@ import {ChangeToolAction} from "./action/ChangeToolAction";
 import {AddChangeAction} from "./action/AddChangeAction";
 import {InfoPopup} from "../common/popup/InfoPopup";
 import {TaskView} from "./TaskView";
+import {Component} from "../common/components/component/Component";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
@@ -19,11 +20,12 @@ class DraftPage extends BasePage {
 
         this._gameContext = gameContext;
 
-        this._addDisposable(this._toolbar);
-        this.addChild(this._toolbar);
-        this._addHandler(this._toolbar.toolChangedEvent(), (action: ChangeToolAction) => {
-            this._actionController.execute(action)
-        });
+
+        const taskWrapper = new Component({blockName: "task-wrapper"});
+        this.addChild(taskWrapper);
+        this._addDisposable(this._taskView);
+        taskWrapper.addChild(this._taskView);
+        this._addHandler(this._taskView.helpRequestEvent(), () => this._helpPopup.open());
 
         this._addDisposable(this._workplace);
         this.addChild(this._workplace);
@@ -31,9 +33,13 @@ class DraftPage extends BasePage {
             this._actionController.execute(action)
         });
 
-        this._addDisposable(this._taskView);
-        this.addChild(this._taskView);
-        this._addHandler(this._taskView.helpRequestEvent(), () => this._helpPopup.open());
+
+
+        this._addDisposable(this._toolbar);
+        this.addChild(this._toolbar);
+        this._addHandler(this._toolbar.toolChangedEvent(), (action: ChangeToolAction) => {
+            this._actionController.execute(action)
+        });
 
         this._addDisposable(this._helpPopup);
         this.addChild(this._helpPopup);

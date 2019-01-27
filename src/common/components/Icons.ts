@@ -7,8 +7,8 @@ class Icons {
     public static star():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/star.svg").toString();
     }
-    public static line():string {
-        return fs.readFileSync(__dirname + "/../../../res/images/svg/line.svg").toString();
+    public static pencil():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/pencil.svg").toString();
     }
     public static compass():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/compass.svg").toString();

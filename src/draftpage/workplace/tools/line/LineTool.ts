@@ -7,7 +7,7 @@ import {MouseEventData} from "../../MouseEventDispatcher";
 
 class LineTool extends BaseTool {
     public icon(): string {
-        return Icons.line();
+        return Icons.pencil();
     }
 
     public reset(): void {
