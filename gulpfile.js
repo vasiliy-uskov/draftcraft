@@ -3,16 +3,20 @@ const gutil = require("gulp-util");
 const sass = require("gulp-sass");
 const base64Inline = require("gulp-base64-inline");
 const browserify = require("browserify");
-const source = require('vinyl-source-stream');
+const source = require("vinyl-source-stream");
 const tsify = require("tsify");
-const buffer = require('vinyl-buffer');
+const buffer = require("vinyl-buffer");
+const fs = require("fs");
+const pathUtils = require("path");
 
 
 const path = {
 	out: "bin/build",
-	tsEntryPoint: "src/app.ts",
-	scssFiles: "res/styles/**/*.scss",
-	scssEntryPoint: "res/styles/styles.scss",
+	tsEntryPoint: "src/clientcontent/app.ts",
+	scssFiles: "res/styles/clientcontent/**/*.scss",
+	scssEntryPoint: "res/styles/clientcontent/**/*.scss",
+	externalOut: "external",
+	externalConfig: "external-config.json",
 };
 
 const config = {
@@ -21,37 +25,58 @@ const config = {
 	}),
 	babel: (debug) => ({
 		presets: !debug ? ["@babel/env"] : [],
-		extensions: ['.ts'],
+		extensions: [".ts"],
 		minified: !debug,
 	}),
-	browserify: (debug) => ({
+	browserify: (debug, entryPoint) => ({
 		debug,
-		entries: [path.tsEntryPoint],
-		extensions: ['.babel'],
+		entries: [entryPoint],
+		extensions: [".babel"],
 		cache: {},
 		packageCache: {},
-	})
+	}),
+	external: JSON.parse(fs.readFileSync(path.externalConfig)),
 };
 
-gulp.task("compile-ts", () => {
-	return browserify(config.browserify(gutil.env.debug))
+function buildTs(entryPoint, out, debug) {
+	browserify(config.browserify(debug, entryPoint))
 		.plugin(tsify)
 		.transform("brfs")
-		.transform("babelify", config.babel(gutil.env.debug))
+		.transform("babelify", config.babel(debug))
 		.bundle()
-		.on('error', (error) => {
+		.on("error", (error) => {
 			console.log(error.message);
 		})
-		.pipe(source('index.js'))
+		.pipe(source("index.js"))
 		.pipe(buffer())
-		.pipe(gulp.dest(path.out));
+		.pipe(gulp.dest(out));
+}
+
+function buildScss(entryPoint, out, debug) {
+	gulp.src(entryPoint)
+		.pipe(sass(config.sass(debug)))
+		.pipe(base64Inline())
+		.pipe(gulp.dest(out));
+}
+
+gulp.task("build-external", () => {
+	for (const externalConf of config.external) {
+		const externalDir = pathUtils.join(path.externalOut, externalConf.name.toLowerCase().replace(/[-_.]/g, ""));
+		buildTs(externalConf.tsEntryPoint, externalDir, gutil.env.debug);
+		buildScss(externalConf.scssEntryPoint, externalDir, gutil.env.debug);
+	}
+});
+
+gulp.task("compile-ts", () => {
+	buildTs(
+		path.tsEntryPoint,
+		path.out,
+		gutil.env.debug
+	)
 });
 
 gulp.task("compile-scss", () => {
-	gulp.src(path.scssEntryPoint)
-		.pipe(sass(config.sass(gutil.env.debug)))
-		.pipe(base64Inline())
-		.pipe(gulp.dest(path.out));
+	buildScss(path.scssEntryPoint, path.out, gutil.env.debug);
 });
 
 gulp.task("watch-scss", ["compile-scss"], () => {

@@ -1,0 +1,7 @@
+[
+  {
+    "name": "DrawableArea",
+    "tsEntryPoint": "src/external/drawablearea/DrawableArea.ts",
+    "scssEntryPoint": "res/styles/external/drawablearea/styles.scss"
+  }
+]

@@ -1,0 +1,17 @@
+@import "../_common/reset";
+@import "../_common/common";
+@import "../_common/page";
+@import "../_common/button";
+@import "../_common/spinner";
+@import "../_common/toasts";
+@import "../_common/text-styles";
+@import "../_common/scrollbar";
+@import "../_common/info-popup";
+@import "../_common/workplace";
+@import "../_common/toolbar";
+
+@import "draftpage/draft-page";
+@import "resultpage/result-page";
+@import "startpage/start-page";
+@import "levelspage/levels-page";
+@import "errorpage/error-page";

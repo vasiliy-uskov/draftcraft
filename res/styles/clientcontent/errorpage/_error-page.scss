@@ -1,0 +1,31 @@
+#error-page {
+  .content {
+    width: 60%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    padding: 50px;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .error-code_500 {
+    background: inline("../../images/ooops.png") no-repeat;
+  }
+
+  .error-code_400 {
+    background: inline("../../images/drooling.png") no-repeat;
+  }
+
+  .error-code {
+    font: 500 120px/287px Tahoma;
+    background-size: contain;
+    background-position: 212px;
+  }
+
+  .message {
+    font: normal 28px/40px $FONT_FAMILY;
+    margin-top: 40px;
+  }
+}
