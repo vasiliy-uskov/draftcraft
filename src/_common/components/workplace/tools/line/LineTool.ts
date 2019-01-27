@@ -1,11 +1,10 @@
-import {BaseTool} from "../BaseTool";
+import {DrawTool} from "../DrawTool";
 import {Line} from "./Line";
-import {DrawableChange} from "../DrawableChange";
 import {AnnotationDrawer} from "../AnnotationDrawer";
 import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
 
-class LineTool extends BaseTool {
+class LineTool extends DrawTool {
     public icon(): string {
         return Icons.pencil();
     }
@@ -21,7 +20,7 @@ class LineTool extends BaseTool {
             this._invalidateLineView();
         }
         else {
-            this._dispatchChangeEvent(new DrawableChange(this._line));
+            this._dispatchAddShapeEvent(this._line);
             this.reset();
         }
     }

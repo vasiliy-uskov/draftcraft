@@ -25,7 +25,7 @@ class Toolbar extends Component {
         this._tools[0].activate();
     }
 
-    public toolChangedEvent(): EventDispatcher<ChangeToolAction> {
+    public toolChangedEvent(): EventDispatcher<IAction> {
         return this._toolChangedEvent;
     }
 
@@ -38,7 +38,7 @@ class Toolbar extends Component {
     }
 
     private readonly _tools: Array<ToolView> = [];
-    private readonly _toolChangedEvent = this._createEventDispatcher<ChangeToolAction>();
+    private readonly _toolChangedEvent = this._createEventDispatcher<IAction>();
 }
 
 export {Toolbar};

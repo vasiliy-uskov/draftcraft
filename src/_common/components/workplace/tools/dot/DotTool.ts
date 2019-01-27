@@ -1,6 +1,5 @@
-import {BaseTool} from "../BaseTool";
+import {DrawTool} from "../DrawTool";
 import {Dot} from "./Dot";
-import {DrawableChange} from "../DrawableChange";
 import {LabeledDot} from "./LabeledDot";
 import {Vec2} from "../../../../utils/Vec2";
 import {Icons} from "../../../Icons";
@@ -8,12 +7,13 @@ import {LabelInput} from "./LabelInput";
 import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
 import {MouseEventData, MouseEventDispatcher} from "../../MouseEventDispatcher";
 import {Component} from "../../../component/Component";
+import {ShapesHolder} from "../../ShapesHolder";
 
 const LABEL_PADDING = new Vec2(0, -15);
 
-class DotTool extends BaseTool {
-    constructor(drawingContext: IDrawingContext, eventDispatcher: MouseEventDispatcher, workPlace: Component) {
-        super(drawingContext, eventDispatcher);
+class DotTool extends DrawTool {
+    constructor(drawingContext: IDrawingContext, eventDispatcher: MouseEventDispatcher, shapes: ShapesHolder, workPlace: Component) {
+        super(drawingContext, eventDispatcher, shapes);
         this._labelInput = new LabelInput(workPlace);
         this._addDisposable(this._labelInput);
     }
@@ -35,7 +35,7 @@ class DotTool extends BaseTool {
         const labelPosition = relativeCords.clone().add(LABEL_PADDING);
         this._labelInput.show(labelPosition);
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
-            this._dispatchChangeEvent(new DrawableChange(new LabeledDot(this._dot, label)));
+            this._dispatchAddShapeEvent(new LabeledDot(this._dot, label));
             this.reset();
         });
     }

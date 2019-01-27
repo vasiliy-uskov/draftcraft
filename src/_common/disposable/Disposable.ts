@@ -25,11 +25,11 @@ class Disposable {
     protected _destruct() {}
 
     /** @final */
-    protected _createEventDispatcher<T = void>(parentEvent?: EventDispatcher<T>): EventDispatcher<T> {
+    protected _createEventDispatcher<T = void>(...parentEvent: Array<EventDispatcher<T>>): EventDispatcher<T> {
         const dispatcher = new EventDispatcher<T>(this);
         this._addDisposable(dispatcher);
-        if (parentEvent) {
-            this._addHandler(parentEvent, (arg: T) => dispatcher.dispatch(arg));
+        for (const event of parentEvent) {
+            this._addHandler(event, (arg: T) => dispatcher.dispatch(arg));
         }
         return dispatcher;
     }

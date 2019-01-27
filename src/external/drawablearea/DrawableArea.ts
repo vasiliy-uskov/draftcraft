@@ -2,9 +2,8 @@ import {Component} from "../../_common/components/component/Component";
 import {Workplace} from "../../_common/components/workplace/Workplace";
 import {Toolbar} from "../../_common/components/toolbar/Toolbar";
 import {ActionController} from "../../_common/action/ActionController";
-import {AddChangeAction} from "../../_common/components/workplace/action/AddChangeAction";
-import {ChangeToolAction} from "../../_common/components/toolbar/action/ChangeToolAction";
 import {HotKeyBinder} from "../../_common/hotkeys/HotKeysBinder";
+import {ToolsCreator} from "./ToolsCreator";
 
 class DrawableArea extends Component{
     constructor(container: Element) {
@@ -17,13 +16,13 @@ class DrawableArea extends Component{
 
         this._addDisposable(this._workplace);
         this.addChild(this._workplace);
-        this._addHandler(this._workplace.changeCreatedEvent(), (action: AddChangeAction) => {
+        this._addHandler(this._workplace.actionCreatedEvent(), (action: IAction) => {
             this._activated && actionController.execute(action)
         });
 
         this._addDisposable(this._toolbar);
         this.addChild(this._toolbar);
-        this._addHandler(this._toolbar.toolChangedEvent(), (action: ChangeToolAction) => {
+        this._addHandler(this._toolbar.toolChangedEvent(), (action: IAction) => {
             this._activated && actionController.execute(action)
         });
         this._toolbar.activateFirstTool();
@@ -58,7 +57,7 @@ class DrawableArea extends Component{
     }
 
     private _activated = true;
-    private _workplace = new Workplace();
+    private _workplace = new Workplace(new ToolsCreator());
     private _toolbar = new Toolbar(this._workplace.tools());
 }
 

@@ -3,20 +3,16 @@ import {TagsName} from "../component/TagsName";
 import {CanvasDrawingContext} from "./drawingcontext/CanvasDrawingContext";
 import {IDrawingContext} from "./drawingcontext/IDrawingContext";
 import {MouseEventDispatcher} from "./MouseEventDispatcher";
-import {ChangesHolder} from "./ChangesHolder";
-import {IChange} from "./tools/IChange";
-import {AddChangeAction} from "./action/AddChangeAction";
 import {ResizeObserver} from "../../utils/ResizeObserver";
 import {ITool} from "./tools/ITool";
 import {BaseTool} from "./tools/BaseTool";
 import {EventDispatcher} from "../../disposable/EventDispatcher";
-import {LineTool} from "./tools/line/LineTool";
-import {CompassTool} from "./tools/compass/CompassTool";
-import {DotTool} from "./tools/dot/DotTool";
-import {EraserTool} from "./tools/eraser/EraserTool";
+import {ShapesHolder} from "./ShapesHolder";
+import {ToolFactory} from "./tools/ToolFactory";
+import {IToolsCreator} from "./tools/IToolsCreator";
 
 class Workplace extends Component {
-    constructor() {
+    constructor(toolsCreator: IToolsCreator) {
         super({
             blockName: "workplace",
         });
@@ -36,20 +32,25 @@ class Workplace extends Component {
         const canvasMouseEventDispatcher = new MouseEventDispatcher(workingCanvas);
         this._addDisposable(canvasMouseEventDispatcher);
 
-        this._addDisposable(this._changes);
-        this._addHandler(this._changes.invalidateRequestEvent(), this._invalidateResultCanvas.bind(this));
-        this._tools = this._createTools(canvasMouseEventDispatcher);
+        this._addDisposable(this._shapesHolder);
+        this._addHandler(this._shapesHolder.changeEvent(), () => this._invalidateResultCanvas());
+
+        const toolFactory = new ToolFactory({
+            canvasMouseEventDispatcher,
+            canvasContext: this._workingCanvasContext,
+            shapesHolder: this._shapesHolder,
+            workplaceContainer: this,
+        });
+        this._tools = toolsCreator.createTools(toolFactory);
         this._tools.forEach((tool) => {
             this._addDisposable(tool);
-            this._addHandler(tool.changeCreatedEvent(), (change) => {
-                this._dispatchChangeCreatedEvent(change)
-            })
         });
-        this._listen("scroll", this, () => this.element().scrollLeft = 0);
+        const actionEventDispatchers = this._tools.map((tool) => tool.actionCreatedEvent());
+        this._actionCreatedEvent = this._createEventDispatcher(...actionEventDispatchers);
     }
 
-    public changeCreatedEvent(): EventDispatcher<AddChangeAction> {
-        return this._changeCreatedEvent;
+    public actionCreatedEvent(): EventDispatcher<IAction> {
+        return this._actionCreatedEvent;
     }
 
     public tools(): Array<ITool> {
@@ -68,20 +69,16 @@ class Workplace extends Component {
 
     public getSerializedChanges(): string {
         const data = [];
-        for (const change of this._changes.toArray()) {
-            data.push(change.serialize())
+        for (const shape of this._shapesHolder) {
+            data.push(shape.serialize())
         }
         return JSON.stringify(data);
     }
 
     public clean(): void {
-        this._changes.clean();
+        this._shapesHolder.clear();
         this._workingCanvasContext.clean();
         this._resultsCanvasContext.clean();
-    }
-
-    private _dispatchChangeCreatedEvent(change: IChange): void {
-        this._changeCreatedEvent.dispatch(new AddChangeAction(this._changes, change));
     }
 
     private _createCanvas(elementName: string): {context: IDrawingContext, canvas: Component} {
@@ -103,28 +100,19 @@ class Workplace extends Component {
         return {context: new CanvasDrawingContext(canvasElement), canvas};
     }
 
-    private _invalidateResultCanvas(changes: Array<IChange>) {
+    private _invalidateResultCanvas() {
         this._resultsCanvasContext.clean();
-        for (const change of changes) {
-            change.apply(this._resultsCanvasContext);
+        for (const shape of this._shapesHolder) {
+            shape.draw(this._resultsCanvasContext);
         }
-    }
-
-    private _createTools(mouseEventDispatcher: MouseEventDispatcher): Array<BaseTool> {
-        const tools: Array<BaseTool> = [];
-        tools.push(new LineTool(this._workingCanvasContext, mouseEventDispatcher));
-        tools.push(new CompassTool(this._workingCanvasContext, mouseEventDispatcher));
-        tools.push(new DotTool(this._workingCanvasContext, mouseEventDispatcher, this));
-        //tools.push(new EraserTool(this._workingCanvasContext, mouseEventDispatcher));
-        return tools;
     }
 
     private _tools: Array<BaseTool>;
     private _background: Component;
-    private _changes = new ChangesHolder();
+    private _shapesHolder = new ShapesHolder();
     private _resultsCanvasContext: IDrawingContext;
     private _workingCanvasContext: IDrawingContext;
-    private _changeCreatedEvent = this._createEventDispatcher<AddChangeAction>();
+    private _actionCreatedEvent: EventDispatcher<IAction>;
 }
 
 export {Workplace};

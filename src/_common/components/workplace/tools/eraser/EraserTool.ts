@@ -1,12 +1,11 @@
-import {BaseTool} from "../BaseTool";
-import {DrawableChange} from "../DrawableChange";
+import {DrawTool} from "../DrawTool";
 import {CleanArea} from "./CleanArea";
 import {DrawingParams} from "../DrawingParams";
 import {Vec2} from "../../../../utils/Vec2";
 import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
 
-class EraserTool extends BaseTool {
+class EraserTool extends DrawTool {
     public icon(): string {
         return Icons.eraser();
     }
@@ -14,7 +13,7 @@ class EraserTool extends BaseTool {
     protected _mouseDownHandler({relativeCords}: MouseEventData): void {
         this._active = true;
         const shape = new CleanArea(this._getEraserPosition(relativeCords).clone());
-        this._dispatchChangeEvent(new DrawableChange(shape));
+        this._dispatchAddShapeEvent(shape);
     }
 
     protected _mouseMoveHandler({relativeCords}: MouseEventData): void {
@@ -22,7 +21,7 @@ class EraserTool extends BaseTool {
         this._drawEraser(mouseCord.clone());
         if (this._active) {
             const shape = new CleanArea(mouseCord.clone());
-            this._dispatchChangeEvent(new DrawableChange(shape));
+            this._dispatchAddShapeEvent(shape);
         }
     }
 

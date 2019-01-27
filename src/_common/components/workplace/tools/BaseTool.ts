@@ -3,13 +3,11 @@ import {IDrawingContext} from "../drawingcontext/IDrawingContext";
 import {MouseEventData, MouseEventDispatcher} from "../MouseEventDispatcher";
 import {Disposable} from "../../../disposable/Disposable";
 import {EventDispatcher} from "../../../disposable/EventDispatcher";
-import {IChange} from "./IChange";
 
 abstract class BaseTool extends Disposable implements ITool {
     constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher) {
         super();
         this._drawingContext = drawingContext;
-
         this._addHandler(mouseEventDispatcher.mouseDownEvent(), (data: MouseEventData) => this._activated && this._mouseDownHandler(data));
         this._addHandler(mouseEventDispatcher.mouseMoveEvent(), (data: MouseEventData) => this._activated && this._mouseMoveHandler(data));
         this._addHandler(mouseEventDispatcher.mouseUpEvent(),(data: MouseEventData) => this._activated && this._mouseUpHandler(data));
@@ -17,8 +15,8 @@ abstract class BaseTool extends Disposable implements ITool {
 
     public abstract icon(): string;
 
-    public changeCreatedEvent(): EventDispatcher<IChange> {
-        return this._changeCreatedEvent;
+    public actionCreatedEvent(): EventDispatcher<IAction> {
+        return this._actionCreatedEvent;
     }
 
     public activate(): void {
@@ -37,14 +35,14 @@ abstract class BaseTool extends Disposable implements ITool {
     protected _mouseMoveHandler(data: MouseEventData): void {}
 
     /** @final */
-    protected _dispatchChangeEvent(change: IChange) {
-        this._changeCreatedEvent.dispatch(change);
+    protected _dispatchActionCreatedEvent(action: IAction) {
+        this._actionCreatedEvent.dispatch(action);
     }
 
     protected _drawingContext: IDrawingContext;
 
     private _activated = false;
-    private _changeCreatedEvent = this._createEventDispatcher<IChange>();
+    private _actionCreatedEvent = this._createEventDispatcher<IAction>();
 }
 
 export {BaseTool}

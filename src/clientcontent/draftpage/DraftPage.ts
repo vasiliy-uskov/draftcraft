@@ -8,18 +8,16 @@ import {BackButton} from "../../_common/components/button/BackButton";
 import {Button} from "../../_common/components/button/Button";
 import {ActionController} from "../../_common/action/ActionController";
 import {HotKeyBinder} from "../../_common/hotkeys/HotKeysBinder";
-import {ChangeToolAction} from "../../_common/components/toolbar/action/ChangeToolAction";
-import {AddChangeAction} from "../../_common/components/workplace/action/AddChangeAction";
 import {InfoPopup} from "../../_common/components/popup/InfoPopup";
 import {TaskView} from "./TaskView";
 import {Component} from "../../_common/components/component/Component";
+import {ToolsCreator} from "./ToolsCreator";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
         super(container, messages, PagesType.DraftPage, hotKeyBinder);
 
         this._gameContext = gameContext;
-
 
         const taskWrapper = new Component({blockName: "task-wrapper"});
         this.addChild(taskWrapper);
@@ -29,15 +27,13 @@ class DraftPage extends BasePage {
 
         this._addDisposable(this._workplace);
         this.addChild(this._workplace);
-        this._addHandler(this._workplace.changeCreatedEvent(), (action: AddChangeAction) => {
+        this._addHandler(this._workplace.actionCreatedEvent(), (action: IAction) => {
             this._actionController.execute(action)
         });
 
-
-
         this._addDisposable(this._toolbar);
         this.addChild(this._toolbar);
-        this._addHandler(this._toolbar.toolChangedEvent(), (action: ChangeToolAction) => {
+        this._addHandler(this._toolbar.toolChangedEvent(), (action: IAction) => {
             this._actionController.execute(action)
         });
 
@@ -93,7 +89,7 @@ class DraftPage extends BasePage {
     private _gameContext: GameContext;
     private _actionController = new ActionController();
     private _helpPopup = new InfoPopup({blockName: "help-popup"});
-    private _workplace = new Workplace();
+    private _workplace = new Workplace(new ToolsCreator());
     private _taskView = new TaskView(this._getMessage("helpButtonHint"));
     private _toolbar = new Toolbar(this._workplace.tools());
 }
