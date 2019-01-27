@@ -106,7 +106,7 @@ class Workplace extends Component {
     private _invalidateResultCanvas(changes: Array<IChange>) {
         this._resultsCanvasContext.clean();
         for (const change of changes) {
-            change.execute(this._resultsCanvasContext);
+            change.apply(this._resultsCanvasContext);
         }
     }
 

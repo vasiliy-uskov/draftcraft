@@ -7,7 +7,7 @@ class DrawChange implements IChange {
         this._shape = shape;
     }
 
-    public execute(drawingContext: IDrawingContext): void {
+    public apply(drawingContext: IDrawingContext): void {
         this._shape.draw(drawingContext);
     }
 
