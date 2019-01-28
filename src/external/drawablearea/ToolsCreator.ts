@@ -7,7 +7,8 @@ class ToolsCreator implements IToolsCreator{
         return [
             toolFactory.createLineTool(),
             toolFactory.createCompassTool(),
-            toolFactory.createDotTool()
+            toolFactory.createDotTool(),
+            toolFactory.createSelectTool()
         ];
     }
 }

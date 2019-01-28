@@ -49,7 +49,7 @@ class DrawableArea extends Component{
     }
 
     public getValue(): string {
-        return this._workplace.getSerializedChanges();
+        return this._workplace.getSerializedShapes(shape => shape.selected());
     }
 
     public setBackground(url: string) {

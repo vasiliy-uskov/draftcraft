@@ -11,6 +11,10 @@ abstract class DrawTool extends BaseTool {
         this._shapes = shapes;
     }
 
+    public cursor(): string {
+        return "crosshair";
+    }
+
     /** @final */
     protected _dispatchAddShapeEvent(shape: IShape) {
         this._dispatchActionCreatedEvent(new AddShapeAction(this._shapes, shape));

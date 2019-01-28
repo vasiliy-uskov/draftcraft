@@ -15,12 +15,19 @@ abstract class BaseTool extends Disposable implements ITool {
 
     public abstract icon(): string;
 
+    public abstract cursor(): string;
+
     public actionCreatedEvent(): EventDispatcher<IAction> {
         return this._actionCreatedEvent;
     }
 
+    public activatedEvent(): EventDispatcher<void> {
+        return this._activatedEvent;
+    }
+
     public activate(): void {
         this._activated = true;
+        this._activatedEvent.dispatch();
     }
 
     public deactivate(): void {
@@ -43,6 +50,7 @@ abstract class BaseTool extends Disposable implements ITool {
 
     private _activated = false;
     private _actionCreatedEvent = this._createEventDispatcher<IAction>();
+    private _activatedEvent = this._createEventDispatcher();
 }
 
 export {BaseTool}

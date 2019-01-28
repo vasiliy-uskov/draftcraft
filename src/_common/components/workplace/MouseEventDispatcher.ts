@@ -28,11 +28,13 @@ class MouseEventDispatcher extends Disposable {
         this._listen("mousemove", listenableWindow, (event: Event) => {
             this._mouseMoveEvent.dispatch(this._getEventData(event as MouseEvent, component));
         });
-        this._listen("keydown", listenableWindow, (event: KeyboardEvent) => {
+        this._listen("keydown", listenableWindow, (ev: Event) => {
+            const event = ev as any as KeyboardEvent;
             this._ctrlPressed = this._ctrlPressed || event.key == "Control";
             this._shiftPressed = this._shiftPressed || event.key == "Shift";
         });
-        this._listen("keyup", listenableWindow, (event: KeyboardEvent) => {
+        this._listen("keyup", listenableWindow, (ev: Event) => {
+            const event = ev as any as KeyboardEvent;
             this._ctrlPressed = this._ctrlPressed && event.key != "Control";
             this._shiftPressed = this._shiftPressed && event.key != "Shift";
         });

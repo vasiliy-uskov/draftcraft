@@ -18,7 +18,13 @@
     ],
     "noImplicitAny": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true
+    "noImplicitThis": true,
+    "noImplicitUseStrict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": false,
+    "removeComments": true
   },
   "exclude": [
     "node_modules"

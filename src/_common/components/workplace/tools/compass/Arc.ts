@@ -1,11 +1,12 @@
 import {Vec2} from "../../../../utils/Vec2";
-import {IShape} from "../IShape";
 import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
 import {normalizeAngle} from "../../../../utils/mathutils";
 import {DrawingParams} from "../DrawingParams";
+import {BaseShape} from "../BaseShape";
 
-class Arc implements IShape {
+class Arc extends BaseShape {
     constructor(center: Vec2, arcStartPoint: Vec2, arcEndPoint: Vec2) {
+        super();
         this._center = center;
         const angleStartVec = new Vec2(arcStartPoint.x - this._center.x, arcStartPoint.y - this._center.y);
         this._startAngle = angleStartVec.angle();
@@ -14,6 +15,24 @@ class Arc implements IShape {
         this._angle = angleEndVec.angle() - this._startAngle;
         this._angle = this._angle < 0 ? this._angle + Math.PI * 2 : this._angle;
     }
+
+    public owns(cord: Vec2): boolean {
+        cord = cord.clone().reduce(this._center);
+        const accuracy = 1;
+        const arcStart = new Vec2(
+            this._radius * Math.cos(this._startAngle),
+            this._radius * Math.sin(this._startAngle),
+        );
+        const arcEnd = new Vec2(
+            this._radius * Math.cos(this._startAngle + this._angle),
+            this._radius * Math.sin(this._startAngle + this._angle),
+        );
+        return cord.x * arcStart.y - cord.y * arcStart.x < 0
+            && cord.x * arcEnd.y - cord.y * arcEnd.x > 0
+            && cord.x * cord.x + cord.y * cord.y < (this._radius + accuracy) * (this._radius + accuracy)
+            && cord.x * cord.x + cord.y * cord.y > (this._radius - accuracy) * (this._radius - accuracy)
+    }
+
 
     public center(): Vec2 {
         return this._center.clone();
@@ -50,7 +69,7 @@ class Arc implements IShape {
     }
 
     public draw(drawingContext: IDrawingContext) {
-        drawingContext.setStroke(DrawingParams.linesColor());
+        drawingContext.setStroke(this.selected() ? DrawingParams.selectedLinesColor() : DrawingParams.linesColor());
         drawingContext.setStrokeWidth(DrawingParams.linesWidth());
         drawingContext.beginPath();
         drawingContext.arc(this.center(), this.radius(), this.startAngle(), this.angle());

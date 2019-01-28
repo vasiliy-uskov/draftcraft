@@ -1,7 +1,6 @@
 .workplace {
   background: #FFFFFF;
   overflow: hidden;
-  cursor: crosshair;
   position: relative;
 
   &__background {
@@ -39,4 +38,5 @@
   width: 100%;
   transform: translateY(-22px);
   outline: 0;
+  border: 0;
 }

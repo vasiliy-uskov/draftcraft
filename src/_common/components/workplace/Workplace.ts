@@ -10,6 +10,7 @@ import {EventDispatcher} from "../../disposable/EventDispatcher";
 import {ShapesHolder} from "./ShapesHolder";
 import {ToolFactory} from "./tools/ToolFactory";
 import {IToolsCreator} from "./tools/IToolsCreator";
+import {IShapeInfo} from "./tools/IShape";
 
 class Workplace extends Component {
     constructor(toolsCreator: IToolsCreator) {
@@ -22,6 +23,7 @@ class Workplace extends Component {
             bemInfo: this.createChildBemInfo("background"),
         });
         this.addChild(this._background);
+        this._background.setStyle("display", "none");
 
         const {context: resultsCanvasContext} = this._createCanvas("results-canvas");
         this._resultsCanvasContext = resultsCanvasContext;
@@ -44,6 +46,9 @@ class Workplace extends Component {
         this._tools = toolsCreator.createTools(toolFactory);
         this._tools.forEach((tool) => {
             this._addDisposable(tool);
+            this._addHandler(tool.activatedEvent(), () => {
+                this.setStyle("cursor", tool.cursor());
+            })
         });
         const actionEventDispatchers = this._tools.map((tool) => tool.actionCreatedEvent());
         this._actionCreatedEvent = this._createEventDispatcher(...actionEventDispatchers);
@@ -67,10 +72,10 @@ class Workplace extends Component {
         }
     }
 
-    public getSerializedChanges(): string {
+    public getSerializedShapes(predicate?: (shape: IShapeInfo) => boolean): string {
         const data = [];
         for (const shape of this._shapesHolder) {
-            data.push(shape.serialize())
+            (!predicate || predicate(shape)) && data.push(shape.serialize())
         }
         return JSON.stringify(data);
     }

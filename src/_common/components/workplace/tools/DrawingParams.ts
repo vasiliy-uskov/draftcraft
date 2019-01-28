@@ -1,5 +1,6 @@
 const DrawingParams = new class {
     public linesColor(): string {return "#555555"}
+    public selectedLinesColor(): string {return "#AD731D"}
     public linesWidth(): number {return 2}
 
     public eraserColor(): string {return "#E5E5E5"}

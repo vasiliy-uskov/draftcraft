@@ -7,6 +7,7 @@ import {LineTool} from "./line/LineTool";
 import {DotTool} from "./dot/DotTool";
 import {CompassTool} from "./compass/CompassTool";
 import {EraserTool} from "./eraser/EraserTool";
+import {SelectTool} from "./select/SelectTool";
 
 
 type ToolFactoryConfig = {
@@ -38,6 +39,10 @@ class ToolFactory {
 
     public createEraserTool(): BaseTool {
         return new EraserTool(this._canvasContext, this._mouseEventDispatcher, this._shapesHolder);
+    }
+
+    public createSelectTool(): BaseTool {
+        return new SelectTool(this._canvasContext, this._mouseEventDispatcher, this._shapesHolder);
     }
 
     private readonly _canvasContext: IDrawingContext;

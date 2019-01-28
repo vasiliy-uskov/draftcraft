@@ -1,13 +1,30 @@
 import {createVec2ByPolar, Vec2} from "../../../../utils/Vec2";
 import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
-import {IShape} from "../IShape";
 import {DrawingParams} from "../DrawingParams";
 import {toDegrease, toRadians} from "../../../../utils/mathutils";
+import {Transform} from "../../../../utils/Transform";
+import {BaseShape} from "../BaseShape";
 
-class Line implements IShape {
+class Line extends BaseShape {
     constructor(start: Vec2, end: Vec2) {
+        super();
         this._start = start;
         this._end = end;
+    }
+
+    public owns(cord: Vec2): boolean {
+        const translate = Transform.translate(this._start.clone().scale(-1));
+        const accuracy = 5;
+        cord = translate.transform(cord);
+        let start = translate.transform(this._start);
+        let end = translate.transform(this._end);
+        const rotate = Transform.rotate(-end.angle());
+        start = rotate.transform(start);
+        end = rotate.transform(end);
+        cord = rotate.transform(cord);
+        return start.x - accuracy <= cord.x && cord.x <= end.x - accuracy
+            && start.y - accuracy <= cord.y && cord.y <= start.y + accuracy
+            && end.y - accuracy <= cord.y && cord.y <= end.y + accuracy;
     }
 
     public setEnd(end: Vec2, reduced: boolean = false) {
@@ -32,7 +49,7 @@ class Line implements IShape {
     }
 
     public draw(drawingContext: IDrawingContext): void {
-        drawingContext.setStroke(DrawingParams.linesColor());
+        drawingContext.setStroke(this.selected() ? DrawingParams.selectedLinesColor() : DrawingParams.linesColor());
         drawingContext.setStrokeWidth(DrawingParams.linesWidth());
         drawingContext.beginPath();
         drawingContext.moveTo(this.start());

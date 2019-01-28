@@ -59,7 +59,7 @@ class DraftPage extends BasePage {
 
     private _setLevelAnswer() {
         this._addClosingParallelTask(() => {
-            const answer = this._workplace.getSerializedChanges();
+            const answer = this._workplace.getSerializedShapes();
             return this._gameContext.setCurrentLevelAnswer(answer);
         });
     }
