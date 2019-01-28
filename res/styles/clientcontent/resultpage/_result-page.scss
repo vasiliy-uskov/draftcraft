@@ -9,13 +9,13 @@
     &__content {
       background: #FFFFFF;
       box-shadow: 0 0 12px rgba(#333333, 0.6);
-      padding: 80px 0;
+      padding: 70px 0 80px;
     }
 
     &__message {
       font: normal 60px $FONT_FAMILY;
       text-align: center;
-      margin-top: 40px;
+      margin-top: 30px;
     }
 
     &__mark-icon {
