@@ -48,8 +48,12 @@ class DrawableArea extends Component{
         this._toolbar.resetTools();
     }
 
-    public getValue(): string {
+    public getAnswer(): string {
         return this._workplace.getSerializedShapes(shape => shape.selected());
+    }
+
+    public getDetailedAnswer(): string {
+        return this._workplace.getSerializedShapes();
     }
 
     public setBackground(url: string) {
