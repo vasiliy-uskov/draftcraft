@@ -1,36 +1,39 @@
 import {Level} from "./model/Level";
 import {ServerApiHelper} from "./ServerApiHelper";
-import {BaseCustomError} from "../_common/http/Exceptions";
 import {Disposable} from "../_common/disposable/Disposable";
-import {ServerErrorsHandler} from "./ServerErrorsHandler";
+import {IErrorHandler} from "./IErrorHandler";
 
 class GameContext extends Disposable {
-    constructor(api: ServerApiHelper, errorHandler: ServerErrorsHandler) {
+    constructor(api: ServerApiHelper, errorHandler: IErrorHandler) {
         super();
         this._api = api;
         this._errorsHandler = errorHandler;
-        this._serverRequestPromise = this._updateLevels();
+        this._serverRequest = this._updateLevels();
+    }
+
+    public ready(): Promise<void> {
+        return this._serverRequest;
     }
 
     public async setCurrentLevel(id: string) {
-        await this._serverRequestPromise;
+        await this._serverRequest;
         if (this._levels.has(id)) {
             this._currentLevel = this._levels.get(id);
         }
     }
 
     public async setCurrentLevelAnswer(answer: string) {
-        this._serverRequestPromise.then(() => this._api.setLevelAnswer(this._currentLevel.id(), answer));
-        this._serverRequestPromise.then(() => this._updateLevels());
+        this._serverRequest = this._serverRequest
+            .then(() => this._api.setLevelAnswer(this._currentLevel.id(), answer))
+            .then(() => this._updateLevels());
     }
 
     public async selectNextLevel() {
-        await this._serverRequestPromise;
         this._currentLevel = (await this.nextLevel()) || this._currentLevel;
     }
 
     public async nextLevel(): Promise<Level|null> {
-        await this._serverRequestPromise;
+        await this._serverRequest;
         let prevLevel: Level|null = null;
         for (const level of this._levels.values()) {
             if (prevLevel && prevLevel.id() == this._currentLevel.id()) {
@@ -42,17 +45,17 @@ class GameContext extends Disposable {
     }
 
     public async getLevels(): Promise<Array<Level>> {
-        await this._serverRequestPromise;
+        await this._serverRequest;
         return Array(...this._levels.values());
     }
 
     public async isLevelEnabled(id: string): Promise<boolean> {
-        await this._serverRequestPromise;
+        await this._serverRequest;
         return this._levels.get(id).enable();
     }
 
     public async currentLevel(): Promise<Level> {
-        await this._serverRequestPromise;
+        await this._serverRequest;
         return this._currentLevel;
     }
 
@@ -67,19 +70,14 @@ class GameContext extends Disposable {
             else {
                 this._currentLevel = this._levels.get(this._currentLevel.id());
             }
-        }).catch(this._errorHandler.bind(this));
-    }
-
-    private _errorHandler(error: BaseCustomError): Promise<void> {
-        this._errorsHandler.handleError(error);
-        return Promise.resolve();
+        }).catch().catch((err) => this._errorsHandler.handleError(err));
     }
 
     private _api: ServerApiHelper;
-    private _errorsHandler: ServerErrorsHandler;
     private _levels: Map<string, Level> = new Map();
     private _currentLevel?: Level;
-    private _serverRequestPromise: Promise<void>;
+    private _serverRequest: Promise<void>;
+    private _errorsHandler: IErrorHandler;
 }
 
 export {GameContext};

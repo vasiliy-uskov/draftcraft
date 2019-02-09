@@ -3,13 +3,14 @@ import {GameContext} from "./GameContext";
 import {Game} from "./Game";
 import {Messages} from "../_common/lng/Messages";
 import {ServerApiHelper} from "./ServerApiHelper";
-import {ServerErrorsHandler} from "./ServerErrorsHandler";
+import {ErrorsHandlersQueue} from "./ErrorsHandlersQueue";
 
 const sessionId = sessionStorage.getItem("draftCraftSessionId");
 const messages = new Messages();
+const errorsHandlersQueue = new ErrorsHandlersQueue();
 const gameContext = new GameContext(
     new ServerApiHelper(sessionId),
-    new ServerErrorsHandler(messages)
+    errorsHandlersQueue,
 );
-const game = new Game(gameContext, messages);
-game.start();
+const game = new Game(gameContext, messages, errorsHandlersQueue);
+gameContext.ready().then(() => game.start());

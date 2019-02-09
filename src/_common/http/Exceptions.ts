@@ -1,27 +1,19 @@
-function getMessageId(status: number): string|null {
-    switch (Math.floor(status / 100) * 100) {
-        case 400:
-            return "sessionFailed";
-        case 500:
-            return "serverIsNotResponse";
-    }
-    return null
+interface ICustomError {
+    readonly code: number;
 }
 
-class BaseCustomError extends Error {
-    constructor(reason: string, code: number, messageId?: string) {
+class BaseCustomError extends Error implements ICustomError {
+    constructor(reason: string, code: number) {
         super("\n" + reason);
         this.code = code;
-        this.messageId = messageId;
     }
 
     public readonly code: number;
-    public readonly messageId?: string;
 }
 
 class HttpRequestFail extends BaseCustomError {
     constructor(reason: string, code: number, url: string) {
-        super(`${url}\nBad http request "${reason}"`, code, getMessageId(code));
+        super(`${url}\nBad http request "${reason}"`, code);
     }
 }
 
@@ -51,12 +43,12 @@ class TimeoutRequestFail extends HttpRequestFail {
 
 class ValidationError extends BaseCustomError {
     constructor(message: string) {
-        super(`ValidationFail: ${message}`, 500, "serverIsNotResponse");
+        super(`ValidationFail: ${message}`, 500);
     }
 }
 
 export {
-    BaseCustomError,
+    ICustomError,
     HttpRequestFail,
     WrongAnswerDataType,
     UnrecognizedHttpRequestError,

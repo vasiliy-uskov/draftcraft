@@ -4,6 +4,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "lib": [
+      "es7",
       "es6",
       "dom",
       "es2015.core",

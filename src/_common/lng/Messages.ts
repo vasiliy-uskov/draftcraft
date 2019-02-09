@@ -4,10 +4,10 @@ import {verify, verifyNumber} from "../utils/typetools";
 class Messages {
     constructor() {
 
-        const common = new Map<string, string>();
-        common.set("serverIsNotResponse", "Sorry, there is some server`s troubles. Come later.");
-        common.set("sessionFailed", "Sorry, but your session is lost. Try to restart on mooped.");
-        this._messages.set(PagesType.Common, common);
+        const error = new Map<string, string>();
+        error.set("serverIsNotResponse", "Sorry, there is some server`s troubles. Come later.");
+        error.set("sessionFailed", "Sorry, but your session is lost. Try to restart on mooped.");
+        this._messages.set(PagesType.ErrorPage, error);
 
         const startPage = new Map<string, string>();
         startPage.set("startButton", "play");
@@ -43,8 +43,9 @@ class Messages {
                 .get(messageId)
                 .replace(/\$([0-9]+)/g, getParam);
         }
-        catch {}
-        return messageId;
+        catch {
+            return messageId;
+        }
     }
 
     private _messages: Map<PagesType, Map<string, string>> = new Map();
