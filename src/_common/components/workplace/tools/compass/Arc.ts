@@ -18,7 +18,7 @@ class Arc extends BaseShape {
 
     public owns(cord: Vec2): boolean {
         cord = cord.clone().reduce(this._center);
-        const accuracy = 1;
+        const accuracy = 3;
         const arcStart = new Vec2(
             this._radius * Math.cos(this._startAngle),
             this._radius * Math.sin(this._startAngle),
@@ -27,10 +27,20 @@ class Arc extends BaseShape {
             this._radius * Math.cos(this._startAngle + this._angle),
             this._radius * Math.sin(this._startAngle + this._angle),
         );
-        return cord.x * arcStart.y - cord.y * arcStart.x < 0
-            && cord.x * arcEnd.y - cord.y * arcEnd.x > 0
-            && cord.x * cord.x + cord.y * cord.y < (this._radius + accuracy) * (this._radius + accuracy)
-            && cord.x * cord.x + cord.y * cord.y > (this._radius - accuracy) * (this._radius - accuracy)
+        const situateInCircle =
+           cord.x * cord.x + cord.y * cord.y < (this._radius + accuracy) * (this._radius + accuracy)
+        && cord.x * cord.x + cord.y * cord.y > (this._radius - accuracy) * (this._radius - accuracy);
+        if (!situateInCircle) {
+            return false
+        }
+        if (this.angle() < Math.PI) {
+            return cord.x * arcStart.y - cord.y * arcStart.x < 0
+                && cord.x * arcEnd.y   - cord.y * arcEnd.x   > 0
+        }
+        else {
+            return !(cord.x * arcStart.y - cord.y * arcStart.x > 0
+                  && cord.x * arcEnd.y   - cord.y * arcEnd.x   < 0)
+        }
     }
 
 
