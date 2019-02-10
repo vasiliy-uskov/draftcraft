@@ -8,6 +8,7 @@ const tsify = require("tsify");
 const buffer = require("vinyl-buffer");
 const fs = require("fs");
 const pathUtils = require("path");
+const terser = require("gulp-terser");
 
 
 const path = {
@@ -26,7 +27,6 @@ const config = {
 	babel: (debug) => ({
 		presets: !debug ? ["@babel/env"] : [],
 		extensions: [".ts"],
-		minified: !debug,
 	}),
 	browserify: (debug, entryPoint) => ({
 		debug,
@@ -34,21 +34,26 @@ const config = {
 		extensions: [".babel"],
 		cache: {},
 		packageCache: {},
+		plugin: "tsify",
 	}),
 	external: JSON.parse(fs.readFileSync(path.externalConfig)),
 };
 
 function buildTs(entryPoint, out, debug) {
-	browserify(config.browserify(debug, entryPoint))
+	const stream = browserify(config.browserify(debug, entryPoint))
 		.plugin(tsify)
-		.transform("brfs")
-		.transform("babelify", config.babel(debug))
+		.transform("brfs");
+	if (!debug) {
+		stream.transform("babelify", config.babel(debug));
+	}
+	stream
 		.bundle()
 		.on("error", (error) => {
 			console.log(error.message);
 		})
 		.pipe(source("index.js"))
 		.pipe(buffer())
+		.pipe(debug ? gutil.noop() : terser())
 		.pipe(gulp.dest(out));
 }
 
