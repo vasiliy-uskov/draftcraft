@@ -3,10 +3,9 @@ import {GameContext} from "../GameContext";
 import {Messages} from "../../_common/lng/Messages";
 import {PagesType} from "../../_common/page/PagesType";
 import {Component} from "../../_common/components/component/Component";
-import {Level} from "../model/Level";
 import {BackButton} from "../../_common/components/button/BackButton";
-import {Icons} from "../../_common/components/Icons";
 import {HotKeyBinder} from "../../_common/hotkeys/HotKeysBinder";
+import {LevelView} from "./LevelView";
 
 class LevelsPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
@@ -41,7 +40,7 @@ class LevelsPage extends BasePage {
     private async _invalidateLevelsList() {
         const levels = await this._gameContext.getLevels();
         levels.forEach(async (level, index) => {
-            const levelView = LevelsPage._createLevelView(level, index + 1);
+            const levelView = new LevelView(level, index + 1);
             this._levelsViews.push(levelView);
             this._levelsHolder.addChild(levelView);
             this._addDisposable(levelView);
@@ -59,24 +58,6 @@ class LevelsPage extends BasePage {
                 this._sendChangePageRequest(PagesType.DraftPage);
             });
         }
-    }
-
-    private static _createLevelView(level: Level, index: number): Component {
-        const levelView = new Component({
-            blockName: "level",
-        });
-        levelView.addChild(new Component({
-            bemInfo: levelView.createChildBemInfo("index"),
-            content: index.toString()
-        }));
-        if (level.passed()) {
-            const passIcon = new Component({
-                bemInfo: levelView.createChildBemInfo("pass-icon"),
-                content: Icons.accept(),
-            });
-            levelView.addChild(passIcon);
-        }
-        return levelView;
     }
 
     _gameContext: GameContext;

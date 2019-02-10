@@ -30,6 +30,7 @@ class ResizeObserver extends Disposable implements IFrameHandler {
     }
 
     protected _destruct() {
+        super._destruct();
         FramesController.removeFrameHandler(this);
     }
 

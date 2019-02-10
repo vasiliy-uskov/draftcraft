@@ -77,6 +77,7 @@ class Animation extends Disposable implements IAnimation, IFrameHandler {
     }
 
     protected _destruct() {
+        super._destruct();
         FramesController.removeFrameHandler(this);
     }
 

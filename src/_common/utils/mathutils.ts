@@ -14,4 +14,20 @@ function toRadians(angle: number): number {
     return angle / 180 * Math.PI;
 }
 
-export {normalizeAngle, clamp, toDegrease, toRadians}
+function binarySearch(min: number, max: number, inRange: (start: number, end: number) => boolean): number {
+    let prevValue = min;
+    let value = Math.floor((max - min) / 2);
+    while (value != prevValue) {
+        if (inRange(min, value)) {
+            max = value;
+        }
+        else {
+            min = value;
+        }
+        prevValue = value;
+        value = min + Math.floor((max - min) / 2);
+    }
+    return value;
+}
+
+export {normalizeAngle, clamp, toDegrease, toRadians, binarySearch}

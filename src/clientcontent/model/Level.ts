@@ -3,6 +3,7 @@ import {ValidationError} from "../../_common/http/Exceptions";
 
 type LevelConfig = {
     id: string,
+    title: string,
     task: string,
     help: string,
     img: string,
@@ -11,17 +12,22 @@ type LevelConfig = {
 }
 
 class Level {
-    constructor({id, task, help, passed, img, enable}: LevelConfig) {
+    constructor({id, task, help, passed, img, enable, title}: LevelConfig) {
         this._id = id;
         this._task = task;
         this._help = help;
         this._img = img;
+        this._title = title;
         this._enable = enable;
         this._passed = passed;
     }
 
     public img(): string {
         return this._img;
+    }
+
+    public title(): string {
+        return this._title;
     }
 
     public help(): string {
@@ -41,7 +47,7 @@ class Level {
     }
 
     public enable(): boolean {
-        return this._enable;
+        return this._enable && !this._passed;
     }
 
     public static validateConfig(levelConfig: LevelConfig) {
@@ -51,6 +57,7 @@ class Level {
             verifyString(levelConfig.task);
             verifyString(levelConfig.help);
             verifyString(levelConfig.img);
+            verifyString(levelConfig.title);
             verifyBoolean(levelConfig.passed);
             verifyBoolean(levelConfig.enable);
         }
@@ -63,6 +70,7 @@ class Level {
     private readonly _enable: boolean;
     private readonly _img: string;
     private readonly _help: string;
+    private readonly _title: string;
     private readonly _id: string;
     private readonly _task: string;
 }

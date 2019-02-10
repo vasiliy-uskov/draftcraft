@@ -70,7 +70,7 @@ class GameContext extends Disposable {
             else {
                 this._currentLevel = this._levels.get(this._currentLevel.id());
             }
-        }).catch().catch((err) => this._errorsHandler.handleError(err));
+        }).catch((err) => this._errorsHandler.handleError(err));
     }
 
     private _api: ServerApiHelper;
