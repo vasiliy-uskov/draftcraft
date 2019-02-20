@@ -229,4 +229,4 @@ class Component extends Disposable implements IListenable {
     private _frameHandler: (() => void)| null = null;
 }
 
-export {Component}
+export {Component, ConnectionHandlers}

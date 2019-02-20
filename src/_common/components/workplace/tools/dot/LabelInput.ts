@@ -2,8 +2,7 @@ import {EventDispatcher} from "../../../../disposable/EventDispatcher";
 import {Component} from "../../../component/Component";
 import {TagsName} from "../../../component/TagsName";
 import {Vec2} from "../../../../utils/Vec2";
-import {DrawingParams} from "../DrawingParams";
-import {Label} from "./Label";
+import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
 import {ListenableWindow} from "../../../../disposable/ListenableWindow";
 
 class LabelInput extends Component {
@@ -24,7 +23,7 @@ class LabelInput extends Component {
         this._listen("scroll", parent, () => this.element().scrollLeft = 0);
     }
 
-    public inputEndEvent(): EventDispatcher<Label> {
+    public inputEndEvent(): EventDispatcher<string> {
         return this._inputEndEvent;
     }
 
@@ -40,10 +39,6 @@ class LabelInput extends Component {
         this._visible = false;
         this.blur();
         this.element().parentNode && this._parent.removeChild(this);
-    }
-
-    public createLabel(): Label {
-        return new Label(new Vec2(this.x(), this.y()), this._getInputElement().value);
     }
 
     public focus() {
@@ -67,7 +62,7 @@ class LabelInput extends Component {
     }
 
     private _dispatchInputEvent() {
-        this._inputEndEvent.dispatch(this.createLabel());
+        this._inputEndEvent.dispatch(this._getInputElement().value);
     }
 
     private _getInputElement(): HTMLInputElement {
@@ -76,7 +71,7 @@ class LabelInput extends Component {
 
     private _parent: Component;
     private _visible = false;
-    private _inputEndEvent = this._createEventDispatcher<Label>();
+    private _inputEndEvent = this._createEventDispatcher<string>();
 }
 
 export {LabelInput};

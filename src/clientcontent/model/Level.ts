@@ -9,10 +9,11 @@ type LevelConfig = {
     img: string,
     enable: boolean,
     passed: boolean
+    detailedAnswer?: string,
 }
 
 class Level {
-    constructor({id, task, help, passed, img, enable, title}: LevelConfig) {
+    constructor({id, task, help, passed, img, enable, title, detailedAnswer}: LevelConfig) {
         this._id = id;
         this._task = task;
         this._help = help;
@@ -20,6 +21,7 @@ class Level {
         this._title = title;
         this._enable = enable;
         this._passed = passed;
+        this._detailedAnswer = detailedAnswer
     }
 
     public img(): string {
@@ -50,6 +52,10 @@ class Level {
         return this._enable && !this._passed;
     }
 
+    public detailedAnswer(): string|null {
+        return this._detailedAnswer;
+    }
+
     public static validateConfig(levelConfig: LevelConfig) {
         try {
             verifyObject(levelConfig);
@@ -73,6 +79,7 @@ class Level {
     private readonly _title: string;
     private readonly _id: string;
     private readonly _task: string;
+    private readonly _detailedAnswer: string|null;
 }
 
 export {Level, LevelConfig};

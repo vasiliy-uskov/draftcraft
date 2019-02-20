@@ -1,6 +1,6 @@
 import {ArrIterator} from "../iterator/ArrIterator";
 
-class ActionController {
+class ActionHolder {
     public execute(action: IAction) {
         this._currentAction.insert(action).value().execute();
         this._currentAction.next().deleteTail();
@@ -29,4 +29,4 @@ class ActionController {
     private _currentAction = new ArrIterator<IAction>(0, this._actions);
 }
 
-export {ActionController};
+export {ActionHolder};

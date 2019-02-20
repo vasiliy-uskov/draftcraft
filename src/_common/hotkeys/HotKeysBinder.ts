@@ -1,5 +1,4 @@
 import {Disposable} from "../disposable/Disposable";
-import {ActionController} from "../action/ActionController";
 import {ListenableWindow} from "../disposable/ListenableWindow";
 
 const REDO_KEY = "KeyY";
@@ -21,13 +20,16 @@ class HotKeyBinder extends Disposable {
         delete this._resetHandler;
     }
 
-    public setActionController(actionController: ActionController) {
-        this._undoHandler = () => actionController.undo();
-        this._redoHandler = () => actionController.redo();
+    public setUndoHandler(handler: () => void) {
+        this._undoHandler = handler;
     }
 
-    public setResetHandler(resetHandler: () => void) {
-        this._resetHandler = resetHandler;
+    public setRedoHandler(handler: () => void) {
+        this._redoHandler = handler;
+    }
+
+    public setResetHandler(handler: () => void) {
+        this._resetHandler = handler;
     }
 
     private _handleKeyDown(event: KeyboardEvent) {

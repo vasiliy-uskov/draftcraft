@@ -1,7 +1,6 @@
 import {Component} from "../../_common/components/component/Component";
 import {Workplace} from "../../_common/components/workplace/Workplace";
 import {Toolbar} from "../../_common/components/toolbar/Toolbar";
-import {ActionController} from "../../_common/action/ActionController";
 import {HotKeyBinder} from "../../_common/hotkeys/HotKeysBinder";
 import {ToolsCreator} from "./ToolsCreator";
 
@@ -12,24 +11,17 @@ class DrawableArea extends Component{
         });
         container.appendChild(this.element());
 
-        const actionController = new ActionController();
-
         this._addDisposable(this._workplace);
         this.addChild(this._workplace);
-        this._addHandler(this._workplace.actionCreatedEvent(), (action: IAction) => {
-            this._activated && actionController.execute(action)
-        });
 
         this._addDisposable(this._toolbar);
         this.addChild(this._toolbar);
-        this._addHandler(this._toolbar.toolChangedEvent(), (action: IAction) => {
-            this._activated && actionController.execute(action)
-        });
         this._toolbar.activateFirstTool();
 
         const hotKeyBinder = new HotKeyBinder();
-        hotKeyBinder.setResetHandler(() => this._toolbar.resetTools());
-        hotKeyBinder.setActionController(actionController);
+        hotKeyBinder.setUndoHandler(() => this._workplace.undo());
+        hotKeyBinder.setRedoHandler(() => this._workplace.redo());
+        hotKeyBinder.setResetHandler(() => this._toolbar.resetTools())
     }
 
     public activate() {
@@ -49,11 +41,11 @@ class DrawableArea extends Component{
     }
 
     public getAnswer(): string {
-        return this._workplace.getSerializedShapes(shape => shape.selected());
+        return JSON.stringify(this._workplace.selection().serialize());
     }
 
     public getDetailedAnswer(): string {
-        return this._workplace.getSerializedShapes();
+        return JSON.stringify(this._workplace.draft().serialize());
     }
 
     public setBackground(url: string) {

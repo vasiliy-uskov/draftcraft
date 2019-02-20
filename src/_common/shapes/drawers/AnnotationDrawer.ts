@@ -1,8 +1,8 @@
-import {IDrawingContext} from "../drawingcontext/IDrawingContext";
-import {Line} from "./line/Line";
-import {Vec2} from "../../../utils/Vec2";
-import {TextAlign} from "../drawingcontext/TextAlign";
+import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
+import {Vec2} from "../../utils/Vec2";
+import {TextAlign} from "../../drawingcontext/TextAlign";
 import {DrawingParams} from "./DrawingParams";
+import {Line} from "../Line";
 
 const METRICS_SCALE = 0.25;
 
@@ -15,10 +15,10 @@ class AnnotationDrawer {
 
     public static drawLineAnnotation(context: IDrawingContext, line: Line) {
         const textTranslate = 25;
-        const dirVector = AnnotationDrawer._getLineDir(line);
+        let dirVector = AnnotationDrawer._getLineDir(line);
         const length = AnnotationDrawer._getLineLength(dirVector);
         dirVector.scale(textTranslate / dirVector.radius());
-        const textPosition = line.end().add(dirVector);
+        const textPosition = line.end.add(dirVector);
         context.setTextAlign(TextAlign.center);
         AnnotationDrawer.drawLabel(context, length.toString(), textPosition)
     }
@@ -28,8 +28,8 @@ class AnnotationDrawer {
     }
 
     private static _getLineDir(line: Line): Vec2 {
-        const start = line.start();
-        const end = line.end();
+        const start = line.start;
+        const end = line.end;
         return new Vec2(end.x - start.x, end.y - start.y);
     }
 }

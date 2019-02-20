@@ -1,11 +1,12 @@
-import {Vec2} from "../../../utils/Vec2";
-import {BoundingRect} from "../../../utils/BoundingRect";
+import {Vec2} from "../utils/Vec2";
+import {BoundingRect} from "../utils/BoundingRect";
 import {TextAlign} from "./TextAlign";
 
 interface IDrawingContext {
     setFill(color: string): void;
     setStroke(color: string): void;
     setStrokeWidth(width: number):void;
+    setLineDash(dashStyle: Array<number>):void;
     setFont(font: string): void;
     setTextAlign(align: TextAlign): void;
     beginPath(): void;

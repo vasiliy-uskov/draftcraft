@@ -1,21 +1,26 @@
-import {DrawTool} from "../DrawTool";
-import {Dot} from "./Dot";
-import {LabeledDot} from "./LabeledDot";
 import {Vec2} from "../../../../utils/Vec2";
 import {Icons} from "../../../Icons";
 import {LabelInput} from "./LabelInput";
-import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
+import {IDrawingContext} from "../../../../drawingcontext/IDrawingContext";
 import {MouseEventData, MouseEventDispatcher} from "../../MouseEventDispatcher";
 import {Component} from "../../../component/Component";
-import {ShapesHolder} from "../../ShapesHolder";
+import {BaseTool} from "../BaseTool";
+import {IFieldOrganizer} from "../../field/IFieldOrganizer";
+import {LabeledDot} from "../../../../shapes/LabeledDot";
+import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
+import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
 
 const LABEL_PADDING = new Vec2(0, -15);
 
-class DotTool extends DrawTool {
-    constructor(drawingContext: IDrawingContext, eventDispatcher: MouseEventDispatcher, shapes: ShapesHolder, workPlace: Component) {
-        super(drawingContext, eventDispatcher, shapes);
-        this._labelInput = new LabelInput(workPlace);
+class DotTool extends BaseTool {
+    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, fieldOrganizer: IFieldOrganizer, workplace: Component) {
+        super(drawingContext, mouseEventDispatcher, fieldOrganizer);
+        this._labelInput = new LabelInput(workplace);
         this._addDisposable(this._labelInput);
+    }
+
+    public cursor(): string {
+        return "crosshair";
     }
 
     public icon(): string {
@@ -26,22 +31,20 @@ class DotTool extends DrawTool {
         this._removeDependency(this._labelInput);
         this._drawingContext.clean();
         this._labelInput.hide();
-        this._dot = null;
     }
 
-    protected _mouseUpHandler({relativeCords}: MouseEventData): void {
-        this._dot = new Dot(relativeCords);
-        this._dot.draw(this._drawingContext);
-        const labelPosition = relativeCords.clone().add(LABEL_PADDING);
+    protected _mouseDownHandler({relativeCords}: MouseEventData): void {
+        const labelPosition = relativeCords.add(LABEL_PADDING);
         this._labelInput.show(labelPosition);
+        ShapesDrawer.drawDot(this._drawingContext, relativeCords, DrawingParams.linesColor());
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
-            this._dispatchAddShapeEvent(new LabeledDot(this._dot, label));
+            const dot = new LabeledDot(relativeCords, label);
+            this._fieldOrganizer.addDraft(dot.draft());
             this.reset();
         });
     }
 
     private _labelInput: LabelInput;
-    private _dot?: Dot;
 }
 
 export {DotTool};

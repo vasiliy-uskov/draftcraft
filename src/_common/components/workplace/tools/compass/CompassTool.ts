@@ -1,41 +1,34 @@
-import {DrawTool} from "../DrawTool";
 import {ICompassState} from "./ICompassState";
-import {NullState} from "./NullState";
 import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
+import {BaseTool} from "../BaseTool";
+import {GetCenterState} from "./GetCenterState";
 
-class CompassTool extends DrawTool {
+class CompassTool extends BaseTool {
+
+    public cursor(): string {
+        return "crosshair";
+    }
+
     public icon(): string {
         return Icons.compass();
     }
 
     public reset() {
-        this._currentState = new NullState();
+        this._currentState = new GetCenterState(this._drawingContext);
         this._drawingContext.clean();
     }
 
-    protected _mouseDownHandler(data: MouseEventData): void {
-        const newState = this._currentState.mouseDownHandler(data.relativeCords);
-        if (newState) {
-            this._currentState = newState;
-        }
-        else {
-            const arc = this._currentState.arc();
-            if (!arc) {
-                throw new Error("Invalid result tool for compass");
-            }
-            this._dispatchAddShapeEvent(arc);
-            this.reset();
-        }
-        this._currentState.redrawState(this._drawingContext);
+    protected _mouseDownHandler({relativeCords}: MouseEventData): void {
+        this._currentState.addPoint(relativeCords);
+        this._currentState = this._currentState.getNextState();
     }
 
-    protected _mouseMoveHandler(data: MouseEventData): void {
-        this._currentState.mouseMoveHandler(data.relativeCords);
-        this._currentState.redrawState(this._drawingContext);
+    protected _mouseMoveHandler({relativeCords}: MouseEventData): void {
+        this._currentState.addPoint(relativeCords);
     }
 
-    private _currentState: ICompassState = new NullState;
+    private _currentState: ICompassState = new GetCenterState(this._drawingContext);
 }
 
 export {CompassTool}

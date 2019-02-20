@@ -1,3 +1,5 @@
+import {createVec2ByPolar, Vec2} from "./Vec2";
+
 function normalizeAngle(angle: number): number {
     return (angle % (Math.PI * 2) + (Math.PI * 2)) % (Math.PI * 2);
 }
@@ -12,6 +14,16 @@ function toDegrease(angle: number): number {
 
 function toRadians(angle: number): number {
     return angle / 180 * Math.PI;
+}
+
+function compareFloat(n1: number, n2: number) {
+    return Math.abs(n1 - n2) < Number.EPSILON;
+}
+
+function reduceVector(vec: Vec2, reduceStep: number = 15): Vec2 {
+    const angle = toDegrease(vec.angle());
+    const reducedAngle = toRadians(Math.round(angle / reduceStep) * reduceStep);
+    return createVec2ByPolar(reducedAngle, vec.radius());
 }
 
 function binarySearch(min: number, max: number, inRange: (start: number, end: number) => boolean): number {
@@ -30,4 +42,12 @@ function binarySearch(min: number, max: number, inRange: (start: number, end: nu
     return value;
 }
 
-export {normalizeAngle, clamp, toDegrease, toRadians, binarySearch}
+export {
+    normalizeAngle,
+    clamp,
+    toDegrease,
+    toRadians,
+    binarySearch,
+    compareFloat,
+    reduceVector,
+}

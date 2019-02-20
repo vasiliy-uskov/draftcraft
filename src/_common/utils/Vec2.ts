@@ -1,4 +1,5 @@
-import {normalizeAngle} from "./mathutils";
+import {compareFloat, normalizeAngle} from "./mathutils";
+import {verifyNumber, verifyObject} from "./typetools";
 
 class Vec2 {
     constructor(x: number, y: number) {
@@ -15,33 +16,40 @@ class Vec2 {
         return Math.hypot(this.x, this.y);
     }
 
-    public clone(): Vec2 {
-        return new Vec2(this.x, this.y);
-    }
-
     public scale(scale: number): Vec2 {
-        this.x *= scale;
-        this.y *= scale;
-        return this;
+        return new Vec2(this.x * scale, this.y * scale);
     }
 
     public add(vec: Vec2): Vec2 {
-        this.x += vec.x;
-        this.y += vec.y;
-        return this;
+        return new Vec2(this.x + vec.x, this.y + vec.y);
     }
 
     public reduce(vec: Vec2): Vec2 {
-        this.add(vec.clone().scale(-1));
-        return this;
+        return this.add(vec.scale(-1));
+    }
+
+    public equal(vec: Vec2): boolean {
+        return compareFloat(this.x, vec.x)
+            && compareFloat(this.y, vec.y)
+    }
+
+    public normalize(): Vec2 {
+        return this.scale(1 / this.radius());
     }
 
     public toString(): string {
         return `{x: ${this.x}, y: ${this.y}}`;
     }
 
-    public x: number;
-    public y: number;
+    static load(data: any): Vec2 {
+        verifyObject(data);
+        verifyNumber(data.x);
+        verifyNumber(data.y);
+        return new Vec2(data.x, data.y)
+    }
+
+    public readonly x: number;
+    public readonly y: number;
 }
 
 function createVec2ByPolar(angle: number, radius: number) {

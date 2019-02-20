@@ -1,38 +1,39 @@
-import {Line} from "../line/Line";
-import {Arc} from "./Arc";
 import {Vec2} from "../../../../utils/Vec2";
-import {ICompassState} from "./ICompassState";
 import {GetAngleState} from "./GetAngleState";
-import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
-import {AnnotationDrawer} from "../AnnotationDrawer";
+import {IDrawingContext} from "../../../../drawingcontext/IDrawingContext";
+import {AnnotationDrawer} from "../../../../shapes/drawers/AnnotationDrawer";
+import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
+import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
+import {Line} from "../../../../shapes/Line";
+import {Arc} from "../../../../shapes/Arc";
+import {ICompassState} from "./ICompassState";
 
 class GetRadiusState implements ICompassState {
-    constructor(arcCenterCords: Vec2) {
-        this._line = new Line(arcCenterCords, arcCenterCords)
+    constructor(arcCenterCords: Vec2, drawingContext: IDrawingContext) {
+        this._line = new Line(arcCenterCords, arcCenterCords);
+        this._drawingContext = drawingContext;
     }
 
-    public mouseDownHandler(cord: Vec2): ICompassState {
-        return new GetAngleState(this._line.start(), this._line.end());
-    }
-
-    public mouseMoveHandler(cord: Vec2): void {
-        this._line.setEnd(cord);
-    }
-
-    public line(): Line|null {
-        return this._line;
-    }
-
-    public arc(): Arc|null {
+    public result(): Arc|null {
         return null;
     }
 
-    public redrawState(drawingContext: IDrawingContext) {
-        drawingContext.clean();
-        this._line.draw(drawingContext);
-        AnnotationDrawer.drawLineAnnotation(drawingContext, this._line);
+    public getNextState(): ICompassState {
+        return new GetAngleState(this._line, this._drawingContext);
     }
 
+    public addPoint(cord: Vec2): void {
+        this._line = new Line(this._line.start, cord);
+        this._redrawState()
+    }
+
+    private _redrawState() {
+        this._drawingContext.clean();
+        ShapesDrawer.drawLine(this._drawingContext, this._line, DrawingParams.linesColor());
+        AnnotationDrawer.drawLineAnnotation(this._drawingContext, this._line);
+    }
+
+    private readonly _drawingContext: IDrawingContext;
     private _line: Line;
 }
 

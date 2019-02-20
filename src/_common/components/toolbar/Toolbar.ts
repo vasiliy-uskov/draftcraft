@@ -1,6 +1,4 @@
 import {Component} from "../component/Component";
-import {EventDispatcher} from "../../disposable/EventDispatcher";
-import {ChangeToolAction} from "./action/ChangeToolAction";
 import {ToolView} from "./ToolView";
 import {ITool} from "../workplace/tools/ITool";
 
@@ -25,20 +23,16 @@ class Toolbar extends Component {
         this._tools[0].activate();
     }
 
-    public toolChangedEvent(): EventDispatcher<IAction> {
-        return this._toolChangedEvent;
-    }
-
     public resetTools() {
         this._tools.forEach((tool) => tool.reset());
     }
 
     private _onToolClickHandler(tool: ToolView) {
-        this._toolChangedEvent.dispatch(new ChangeToolAction(this._tools, tool));
+        this._tools.forEach((tool) => tool.deactivate());
+        tool.activate();
     }
 
     private readonly _tools: Array<ToolView> = [];
-    private readonly _toolChangedEvent = this._createEventDispatcher<IAction>();
 }
 
 export {Toolbar};
