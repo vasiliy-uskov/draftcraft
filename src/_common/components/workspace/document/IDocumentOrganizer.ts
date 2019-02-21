@@ -1,6 +1,6 @@
 import {Draft} from "../../../shapes/Draft";
 
-interface IFieldEditApi {
+interface IDocumentEditApi {
     addDraft(draft: Draft): void;
     removeDraft(draft: Draft): void;
     addSelection(draft: Draft): void;
@@ -10,10 +10,10 @@ interface IFieldEditApi {
     commit(): void;
 }
 
-interface IFieldOrganizer {
-    edit(): Promise<IFieldEditApi>;
+interface IDocumentOrganizer {
+    edit(): Promise<IDocumentEditApi>;
     selection(): Draft;
     draft(): Draft;
 }
 
-export {IFieldOrganizer, IFieldEditApi}
+export {IDocumentOrganizer, IDocumentEditApi}

@@ -3,12 +3,12 @@ import {IDrawingContext} from "../../../drawingcontext/IDrawingContext";
 import {MouseEventData, MouseEventDispatcher} from "../MouseEventDispatcher";
 import {Disposable} from "../../../disposable/Disposable";
 import {EventDispatcher} from "../../../disposable/EventDispatcher";
-import {IFieldOrganizer} from "../field/IFieldOrganizer";
+import {IDocumentOrganizer} from "../document/IDocumentOrganizer";
 
 abstract class BaseTool extends Disposable implements ITool {
-    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, fieldOrganizer: IFieldOrganizer) {
+    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, documentOrganizer: IDocumentOrganizer) {
         super();
-        this._fieldOrganizer = fieldOrganizer;
+        this._documentOrganizer = documentOrganizer;
         this._drawingContext = drawingContext;
         this._addHandler(mouseEventDispatcher.mouseDownEvent(), (data: MouseEventData) => this._activated && this._mouseDownHandler(data));
         this._addHandler(mouseEventDispatcher.mouseMoveEvent(), (data: MouseEventData) => this._activated && this._mouseMoveHandler(data));
@@ -49,7 +49,7 @@ abstract class BaseTool extends Disposable implements ITool {
     }
 
     protected _drawingContext: IDrawingContext;
-    protected _fieldOrganizer: IFieldOrganizer;
+    protected _documentOrganizer: IDocumentOrganizer;
 
     private _activated = false;
     private _actionCreatedEvent = this._createEventDispatcher<IAction>();

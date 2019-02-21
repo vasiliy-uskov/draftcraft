@@ -5,8 +5,8 @@ import {ITool} from "./tools/ITool";
 import {BaseTool} from "./tools/BaseTool";
 import {ToolFactory} from "./tools/ToolFactory";
 import {IToolsCreator} from "./tools/IToolsCreator";
-import {FieldOrganizer} from "./field/FieldOrganizer";
-import {FieldDrawer} from "./field/view/FieldDrawer";
+import {DocumentOrganizer} from "./document/DocumentOrganizer";
+import {DocumentDrawer} from "./document/view/DocumentDrawer";
 import {Draft} from "../../shapes/Draft";
 import {Canvas} from "../canvas/Canvas";
 
@@ -35,7 +35,7 @@ class Workspace extends Component {
         const toolFactory = new ToolFactory({
             canvasMouseEventDispatcher,
             canvasContext: this._workingCanvas.context(),
-            fieldOrganizer: this._fieldOrganizer,
+            documentOrganizer: this._documentOrganizer,
             workspaceContainer: this,
         });
 
@@ -63,23 +63,23 @@ class Workspace extends Component {
     }
 
     public draft(): Draft {
-        return this._fieldOrganizer.draft();
+        return this._documentOrganizer.draft();
     }
 
     public selection(): Draft {
-        return this._fieldOrganizer.selection();
+        return this._documentOrganizer.selection();
     }
 
     public undo() {
-        this._fieldOrganizer.undo();
+        this._documentOrganizer.undo();
     }
 
     public redo() {
-        this._fieldOrganizer.redo();
+        this._documentOrganizer.redo();
     }
 
     public clean() {
-        this._fieldOrganizer.cleanField();
+        this._documentOrganizer.cleanDocument();
         this._workingCanvas.context().clean();
         this._resultsCanvas.context().clean();
     }
@@ -88,7 +88,7 @@ class Workspace extends Component {
     private _background: Component;
     private _resultsCanvas = new Canvas({bemInfo: this.createChildBemInfo("results-canvas")});
     private _workingCanvas = new Canvas({bemInfo: this.createChildBemInfo("working-canvas")});
-    private _fieldOrganizer = new FieldOrganizer(new FieldDrawer(this._resultsCanvas.context()));
+    private _documentOrganizer = new DocumentOrganizer(new DocumentDrawer(this._resultsCanvas.context()));
 }
 
 export {Workspace};

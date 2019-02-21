@@ -1,10 +1,10 @@
 import {Draft} from "../../../../shapes/Draft";
 import {IDrawingContext} from "../../../../drawingcontext/IDrawingContext";
-import {IFieldView} from "./IFieldView";
+import {IDocumentView} from "./IDocumentView";
 import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
 import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
 
-class FieldDrawer implements IFieldView {
+class DocumentDrawer implements IDocumentView {
     constructor(drawingContext: IDrawingContext) {
         this._drawingContext = drawingContext;
     }
@@ -19,4 +19,4 @@ class FieldDrawer implements IFieldView {
     private _drawingContext: IDrawingContext;
 }
 
-export {FieldDrawer};
+export {DocumentDrawer};

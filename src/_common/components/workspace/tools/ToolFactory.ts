@@ -6,42 +6,42 @@ import {LineTool} from "./line/LineTool";
 import {DotTool} from "./dot/DotTool";
 import {CompassTool} from "./compass/CompassTool";
 import {SelectTool} from "./select/SelectTool";
-import {IFieldOrganizer} from "../field/IFieldOrganizer";
+import {IDocumentOrganizer} from "../document/IDocumentOrganizer";
 
 
 type ToolFactoryConfig = {
     canvasContext: IDrawingContext,
     canvasMouseEventDispatcher: MouseEventDispatcher,
-    fieldOrganizer: IFieldOrganizer,
+    documentOrganizer: IDocumentOrganizer,
     workspaceContainer: Component
 }
 
 class ToolFactory {
-    constructor({canvasContext, canvasMouseEventDispatcher, fieldOrganizer, workspaceContainer}: ToolFactoryConfig) {
+    constructor({canvasContext, canvasMouseEventDispatcher, documentOrganizer, workspaceContainer}: ToolFactoryConfig) {
         this._canvasContext = canvasContext;
         this._mouseEventDispatcher = canvasMouseEventDispatcher;
-        this._fieldOrganizer = fieldOrganizer;
+        this._documentOrganizer = documentOrganizer;
         this._workspaceContainer = workspaceContainer;
     }
 
     public createLineTool(): BaseTool {
-        return new LineTool(this._canvasContext, this._mouseEventDispatcher, this._fieldOrganizer);
+        return new LineTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
     }
 
     public createDotTool(): BaseTool {
-        return new DotTool(this._canvasContext, this._mouseEventDispatcher, this._fieldOrganizer, this._workspaceContainer);
+        return new DotTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer, this._workspaceContainer);
     }
 
     public createCompassTool(): BaseTool {
-        return new CompassTool(this._canvasContext, this._mouseEventDispatcher, this._fieldOrganizer);
+        return new CompassTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
     }
     public createSelectTool(): BaseTool {
-        return new SelectTool(this._canvasContext, this._mouseEventDispatcher, this._fieldOrganizer);
+        return new SelectTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
     }
 
     private readonly _canvasContext: IDrawingContext;
     private readonly _mouseEventDispatcher: MouseEventDispatcher;
-    private readonly _fieldOrganizer: IFieldOrganizer;
+    private readonly _documentOrganizer: IDocumentOrganizer;
     private readonly _workspaceContainer: Component;
 }
 

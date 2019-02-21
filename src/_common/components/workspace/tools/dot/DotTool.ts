@@ -5,7 +5,7 @@ import {IDrawingContext} from "../../../../drawingcontext/IDrawingContext";
 import {MouseEventData, MouseEventDispatcher} from "../../MouseEventDispatcher";
 import {Component} from "../../../component/Component";
 import {BaseTool} from "../BaseTool";
-import {IFieldOrganizer} from "../../field/IFieldOrganizer";
+import {IDocumentOrganizer} from "../../document/IDocumentOrganizer";
 import {LabeledDot} from "../../../../shapes/LabeledDot";
 import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
 import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
@@ -13,8 +13,8 @@ import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
 const LABEL_PADDING = new Vec2(0, -15);
 
 class DotTool extends BaseTool {
-    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, fieldOrganizer: IFieldOrganizer, workspace: Component) {
-        super(drawingContext, mouseEventDispatcher, fieldOrganizer);
+    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, documentOrganizer: IDocumentOrganizer, workspace: Component) {
+        super(drawingContext, mouseEventDispatcher, documentOrganizer);
         this._labelInput = new LabelInput(workspace);
         this._addDisposable(this._labelInput);
     }
@@ -39,7 +39,7 @@ class DotTool extends BaseTool {
         ShapesDrawer.drawDot(this._drawingContext, relativeCords, DrawingParams.linesColor());
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
             const dot = new LabeledDot(relativeCords, label);
-            this._fieldOrganizer.edit().then(api => {
+            this._documentOrganizer.edit().then(api => {
                 api.addDraft(dot.draft());
                 api.commit();
             });

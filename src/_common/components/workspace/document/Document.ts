@@ -1,6 +1,6 @@
 import {Draft} from "../../../shapes/Draft";
 
-class Field {
+class Document {
     constructor(draft: Draft = Draft.create(), selection: Draft = Draft.create()) {
         this.draft = draft;
         this.selection = selection;
@@ -10,4 +10,4 @@ class Field {
     public draft: Draft;
 }
 
-export {Field}
+export {Document}

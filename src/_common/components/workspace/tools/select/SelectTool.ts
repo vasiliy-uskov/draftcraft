@@ -12,10 +12,10 @@ class SelectTool extends BaseTool {
     }
 
     protected _mouseDownHandler(data: MouseEventData): void {
-        this._fieldOrganizer.edit().then(api => {
-            const unselectedDraft = this._fieldOrganizer.draft().remove(this._fieldOrganizer.selection());
+        this._documentOrganizer.edit().then(api => {
+            const unselectedDraft = this._documentOrganizer.draft().remove(this._documentOrganizer.selection());
             const selectionToAdd = unselectedDraft.getOwner(data.relativeCords);
-            const selectionToRemove = this._fieldOrganizer.selection().getOwner(data.relativeCords);
+            const selectionToRemove = this._documentOrganizer.selection().getOwner(data.relativeCords);
             api.addSelection(selectionToAdd);
             api.removeSelection(selectionToRemove);
             api.commit();
