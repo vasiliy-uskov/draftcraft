@@ -13,9 +13,9 @@ import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
 const LABEL_PADDING = new Vec2(0, -15);
 
 class DotTool extends BaseTool {
-    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, fieldOrganizer: IFieldOrganizer, workplace: Component) {
+    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, fieldOrganizer: IFieldOrganizer, workspace: Component) {
         super(drawingContext, mouseEventDispatcher, fieldOrganizer);
-        this._labelInput = new LabelInput(workplace);
+        this._labelInput = new LabelInput(workspace);
         this._addDisposable(this._labelInput);
     }
 

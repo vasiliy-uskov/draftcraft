@@ -10,10 +10,10 @@ import {FieldDrawer} from "./field/view/FieldDrawer";
 import {Draft} from "../../shapes/Draft";
 import {Canvas} from "../canvas/Canvas";
 
-class Workplace extends Component {
+class Workspace extends Component {
     constructor(toolsCreator: IToolsCreator) {
         super({
-            blockName: "workplace",
+            blockName: "workspace",
         });
 
         this._background = new Component({
@@ -36,7 +36,7 @@ class Workplace extends Component {
             canvasMouseEventDispatcher,
             canvasContext: this._workingCanvas.context(),
             fieldOrganizer: this._fieldOrganizer,
-            workplaceContainer: this,
+            workspaceContainer: this,
         });
 
         this._tools = toolsCreator.createTools(toolFactory);
@@ -91,4 +91,4 @@ class Workplace extends Component {
     private _fieldOrganizer = new FieldOrganizer(new FieldDrawer(this._resultsCanvas.context()));
 }
 
-export {Workplace};
+export {Workspace};

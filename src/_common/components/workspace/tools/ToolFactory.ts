@@ -13,15 +13,15 @@ type ToolFactoryConfig = {
     canvasContext: IDrawingContext,
     canvasMouseEventDispatcher: MouseEventDispatcher,
     fieldOrganizer: IFieldOrganizer,
-    workplaceContainer: Component
+    workspaceContainer: Component
 }
 
 class ToolFactory {
-    constructor({canvasContext, canvasMouseEventDispatcher, fieldOrganizer, workplaceContainer}: ToolFactoryConfig) {
+    constructor({canvasContext, canvasMouseEventDispatcher, fieldOrganizer, workspaceContainer}: ToolFactoryConfig) {
         this._canvasContext = canvasContext;
         this._mouseEventDispatcher = canvasMouseEventDispatcher;
         this._fieldOrganizer = fieldOrganizer;
-        this._workplaceContainer = workplaceContainer;
+        this._workspaceContainer = workspaceContainer;
     }
 
     public createLineTool(): BaseTool {
@@ -29,7 +29,7 @@ class ToolFactory {
     }
 
     public createDotTool(): BaseTool {
-        return new DotTool(this._canvasContext, this._mouseEventDispatcher, this._fieldOrganizer, this._workplaceContainer);
+        return new DotTool(this._canvasContext, this._mouseEventDispatcher, this._fieldOrganizer, this._workspaceContainer);
     }
 
     public createCompassTool(): BaseTool {
@@ -42,7 +42,7 @@ class ToolFactory {
     private readonly _canvasContext: IDrawingContext;
     private readonly _mouseEventDispatcher: MouseEventDispatcher;
     private readonly _fieldOrganizer: IFieldOrganizer;
-    private readonly _workplaceContainer: Component;
+    private readonly _workspaceContainer: Component;
 }
 
 export {ToolFactory};

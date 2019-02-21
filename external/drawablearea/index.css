@@ -4,7 +4,7 @@
   position: relative;
 }
 
-.workplace {
+.workspace {
   width: calc(100% - 80px);
   left: 80px;
   height: 100%;

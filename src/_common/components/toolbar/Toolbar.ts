@@ -1,6 +1,6 @@
 import {Component} from "../component/Component";
 import {ToolView} from "./ToolView";
-import {ITool} from "../workplace/tools/ITool";
+import {ITool} from "../workspace/tools/ITool";
 
 class Toolbar extends Component {
     constructor(tools: Array<ITool>) {

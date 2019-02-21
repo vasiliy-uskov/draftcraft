@@ -1,5 +1,5 @@
 import {Component} from "../component/Component";
-import {ITool} from "../workplace/tools/ITool";
+import {ITool} from "../workspace/tools/ITool";
 import {BemInfo} from "../component/BemInfo";
 
 class ToolView extends Component {

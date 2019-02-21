@@ -2,7 +2,7 @@ import {BasePage} from "../../_common/page/BasePage";
 import {GameContext} from "../GameContext";
 import {Messages} from "../../_common/lng/Messages";
 import {PagesType} from "../../_common/page/PagesType";
-import {Workplace} from "../../_common/components/workplace/Workplace";
+import {Workspace} from "../../_common/components/workspace/Workspace";
 import {Toolbar} from "../../_common/components/toolbar/Toolbar";
 import {BackButton} from "../../_common/components/button/BackButton";
 import {Button} from "../../_common/components/button/Button";
@@ -24,8 +24,8 @@ class DraftPage extends BasePage {
         taskWrapper.addChild(this._taskView);
         this._addHandler(this._taskView.helpRequestEvent(), () => this._helpPopup.open());
 
-        this._addDisposable(this._workplace);
-        this.addChild(this._workplace);
+        this._addDisposable(this._workspace);
+        this.addChild(this._workspace);
 
         this._addDisposable(this._toolbar);
         this.addChild(this._toolbar);
@@ -52,20 +52,20 @@ class DraftPage extends BasePage {
 
     private _setLevelAnswer() {
         this._addClosingParallelTask(() => {
-            const answer = JSON.stringify(this._workplace.draft().serialize());
+            const answer = JSON.stringify(this._workspace.draft().serialize());
             return this._gameContext.setCurrentLevelAnswer(answer);
         });
     }
 
     protected _initHotKeyBinder(hotKeyBinder: HotKeyBinder) {
-        hotKeyBinder.setUndoHandler(() => this._workplace.undo());
-        hotKeyBinder.setRedoHandler(() => this._workplace.redo());
+        hotKeyBinder.setUndoHandler(() => this._workspace.undo());
+        hotKeyBinder.setRedoHandler(() => this._workspace.redo());
         hotKeyBinder.setResetHandler(() => this._toolbar.resetTools())
     }
 
     protected async _beforeOpen() {
         const currentLevel = await this._gameContext.currentLevel();
-        this._workplace.setBackgroundImage(currentLevel.img());
+        this._workspace.setBackgroundImage(currentLevel.img());
         this._taskView.setContent(currentLevel.task());
         this._helpPopup.setContent(currentLevel.help());
         this._toolbar.activateFirstTool();
@@ -76,14 +76,14 @@ class DraftPage extends BasePage {
     }
 
     protected async _afterClose() {
-        this._workplace.clean();
+        this._workspace.clean();
     }
 
     private _gameContext: GameContext;
     private _helpPopup = new InfoPopup({blockName: "help-popup"});
-    private _workplace = new Workplace(new ToolsCreator());
+    private _workspace = new Workspace(new ToolsCreator());
     private _taskView = new TaskView(this._getMessage("helpButtonHint"));
-    private _toolbar = new Toolbar(this._workplace.tools());
+    private _toolbar = new Toolbar(this._workspace.tools());
 }
 
 export {DraftPage};
