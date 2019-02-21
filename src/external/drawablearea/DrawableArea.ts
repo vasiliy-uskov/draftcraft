@@ -2,7 +2,7 @@ import {Component} from "../../_common/components/component/Component";
 import {Workspace} from "../../_common/components/workspace/Workspace";
 import {Toolbar} from "../../_common/components/toolbar/Toolbar";
 import {HotKeyBinder} from "../../_common/hotkeys/HotKeysBinder";
-import {ToolsCreator} from "./ToolsCreator";
+import {ToolsFactory} from "./ToolsFactory";
 
 class DrawableArea extends Component{
     constructor(container: Element) {
@@ -53,7 +53,7 @@ class DrawableArea extends Component{
     }
 
     private _activated = true;
-    private _workspace = new Workspace(new ToolsCreator());
+    private _workspace = new Workspace(new ToolsFactory());
     private _toolbar = new Toolbar(this._workspace.tools());
 }
 

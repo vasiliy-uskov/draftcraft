@@ -9,15 +9,15 @@ import {SelectTool} from "./select/SelectTool";
 import {IDocumentOrganizer} from "../document/IDocumentOrganizer";
 
 
-type ToolFactoryConfig = {
+type ToolCreatorConfig = {
     canvasContext: IDrawingContext,
     canvasMouseEventDispatcher: MouseEventDispatcher,
     documentOrganizer: IDocumentOrganizer,
     workspaceContainer: Component
 }
 
-class ToolFactory {
-    constructor({canvasContext, canvasMouseEventDispatcher, documentOrganizer, workspaceContainer}: ToolFactoryConfig) {
+class ToolCreator {
+    constructor({canvasContext, canvasMouseEventDispatcher, documentOrganizer, workspaceContainer}: ToolCreatorConfig) {
         this._canvasContext = canvasContext;
         this._mouseEventDispatcher = canvasMouseEventDispatcher;
         this._documentOrganizer = documentOrganizer;
@@ -45,4 +45,4 @@ class ToolFactory {
     private readonly _workspaceContainer: Component;
 }
 
-export {ToolFactory};
+export {ToolCreator};

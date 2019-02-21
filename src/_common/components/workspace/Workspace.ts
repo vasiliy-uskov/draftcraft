@@ -3,15 +3,15 @@ import {TagsName} from "../component/TagsName";
 import {MouseEventDispatcher} from "./MouseEventDispatcher";
 import {ITool} from "./tools/ITool";
 import {BaseTool} from "./tools/BaseTool";
-import {ToolFactory} from "./tools/ToolFactory";
-import {IToolsCreator} from "./tools/IToolsCreator";
+import {ToolCreator} from "./tools/ToolCreator";
+import {IToolsFactory} from "./tools/IToolsFactory";
 import {DocumentOrganizer} from "./document/DocumentOrganizer";
 import {DocumentDrawer} from "./document/view/DocumentDrawer";
 import {Draft} from "../../shapes/Draft";
 import {Canvas} from "../canvas/Canvas";
 
 class Workspace extends Component {
-    constructor(toolsCreator: IToolsCreator) {
+    constructor(toolsCreator: IToolsFactory) {
         super({
             blockName: "workspace",
         });
@@ -32,7 +32,7 @@ class Workspace extends Component {
         const canvasMouseEventDispatcher = new MouseEventDispatcher(this._workingCanvas);
         this._addDisposable(canvasMouseEventDispatcher);
 
-        const toolFactory = new ToolFactory({
+        const toolFactory = new ToolCreator({
             canvasMouseEventDispatcher,
             canvasContext: this._workingCanvas.context(),
             documentOrganizer: this._documentOrganizer,
