@@ -13,9 +13,9 @@ const terser = require("gulp-terser");
 
 const path = {
 	out: "bin/build",
-	tsEntryPoint: "src/clientcontent/app.ts",
-	scssFiles: "res/styles/clientcontent/**/*.scss",
-	scssEntryPoint: "res/styles/clientcontent/**/*.scss",
+	tsEntryPoint: "src/app/app.ts",
+	scssFiles: "res/styles/app/**/*.scss",
+	scssEntryPoint: "res/styles/app/**/*.scss",
 	externalOut: "external",
 	externalConfig: "external-config.json",
 };
