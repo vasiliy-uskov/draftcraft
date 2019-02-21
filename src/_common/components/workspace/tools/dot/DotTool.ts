@@ -9,6 +9,7 @@ import {IDocumentOrganizer} from "../../document/IDocumentOrganizer";
 import {LabeledDot} from "../../../../shapes/LabeledDot";
 import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
 import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
+import {reducePoint} from "../../../../utils/mathutils";
 
 const LABEL_PADDING = new Vec2(0, -15);
 
@@ -34,11 +35,12 @@ class DotTool extends BaseTool {
     }
 
     protected _mouseUpHandler({relativeCords}: MouseEventData): void {
+        const position = reducePoint(this._documentOrganizer.draft().getControlPoints(), relativeCords);
         const labelPosition = relativeCords.add(LABEL_PADDING);
         this._labelInput.show(labelPosition);
-        ShapesDrawer.drawDot(this._drawingContext, relativeCords, DrawingParams.linesColor());
+        ShapesDrawer.drawDot(this._drawingContext, position, DrawingParams.linesColor());
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
-            const dot = new LabeledDot(relativeCords, label);
+            const dot = new LabeledDot(position, label);
             this._documentOrganizer.edit(api => api.addDraft(dot.draft()).commit());
             this.reset();
         });

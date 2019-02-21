@@ -3,6 +3,7 @@ import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
 import {BaseTool} from "../BaseTool";
 import {GetCenterState} from "./GetCenterState";
+import {reducePoint} from "../../../../utils/mathutils";
 
 class CompassTool extends BaseTool {
 
@@ -20,7 +21,10 @@ class CompassTool extends BaseTool {
     }
 
     protected _mouseDownHandler({relativeCords}: MouseEventData): void {
-        this._currentState.addPoint(relativeCords);
+        this._currentState.addPoint(reducePoint(
+            this._documentOrganizer.draft().getControlPoints(),
+            relativeCords
+        ));
         if (this._currentState.result()) {
             const arc = this._currentState.result();
             this._documentOrganizer.edit(api => api.addDraft(arc.draft()).commit());
@@ -29,7 +33,10 @@ class CompassTool extends BaseTool {
     }
 
     protected _mouseMoveHandler({relativeCords}: MouseEventData): void {
-        this._currentState.addPoint(relativeCords);
+        this._currentState.addPoint(reducePoint(
+            this._documentOrganizer.draft().getControlPoints(),
+            relativeCords
+        ));
     }
 
     private _currentState: ICompassState = new GetCenterState(this._drawingContext);

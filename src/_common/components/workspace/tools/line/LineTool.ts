@@ -3,7 +3,7 @@ import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
 import {BaseTool} from "../BaseTool";
 import {Line} from "../../../../shapes/Line";
-import {reduceVector} from "../../../../utils/mathutils";
+import {reducePoint, reduceVector} from "../../../../utils/mathutils";
 import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
 import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
 
@@ -22,11 +22,12 @@ class LineTool extends BaseTool {
     }
 
     protected _mouseDownHandler({relativeCords}: MouseEventData): void {
-        this._line = new Line(relativeCords, relativeCords);
+        const position = reducePoint(this._documentOrganizer.draft().getControlPoints(), relativeCords);
+        this._line = new Line(position, position);
         this._invalidateView();
     }
 
-    protected _mouseUpHandler(data: MouseEventData): void {
+    protected _mouseUpHandler(): void {
         if (this._line) {
             const line = this._line;
             this._documentOrganizer.edit(api => api.addDraft(line.draft()).commit());
@@ -37,9 +38,13 @@ class LineTool extends BaseTool {
     protected _mouseMoveHandler(data: MouseEventData): void {
         if (this._line) {
             const start = this._line.start;
-            const end = data.shiftKey
+            let end = data.shiftKey
                 ? reduceVector(data.relativeCords.reduce(start)).add(start)
                 : data.relativeCords;
+            end = reducePoint(
+                this._documentOrganizer.draft().getControlPoints(),
+                end
+            );
             this._line = new Line(start, end);
             this._invalidateView();
         }

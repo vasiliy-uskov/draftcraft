@@ -35,10 +35,17 @@ function vecInCorner(vec: Vec2, cornerStart: Vec2, cornerEnd: Vec2) {
     }
 }
 
-function reduceVector(vec: Vec2, reduceStep: number = 15): Vec2 {
+function reduceVector(vec: Vec2, reduceStep = 15): Vec2 {
     const angle = toDegrease(vec.angle());
     const reducedAngle = toRadians(Math.round(angle / reduceStep) * reduceStep);
     return createVec2ByPolar(reducedAngle, vec.radius());
+}
+
+function reducePoint(points: Array<Vec2>, pointToReduce: Vec2, reduceRadius = 4) {
+    const reducedPoint = points.find(
+        (point) =>point.reduce(pointToReduce).radius() < reduceRadius
+    );
+    return reducedPoint ? reducedPoint : pointToReduce;
 }
 
 function binarySearch(min: number, max: number, inRange: (start: number, end: number) => boolean): number {
@@ -65,5 +72,6 @@ export {
     binarySearch,
     compareFloat,
     reduceVector,
+    reducePoint,
     vecInCorner
 }

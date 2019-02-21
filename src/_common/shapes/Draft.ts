@@ -18,6 +18,14 @@ class Draft {
         Object.freeze(this)
     }
 
+    public getControlPoints(): Array<Vec2> {
+        const points = new Array<Vec2>();
+        this.arcs.forEach(arc => points.push(arc.center));
+        this.dots.map(dot => points.push(dot.position));
+        this.lines.map(line => points.push(line.start, line.end));
+        return points;
+    }
+
     public empty(): boolean {
         return !this.arcs.length && !this.lines.length && !this.dots.length;
     }
