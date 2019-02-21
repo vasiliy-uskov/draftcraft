@@ -1,5 +1,4 @@
 import {Draft} from "../../../shapes/Draft";
-import {FieldEditApi} from "./FieldEditApi";
 
 interface IFieldEditApi {
     addDraft(draft: Draft): void;
