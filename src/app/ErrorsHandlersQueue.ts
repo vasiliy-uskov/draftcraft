@@ -1,6 +1,6 @@
 import {ICustomError} from "../_common/http/Exceptions";
 import {IErrorDispatcher} from "./IErrorDispatcher";
-import {IErrorHandler} from "./IErrorHandler";
+import {IErrorHandler} from "./model/IErrorHandler";
 
 class ErrorsHandlersQueue implements IErrorDispatcher, IErrorHandler {
     public addErrorHandler(handler: (err: ICustomError) => void) {

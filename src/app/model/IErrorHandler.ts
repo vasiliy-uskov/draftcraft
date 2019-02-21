@@ -1,4 +1,4 @@
-import {ICustomError} from "../_common/http/Exceptions";
+import {ICustomError} from "../../_common/http/Exceptions";
 
 interface IErrorHandler {
     handleError(err: ICustomError): void;

@@ -4,19 +4,19 @@ import {StartPage} from "./startpage/StartPage";
 import {LevelsPage} from "./levelspage/LevelsPage";
 import {ResultPage} from "./resultpage/ResultPage";
 import {DraftPage} from "./draftpage/DraftPage";
-import {GameContext} from "./GameContext";
+import {GameContext} from "./model/GameContext";
 import {Messages} from "../_common/lng/Messages";
 import {HotKeyBinder} from "../_common/hotkeys/HotKeysBinder";
 import {ErrorPage} from "./errorpage/ErrorPage";
 import {IErrorDispatcher} from "./IErrorDispatcher";
 
 class Game extends Disposable {
-    constructor(gameContext: GameContext, messages: Messages, errorsHandlersQueue: IErrorDispatcher) {
+    constructor(gameContext: GameContext, messages: Messages, errorDispatcher: IErrorDispatcher) {
         super();
         const hotKeyBinder = new HotKeyBinder();
 
         const errorPageContainer = document.getElementById("error-page") as HTMLElement;
-        this._errorPage = new ErrorPage(errorPageContainer, errorsHandlersQueue, messages, hotKeyBinder);
+        this._errorPage = new ErrorPage(errorPageContainer, errorDispatcher, messages, hotKeyBinder);
         this._addHandler(this._errorPage.changePageRequestEvent(), this._open.bind(this));
 
         const startPageContainer = document.getElementById("start-page") as HTMLElement;

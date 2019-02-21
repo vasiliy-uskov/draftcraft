@@ -1,6 +1,6 @@
-import {Level, LevelConfig} from "./model/Level";
-import {AjaxHelper} from "../_common/http/AjaxHelper";
-import {ApiUrls} from "./ApiUrls";
+import {Level, LevelConfig} from "./Level";
+import {AjaxHelper} from "../../_common/http/AjaxHelper";
+import {ApiUrls} from "../ApiUrls";
 
 class ServerApiHelper {
     constructor(sessionId: string) {

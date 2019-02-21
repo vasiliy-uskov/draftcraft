@@ -1,6 +1,6 @@
-import {Level} from "./model/Level";
+import {Level} from "./Level";
 import {ServerApiHelper} from "./ServerApiHelper";
-import {Disposable} from "../_common/disposable/Disposable";
+import {Disposable} from "../../_common/disposable/Disposable";
 import {IErrorHandler} from "./IErrorHandler";
 
 class GameContext extends Disposable {

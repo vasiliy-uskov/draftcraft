@@ -7,13 +7,13 @@ import {ICustomError} from "../../_common/http/Exceptions";
 import {IErrorDispatcher} from "../IErrorDispatcher";
 
 class ErrorPage extends BasePage {
-    constructor(container: HTMLElement, errorsHandlersQueue: IErrorDispatcher, messages: Messages, hotKeyBinder: HotKeyBinder) {
+    constructor(container: HTMLElement, errorDispatcher: IErrorDispatcher, messages: Messages, hotKeyBinder: HotKeyBinder) {
         super(container, messages, PagesType.ErrorPage, hotKeyBinder);
         const content = new Component({blockName: "content"});
         content.addChild(this._codeView);
         content.addChild(this._message);
         this.addChild(content);
-        errorsHandlersQueue.addErrorHandler((err: ICustomError) => {
+        errorDispatcher.addErrorHandler((err: ICustomError) => {
             this._code = err.code;
             this._sendChangePageRequest(PagesType.ErrorPage);
         });

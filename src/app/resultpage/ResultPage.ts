@@ -1,5 +1,5 @@
 import {BasePage} from "../../_common/page/BasePage";
-import {GameContext} from "../GameContext";
+import {GameContext} from "../model/GameContext";
 import {Messages} from "../../_common/lng/Messages";
 import {PagesType} from "../../_common/page/PagesType";
 import {Component} from "../../_common/components/component/Component";
