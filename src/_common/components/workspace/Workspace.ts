@@ -4,14 +4,13 @@ import {MouseEventDispatcher} from "./MouseEventDispatcher";
 import {ITool} from "./tools/ITool";
 import {BaseTool} from "./tools/BaseTool";
 import {ToolCreator} from "./tools/ToolCreator";
-import {IToolsFactory} from "./tools/IToolsFactory";
 import {DocumentOrganizer} from "./document/DocumentOrganizer";
 import {DocumentDrawer} from "./document/view/DocumentDrawer";
 import {Draft} from "../../shapes/Draft";
 import {Canvas} from "../canvas/Canvas";
 
 class Workspace extends Component {
-    constructor(toolsCreator: IToolsFactory) {
+    constructor(createTools: (creator: ToolCreator) => Array<BaseTool>) {
         super({
             blockName: "workspace",
         });
@@ -39,7 +38,7 @@ class Workspace extends Component {
             workspaceContainer: this,
         });
 
-        this._tools = toolsCreator.createTools(toolFactory);
+        this._tools = createTools(toolFactory);
         this._tools.forEach((tool) => {
             this._addDisposable(tool);
             this._addHandler(tool.activatedEvent(), () => {
