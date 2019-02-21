@@ -8,6 +8,7 @@ import {Arc} from "../../../../shapes/Arc";
 class GetCenterState implements ICompassState{
     constructor(drawingContext: IDrawingContext) {
         this._drawingContext = drawingContext;
+        this._drawingContext.clean();
     }
 
     public result(): Arc | null {

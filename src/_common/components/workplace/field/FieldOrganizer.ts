@@ -1,36 +1,32 @@
 import {ActionHolder} from "../../../action/ActionHolder";
 import {Field} from "./Field";
 import {Draft} from "../../../shapes/Draft";
-import {AddDraftAction} from "./actions/AddDraftAction";
-import {RemoveDraftAction} from "./actions/RemoveDraftAction";
-import {AddSelectionAction} from "./actions/AddSelectionAction";
-import {RemoveSelectionAction} from "./actions/RemoveSelectionAction";
 import {IFieldOrganizer} from "./IFieldOrganizer";
 import {IFieldView} from "./view/IFieldView";
+import {FieldEditApi} from "./FieldEditApi";
+import {FieldChangeAction} from "./actions/FieldChangeAction";
 
 class FieldOrganizer implements IFieldOrganizer {
     constructor(fieldView: IFieldView) {
         this._fieldView = fieldView;
     }
 
-    public addDraft(draft: Draft) {
-        !draft.empty() && this._actionHolder.execute(new AddDraftAction(this._field, draft));
-        this._fieldView.updateState(this._field.draft, this._field.selection)
-    }
-
-    public removeDraft(draft: Draft) {
-        !draft.empty() && this._actionHolder.execute(new RemoveDraftAction(this._field, draft));
-        this._fieldView.updateState(this._field.draft, this._field.selection)
-    }
-
-    public addSelection(draft: Draft) {
-        !draft.empty() && this._actionHolder.execute(new AddSelectionAction(this._field, draft));
-        this._fieldView.updateState(this._field.draft, this._field.selection)
-    }
-
-    public removeSelection(draft: Draft) {
-        !draft.empty() && this._actionHolder.execute(new RemoveSelectionAction(this._field, draft));
-        this._fieldView.updateState(this._field.draft, this._field.selection);
+    public edit(): Promise<FieldEditApi> {
+        let fieldPromise: Promise<Field>;
+        let apiPromise = this._editPromise.then(() => {
+            let resolve: (f: Field) => void;
+            fieldPromise = new Promise<Field>((res) => {
+                resolve = res;
+            });
+            return new FieldEditApi(new Field(this._field.draft, this._field.selection), resolve)
+        });
+        this._editPromise = apiPromise.then(() => {
+            fieldPromise.then((field) => {
+                this._actionHolder.execute(new FieldChangeAction(this._field, field));
+                this._fieldView.updateState(this._field.draft, this._field.selection);
+            })
+        });
+        return apiPromise;
     }
 
     public undo() {
@@ -58,6 +54,7 @@ class FieldOrganizer implements IFieldOrganizer {
 
     private _fieldView: IFieldView;
     private _field = new Field();
+    private _editPromise: Promise<void> = Promise.resolve();
     private _actionHolder = new ActionHolder();
 }
 

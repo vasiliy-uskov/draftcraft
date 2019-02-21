@@ -1,7 +1,6 @@
 import {Component} from "../component/Component";
 import {TagsName} from "../component/TagsName";
 import {MouseEventDispatcher} from "./MouseEventDispatcher";
-import {ResizeObserver} from "../../utils/ResizeObserver";
 import {ITool} from "./tools/ITool";
 import {BaseTool} from "./tools/BaseTool";
 import {ToolFactory} from "./tools/ToolFactory";
@@ -29,6 +28,7 @@ class Workplace extends Component {
 
         this._addDisposable(this._workingCanvas);
         this.addChild(this._workingCanvas);
+
         const canvasMouseEventDispatcher = new MouseEventDispatcher(this._workingCanvas);
         this._addDisposable(canvasMouseEventDispatcher);
 
@@ -84,27 +84,11 @@ class Workplace extends Component {
         this._resultsCanvas.context().clean();
     }
 
-    private _createCanvas(elementName: string): Canvas {
-        const canvas = new Canvas({
-            bemInfo: this.createChildBemInfo(elementName),
-        });
-        const canvasResizeObserver = new ResizeObserver(canvas);
-        this._addDisposable(canvasResizeObserver);
-        this._addHandler(canvasResizeObserver.resizeEvent(), () => {
-            requestAnimationFrame(() => {
-                const canvasRect = canvas.getClientRect();
-                canvas.setWidth(canvasRect.width);
-                canvas.setHeight(canvasRect.height);
-            })
-        });
-        return canvas;
-    }
-
     private _tools: Array<BaseTool>;
     private _background: Component;
-    private _resultsCanvas = this._createCanvas("result-canvas");
-    private _workingCanvas = this._createCanvas("working-canvas");
-    private _fieldOrganizer = new FieldOrganizer(new FieldDrawer(this._workingCanvas.context()));
+    private _resultsCanvas = new Canvas({bemInfo: this.createChildBemInfo("results-canvas")});
+    private _workingCanvas = new Canvas({bemInfo: this.createChildBemInfo("working-canvas")});
+    private _fieldOrganizer = new FieldOrganizer(new FieldDrawer(this._resultsCanvas.context()));
 }
 
 export {Workplace};

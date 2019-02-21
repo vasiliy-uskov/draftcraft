@@ -6,6 +6,7 @@ import {Line} from "../../../../shapes/Line";
 import {Arc} from "../../../../shapes/Arc";
 import {ICompassState} from "./ICompassState";
 import {GetCenterState} from "./GetCenterState";
+import {vecInCorner} from "../../../../utils/mathutils";
 
 class GetAngleState implements ICompassState {
     constructor(line: Line, drawingContext: IDrawingContext) {
@@ -25,21 +26,34 @@ class GetAngleState implements ICompassState {
 
     public addPoint(cord: Vec2): void {
         const arcCenter = this._arc.center;
+        const newPoint = cord.reduce(arcCenter);
+        this._line = new Line(
+            this._line.start,
+            newPoint
+                .normalize()
+                .scale(this._arc.radius)
+                .add(arcCenter)
+        );
+        const getDelta = (start: number, end: number) => (end + Math.PI * 2 - start) % (Math.PI * 2);
+        const arcEndAngle = this._arc.startAngle + this._arc.angle;
         const arcStart = createVec2ByPolar(this._arc.startAngle, this._arc.radius);
-        const oldArcEnd = this._line.end.reduce(arcCenter);
-        const newArcEnd = cord.reduce(arcCenter);
-        const angleDelta1 = Math.abs(newArcEnd.angle() - oldArcEnd.angle());
-        const angleDelta2 = Math.abs(newArcEnd.angle() - arcStart.angle());
-        const startAngle = angleDelta1 > angleDelta2
-            ? arcStart.angle() < oldArcEnd.angle()
-                ? arcStart.angle()
-                : oldArcEnd.angle()
-            : arcStart.angle() > oldArcEnd.angle()
-                ? arcStart.angle()
-                : oldArcEnd.angle();
-        const angle = Math.min(Math.PI * 2, this._arc.angle + Math.min(angleDelta1, angleDelta2));
-        this._arc = new Arc(arcStart, this._arc.radius, startAngle, angle);
-        this._line = new Line(this._line.start, cord);
+        const arcEnd = createVec2ByPolar(arcEndAngle, this._arc.radius);
+        if (this._arc.angle < 2 * Math.PI && !vecInCorner(newPoint, arcStart, arcEnd)) {
+            const startAngleDelta = getDelta(newPoint.angle(), this._arc.startAngle);
+            const endAngleDelta = getDelta(this._arc.startAngle + this._arc.angle, newPoint.angle());
+            let startAngle;
+            let angle = this._arc.angle;
+            if (startAngleDelta < endAngleDelta) {
+                startAngle = newPoint.angle();
+                angle += startAngleDelta;
+            }
+            else {
+                startAngle = this._arc.startAngle;
+                angle += endAngleDelta;
+            }
+            angle = Math.min(Math.PI * 2, angle);
+            this._arc = new Arc(arcCenter, this._arc.radius, startAngle, angle);
+        }
         this._redrawState();
     }
 

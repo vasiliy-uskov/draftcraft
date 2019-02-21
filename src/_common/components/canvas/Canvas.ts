@@ -1,6 +1,8 @@
 import {Component, ConnectionHandlers} from "../component/Component";
 import {BemInfo} from "../component/BemInfo";
 import {CanvasDrawingContext} from "./CanvasDrawingContext";
+import {TagsName} from "../component/TagsName";
+import {ResizeObserver} from "../../utils/ResizeObserver";
 
 class Canvas extends Component {
     constructor(config: {
@@ -9,23 +11,19 @@ class Canvas extends Component {
         bemInfo?: BemInfo,
         connectionHandlers?: ConnectionHandlers
     }) {
-        super(config);
-    }
-
-    public setWidth(width: number) {
-        this.element().width = width;
-    }
-
-    public setHeight(height: number) {
-        this.element().height = height;
-    }
-
-    public width(): number {
-        return this.element().width;
-    }
-
-    public height(): number {
-        return this.element().height;
+        super({
+            ...config,
+            tagName: TagsName.canvas,
+        });
+        const canvasResizeObserver = new ResizeObserver(this);
+        this._addDisposable(canvasResizeObserver);
+        this._addHandler(canvasResizeObserver.resizeEvent(), () => {
+            requestAnimationFrame(() => {
+                const canvasRect = this.getClientRect();
+                this.element().width = canvasRect.width;
+                this.element().height = canvasRect.height;
+            })
+        });
     }
 
     public element(): HTMLCanvasElement {

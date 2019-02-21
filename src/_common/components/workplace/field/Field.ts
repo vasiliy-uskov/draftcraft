@@ -1,8 +1,13 @@
 import {Draft} from "../../../shapes/Draft";
 
 class Field {
-    public selection = Draft.create();
-    public draft = Draft.create();
+    constructor(draft: Draft = Draft.create(), selection: Draft = Draft.create()) {
+        this.draft = draft;
+        this.selection = selection;
+    }
+
+    public selection: Draft;
+    public draft: Draft;
 }
 
 export {Field}

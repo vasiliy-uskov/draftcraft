@@ -46,9 +46,9 @@ class Draft {
     }
 
     public remove(draft: Draft): Draft {
-        const arcs = this.arcs.slice().filter(arc => draft.arcs.includes(arc));
-        const dots = this.dots.slice().filter(dot => draft.dots.includes(dot));
-        const lines = this.lines.slice().filter(line => draft.lines.includes(line));
+        const arcs = this.arcs.slice().filter(arc => !draft.arcs.includes(arc));
+        const dots = this.dots.slice().filter(dot => !draft.dots.includes(dot));
+        const lines = this.lines.slice().filter(line => !draft.lines.includes(line));
         return new Draft({arcs, dots, lines})
     }
 

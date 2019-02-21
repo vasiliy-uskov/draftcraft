@@ -16,8 +16,23 @@ function toRadians(angle: number): number {
     return angle / 180 * Math.PI;
 }
 
-function compareFloat(n1: number, n2: number) {
+function compareFloat(n1: number, n2: number): boolean {
     return Math.abs(n1 - n2) < Number.EPSILON;
+}
+
+function angleDelta(start: number, end: number): number {
+    return end - start + (end < start ? Math.PI * 2 : 0);
+}
+
+function vecInCorner(vec: Vec2, cornerStart: Vec2, cornerEnd: Vec2) {
+    if (angleDelta(cornerStart.angle(), cornerEnd.angle()) < Math.PI) {
+        return vec.x * cornerStart.y - vec.y * cornerStart.x < 0
+            && vec.x * cornerEnd.y   - vec.y * cornerEnd.x   > 0
+    }
+    else {
+        return !(vec.x * cornerStart.y - vec.y * cornerStart.x > 0
+            && vec.x * cornerEnd.y   - vec.y * cornerEnd.x   < 0)
+    }
 }
 
 function reduceVector(vec: Vec2, reduceStep: number = 15): Vec2 {
@@ -50,4 +65,5 @@ export {
     binarySearch,
     compareFloat,
     reduceVector,
+    vecInCorner
 }

@@ -28,7 +28,11 @@ class LineTool extends BaseTool {
 
     protected _mouseUpHandler(data: MouseEventData): void {
         if (this._line) {
-            this._fieldOrganizer.addDraft(this._line.draft());
+            const line = this._line;
+            this._fieldOrganizer.edit().then(api => {
+                api.addDraft(line.draft());
+                api.commit();
+            });
             this.reset();
         }
     }
