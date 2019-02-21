@@ -20,7 +20,7 @@ class LabelInput extends Component {
         this._listen("keydown", this, (event) => this._keyDownHandler(event as KeyboardEvent));
         this._listen("focusout", this, () => this.focus());
         this._listen("mousedown", new ListenableWindow(), () => this._dispatchInputEvent());
-        this._listen("scroll", parent, () => this.element().scrollLeft = 0);
+        this._listen("scroll", parent, () => parent.element().scrollLeft = 0);
     }
 
     public inputEndEvent(): EventDispatcher<string> {
