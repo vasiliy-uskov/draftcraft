@@ -23,10 +23,7 @@ class CompassTool extends BaseTool {
         this._currentState.addPoint(relativeCords);
         if (this._currentState.result()) {
             const arc = this._currentState.result();
-            this._documentOrganizer.edit().then(api => {
-                api.addDraft(arc.draft());
-                api.commit();
-            });
+            this._documentOrganizer.edit(api => api.addDraft(arc.draft()).commit());
         }
         this._currentState = this._currentState.getNextState();
     }

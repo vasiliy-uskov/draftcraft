@@ -1,17 +1,17 @@
 import {Draft} from "../../../shapes/Draft";
 
 interface IDocumentEditApi {
-    addDraft(draft: Draft): void;
-    removeDraft(draft: Draft): void;
-    addSelection(draft: Draft): void;
-    removeSelection(draft: Draft): void;
+    addDraft(draft: Draft): IDocumentEditApi;
+    removeDraft(draft: Draft): IDocumentEditApi;
+    addSelection(draft: Draft): IDocumentEditApi;
+    removeSelection(draft: Draft): IDocumentEditApi;
     draft(): Draft;
     selection(): Draft;
     commit(): void;
 }
 
 interface IDocumentOrganizer {
-    edit(): Promise<IDocumentEditApi>;
+    edit(editFn: (api: IDocumentEditApi) => void): void;
     selection(): Draft;
     draft(): Draft;
 }

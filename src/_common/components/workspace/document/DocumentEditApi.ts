@@ -10,19 +10,23 @@ class DocumentEditApi implements IDocumentEditApi {
 
     public addDraft(draft: Draft) {
         this._document.draft = this._document.draft.add(draft);
+        return this;
     }
 
     public removeDraft(draft: Draft) {
         this._document.draft = this._document.draft.remove(draft);
         this._document.selection = this._document.selection.remove(draft);
+        return this;
     }
 
     public addSelection(draft: Draft) {
         this._document.selection = this._document.selection.add(draft);
+        return this;
     }
 
     public removeSelection(draft: Draft) {
         this._document.selection = this._document.selection.remove(draft);
+        return this;
     }
 
     public draft(): Draft {

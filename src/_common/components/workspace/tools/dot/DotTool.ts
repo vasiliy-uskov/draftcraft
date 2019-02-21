@@ -39,10 +39,7 @@ class DotTool extends BaseTool {
         ShapesDrawer.drawDot(this._drawingContext, relativeCords, DrawingParams.linesColor());
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
             const dot = new LabeledDot(relativeCords, label);
-            this._documentOrganizer.edit().then(api => {
-                api.addDraft(dot.draft());
-                api.commit();
-            });
+            this._documentOrganizer.edit(api => api.addDraft(dot.draft()).commit());
             this.reset();
         });
     }
