@@ -60,7 +60,7 @@ function pointInCorner(point: Vec2, corner: {startAngle: number, angle: number, 
     }
 }
 
-function inRange(num: number, start: number, end: number) {
+function inRange(num: number, start: number, end: number): boolean {
     return start <= num && num <= end
         || end <= num && num <= start;
 }
@@ -71,11 +71,12 @@ function reduceVector(vec: Vec2, reduceStep = 15): Vec2 {
     return createVec2ByPolar(reducedAngle, vec.radius());
 }
 
-function reducePoint(points: Array<Vec2>, pointToReduce: Vec2, reduceRadius = 4) {
-    const reducedPoint = points.find(
+function reducePoint(points: Array<Vec2>, pointToReduce: Vec2, reduceRadius = 4): Vec2 {
+    const reducedPoints = points.filter(
         (point) => point.reduce(pointToReduce).radius() < reduceRadius
     );
-    return reducedPoint ? reducedPoint : pointToReduce;
+    reducedPoints.sort((point1, point2) => point1.radius() - point2.radius());
+    return reducedPoints.length ? reducedPoints[0] : pointToReduce;
 }
 
 function getLineEquation({start, end}: Line): {a: number, b: number, c: number} {
