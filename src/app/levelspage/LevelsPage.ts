@@ -44,7 +44,7 @@ class LevelsPage extends BasePage {
             this._levelsViews.push(levelView);
             this._levelsHolder.addChild(levelView);
             this._addDisposable(levelView);
-            const levelAvailable = await this._levelAvailable(level.id);
+            const levelAvailable = !level.passed && level.enable;
             if (levelAvailable) {
                 this._listen("click", levelView, () => this._activateLevel(level.id));
             }
@@ -56,12 +56,6 @@ class LevelsPage extends BasePage {
         this._gameContext.setCurrentLevel(id).then(() => {
             this._sendChangePageRequest(PagesType.DraftPage);
         });
-    }
-
-    private async _levelAvailable(id: string) {
-        const levelEnabled = await this._gameContext.isLevelEnabled(id);
-        const levelPassed = await this._gameContext.isLevelPassed(id);
-        return !levelPassed && levelEnabled;
     }
 
     _gameContext: GameContext;

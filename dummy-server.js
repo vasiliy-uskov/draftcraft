@@ -116,7 +116,7 @@ app.post("/add_answer_to_level_ajax", function (req, res) {
 	const levelIndex = levels.indexOf(level);
 	if (levels[levelIndex + 1])
 	{
-		levels[levelIndex + 1].enable = true;
+		levels[levelIndex + 1].enable = level.passed;
 	}
 
 	res.status(200);

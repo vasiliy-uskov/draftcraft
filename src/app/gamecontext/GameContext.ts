@@ -55,16 +55,6 @@ class GameContext extends Disposable {
         return this._levels;
     }
 
-    public async isLevelPassed(id: string): Promise<boolean> {
-        await this._serverRequest;
-        return this._levels.get(id).passed;
-    }
-
-    public async isLevelEnabled(id: string): Promise<boolean> {
-        await this._serverRequest;
-        return this._levels.get(id).enable;
-    }
-
     public async currentLevel(): Promise<Level> {
         await this._serverRequest;
         return this._currentLevel.value();
