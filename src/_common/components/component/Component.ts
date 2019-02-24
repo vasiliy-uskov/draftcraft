@@ -5,6 +5,7 @@ import {toCamelCase} from "../../utils/stringutils";
 import {IListenable} from "../../disposable/IListenable";
 import {Vec2} from "../../utils/Vec2";
 import {FramesController} from "../../animation/FramesController";
+import {Size} from "../../utils/Size";
 
 type ConnectionHandlers = {
     onConnected?: () => void,
@@ -103,6 +104,13 @@ class Component extends Disposable implements IListenable {
 
     public setHeight(height: number) {
         this.setStyle("height", `${height}px`);
+    }
+
+    public setSize(size: Size) {
+        this.applyStyles({
+            width: `${size.width}px`,
+            height: `${size.height}px`,
+        })
     }
 
     public setX(width: number) {

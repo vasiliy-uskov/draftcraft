@@ -1,4 +1,4 @@
-import {Level, LevelConfig} from "./Level";
+import {Level, LevelConfig} from "../model/Level";
 import {AjaxHelper} from "../../_common/http/AjaxHelper";
 import {ApiUrls} from "../ApiUrls";
 
@@ -11,8 +11,7 @@ class ServerApiHelper {
             const levels: Level[] = [];
             let dataJSON = data as Array<LevelConfig>;
             for (const levelJson of dataJSON) {
-                Level.validateConfig(levelJson);
-                levels.push(new Level(levelJson));
+                levels.push(Level.load(levelJson));
             }
             return levels;
         })

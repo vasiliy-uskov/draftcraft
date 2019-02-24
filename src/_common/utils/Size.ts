@@ -1,3 +1,5 @@
+import {verifyNumber, verifyObject} from "./typetools";
+
 class Size {
     constructor(width: number, height: number) {
         this.width = width;
@@ -17,6 +19,11 @@ class Size {
             width: this.width,
             height: this.height
         })
+    }
+
+    public static load(config: any): Size {
+        verifyObject(config);
+        return new Size(verifyNumber(config.width), verifyNumber(config.height));
     }
 
     public width: number;

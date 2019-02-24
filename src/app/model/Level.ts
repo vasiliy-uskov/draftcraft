@@ -1,5 +1,6 @@
 import {verifyBoolean, verifyObject, verifyString} from "../../_common/utils/typetools";
 import {ValidationError} from "../../_common/http/Exceptions";
+import {Size} from "../../_common/utils/Size";
 
 type LevelConfig = {
     id: string,
@@ -8,78 +9,73 @@ type LevelConfig = {
     help: string,
     img: string,
     enable: boolean,
-    passed: boolean
+    passed: boolean,
+    canvasSize: Size,
     detailedAnswer?: string,
+    userAnswer?: string,
 }
 
 class Level {
-    constructor({id, task, help, passed, img, enable, title, detailedAnswer}: LevelConfig) {
-        this._id = id;
-        this._task = task;
-        this._help = help;
-        this._img = img;
-        this._title = title;
-        this._enable = enable;
-        this._passed = passed;
-        this._detailedAnswer = detailedAnswer
+    constructor({id, task, help, passed, img, enable, title, detailedAnswer, userAnswer, canvasSize}: LevelConfig) {
+        this.id = id;
+        this.task = task;
+        this.help = help;
+        this.img = img;
+        this.title = title;
+        this.enable = enable;
+        this.passed = passed;
+        this.userAnswer = userAnswer;
+        this.detailedAnswer = detailedAnswer;
+        this.canvasSize = canvasSize;
+        Object.freeze(this);
     }
 
-    public img(): string {
-        return this._img;
+    public serialize(): LevelConfig {
+        return {
+            id: this.id,
+            img: this.img,
+            task: this.task,
+            help: this.task,
+            title: this.title,
+            enable: this.enable,
+            passed: this.passed,
+            userAnswer: this.userAnswer,
+            detailedAnswer: this.detailedAnswer,
+            canvasSize: this.canvasSize,
+        }
     }
 
-    public title(): string {
-        return this._title;
-    }
-
-    public help(): string {
-        return this._help;
-    }
-
-    public task(): string {
-        return this._task;
-    }
-
-    public id(): string {
-        return this._id;
-    }
-
-    public passed(): boolean {
-        return this._passed;
-    }
-
-    public enable(): boolean {
-        return this._enable && !this._passed;
-    }
-
-    public detailedAnswer(): string|null {
-        return this._detailedAnswer;
-    }
-
-    public static validateConfig(levelConfig: LevelConfig) {
+    public static load(levelConfig: any): Level {
         try {
             verifyObject(levelConfig);
-            verifyString(levelConfig.id);
-            verifyString(levelConfig.task);
-            verifyString(levelConfig.help);
-            verifyString(levelConfig.img);
-            verifyString(levelConfig.title);
-            verifyBoolean(levelConfig.passed);
-            verifyBoolean(levelConfig.enable);
+            return new Level({
+                id: verifyString(levelConfig.id),
+                task: verifyString(levelConfig.task),
+                help: verifyString(levelConfig.help),
+                img: verifyString(levelConfig.img),
+                title: verifyString(levelConfig.title),
+                passed: verifyBoolean(levelConfig.passed),
+                enable: verifyBoolean(levelConfig.enable),
+                canvasSize: Size.load(levelConfig.canvasSize),
+                detailedAnswer: levelConfig.detailedAnswer,
+                userAnswer: levelConfig.userAnswer,
+            });
         }
         catch (err) {
-            throw new ValidationError(`Invalid level config ${err}`);
+            throw new ValidationError(err, `Invalid level config`);
         }
     }
 
-    private readonly _passed: boolean;
-    private readonly _enable: boolean;
-    private readonly _img: string;
-    private readonly _help: string;
-    private readonly _title: string;
-    private readonly _id: string;
-    private readonly _task: string;
-    private readonly _detailedAnswer: string|null;
+    public readonly passed: boolean;
+    public readonly enable: boolean;
+    public readonly img: string;
+    public readonly help: string;
+    public readonly title: string;
+    public readonly id: string;
+    public readonly task: string;
+    public readonly detailedAnswer: string|null;
+    public readonly userAnswer: string|null;
+    public readonly canvasSize: Size;
 }
 
 export {Level, LevelConfig};

@@ -1,5 +1,5 @@
 import {BasePage} from "../../_common/page/BasePage";
-import {GameContext} from "../model/GameContext";
+import {GameContext} from "../gamecontext/GameContext";
 import {Messages} from "../../_common/lng/Messages";
 import {PagesType} from "../../_common/page/PagesType";
 import {Workspace} from "../../_common/components/workspace/Workspace";
@@ -64,9 +64,10 @@ class DraftPage extends BasePage {
 
     protected async _beforeOpen() {
         const currentLevel = await this._gameContext.currentLevel();
-        this._workspace.setBackgroundImage(currentLevel.img());
-        this._taskView.setContent(currentLevel.task());
-        this._helpPopup.setContent(currentLevel.help());
+        this._workspace.setBackgroundImage(currentLevel.img);
+        this._workspace.setCanvasSize(currentLevel.canvasSize);
+        this._taskView.setContent(currentLevel.task);
+        this._helpPopup.setContent(currentLevel.help);
         this._toolbar.activateFirstTool();
     }
 

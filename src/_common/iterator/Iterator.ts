@@ -1,9 +1,10 @@
 class Iterator<T> {
-    constructor(values: Iterable<T>) {
+    constructor(values: Iterable<T>, currentElement?: T) {
         this._values = new Array<T>(...values);
+        this._pointer = Math.max(0, this._values.indexOf(currentElement));
     }
 
-    next(): IteratorResult<T> {
+    public next(): IteratorResult<T> {
         if (this._pointer < this._values.length) {
             return {
                 done: false,

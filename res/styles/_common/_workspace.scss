@@ -2,17 +2,9 @@
   background: #FFFFFF;
   overflow: hidden;
   position: relative;
-
-  &__background {
-    padding: 20px;
-    max-width: 100%;
-    max-height: 100%;
-    display: block;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
 
   &__results-canvas {
     top: 0;

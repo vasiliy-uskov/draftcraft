@@ -1,5 +1,5 @@
 import {BasePage} from "../../_common/page/BasePage";
-import {GameContext} from "../model/GameContext";
+import {GameContext} from "../gamecontext/GameContext";
 import {Messages} from "../../_common/lng/Messages";
 import {PagesType} from "../../_common/page/PagesType";
 import {Component} from "../../_common/components/component/Component";
@@ -38,26 +38,30 @@ class LevelsPage extends BasePage {
     }
 
     private async _invalidateLevelsList() {
-        const levels = await this._gameContext.getLevels();
+        const levels = [...(await this._gameContext.getLevels())];
         levels.forEach(async (level, index) => {
             const levelView = new LevelView(level, index + 1);
             this._levelsViews.push(levelView);
             this._levelsHolder.addChild(levelView);
             this._addDisposable(levelView);
-            const levelEnabled = await this._gameContext.isLevelEnabled(level.id());
-            if (levelEnabled) {
-                this._listen("click", levelView, () => this._activateLevelHandler(level.id()));
+            const levelAvailable = await this._levelAvailable(level.id);
+            if (levelAvailable) {
+                this._listen("click", levelView, () => this._activateLevel(level.id));
             }
-            levelView.updateModifier("enabled", levelEnabled);
+            levelView.updateModifier("enabled", levelAvailable);
         });
     }
 
-    private _activateLevelHandler(id: string) {
-        if (this._gameContext.isLevelEnabled(id)) {
-            this._gameContext.setCurrentLevel(id).then(() => {
-                this._sendChangePageRequest(PagesType.DraftPage);
-            });
-        }
+    private _activateLevel(id: string) {
+        this._gameContext.setCurrentLevel(id).then(() => {
+            this._sendChangePageRequest(PagesType.DraftPage);
+        });
+    }
+
+    private async _levelAvailable(id: string) {
+        const levelEnabled = await this._gameContext.isLevelEnabled(id);
+        const levelPassed = await this._gameContext.isLevelPassed(id);
+        return !levelPassed && levelEnabled;
     }
 
     _gameContext: GameContext;

@@ -2,18 +2,25 @@ interface ICustomError {
     readonly code: number;
 }
 
-class BaseCustomError extends Error implements ICustomError {
-    constructor(reason: string, code: number) {
-        super("\n" + reason);
+class BaseCustomError implements ICustomError {
+    constructor(message: string, code: number, stack?: string) {
+        this.message = message;
         this.code = code;
+        this.stack = stack;
     }
 
+    public toString(): string {
+        return `Error ${this.code}: ${this.message}\n${this.stack}`;
+    }
+
+    public readonly message: string;
+    public readonly stack?: string;
     public readonly code: number;
 }
 
 class HttpRequestFail extends BaseCustomError {
-    constructor(reason: string, code: number, url: string) {
-        super(`${url}\nBad http request "${reason}"`, code);
+    constructor(message: string, code: number, url: string) {
+        super(`${url}\nBad http request "${message}"`, code);
     }
 }
 
@@ -42,8 +49,8 @@ class TimeoutRequestFail extends HttpRequestFail {
 }
 
 class ValidationError extends BaseCustomError {
-    constructor(message: string) {
-        super(`ValidationFail: ${message}`, 500);
+    constructor(err: Error, message: string) {
+        super(`ValidationFail: ${message}`, 500, err.stack);
     }
 }
 

@@ -1,5 +1,4 @@
 import {Component} from "../component/Component";
-import {TagsName} from "../component/TagsName";
 import {MouseEventDispatcher} from "./MouseEventDispatcher";
 import {ITool} from "./tools/ITool";
 import {BaseTool} from "./tools/BaseTool";
@@ -8,19 +7,13 @@ import {DocumentOrganizer} from "./document/DocumentOrganizer";
 import {DocumentDrawer} from "./document/view/DocumentDrawer";
 import {Draft} from "../../shapes/Draft";
 import {Canvas} from "../canvas/Canvas";
+import {Size} from "../../utils/Size";
 
 class Workspace extends Component {
     constructor(createTools: (creator: ToolCreator) => Array<BaseTool>) {
         super({
             blockName: "workspace",
         });
-
-        this._background = new Component({
-            tagName: TagsName.img,
-            bemInfo: this.createChildBemInfo("background"),
-        });
-        this.addChild(this._background);
-        this._background.setStyle("display", "none");
 
         this._addDisposable(this._resultsCanvas);
         this.addChild(this._resultsCanvas);
@@ -52,13 +45,13 @@ class Workspace extends Component {
     }
 
     public setBackgroundImage(src: string) {
-        if (src) {
-            this._background.setStyle("display", "");
-            this._background.setAttribute("src", src);
-        }
-        else {
-            this._background.setStyle("display", "none");
-        }
+        this.setStyle("background-image", `url(${src})`);
+    }
+
+    public setCanvasSize(size: Size) {
+        this.setSize(size);
+        this._workingCanvas.setCanvasSize(size);
+        this._resultsCanvas.setCanvasSize(size);
     }
 
     public draft(): Draft {
@@ -84,9 +77,14 @@ class Workspace extends Component {
     }
 
     private _tools: Array<BaseTool>;
-    private _background: Component;
-    private _resultsCanvas = new Canvas({bemInfo: this.createChildBemInfo("results-canvas")});
-    private _workingCanvas = new Canvas({bemInfo: this.createChildBemInfo("working-canvas")});
+    private _resultsCanvas = new Canvas({
+        bemInfo: this.createChildBemInfo("results-canvas"),
+        adoptiveSize: true,
+    });
+    private _workingCanvas = new Canvas({
+        bemInfo: this.createChildBemInfo("working-canvas"),
+        adoptiveSize: true,
+    });
     private _documentOrganizer = new DocumentOrganizer(new DocumentDrawer(this._resultsCanvas.context()));
 }
 

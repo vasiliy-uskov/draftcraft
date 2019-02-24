@@ -36,11 +36,8 @@ class Line {
 
     public serialize(): Object {
         return {
-            model: "line",
-            data: {
-                start: this.start,
-                end: this.end,
-            }
+            start: this.start.serialize(),
+            end: this.end.serialize(),
         };
     }
 

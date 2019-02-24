@@ -28,14 +28,11 @@ class Arc {
 
     public serialize(): Object {
         return {
-            model: "arc",
-            data: {
-                center: this.center,
-                angle: this.angle,
-                radius: this.radius,
-                startAngle: this.startAngle,
-                lineType: this.lineType,
-            }
+            center: this.center.serialize(),
+            angle: this.angle,
+            radius: this.radius,
+            startAngle: this.startAngle,
+            lineType: this.lineType,
         }
     }
 

@@ -4,7 +4,7 @@ import {StartPage} from "./startpage/StartPage";
 import {LevelsPage} from "./levelspage/LevelsPage";
 import {ResultPage} from "./resultpage/ResultPage";
 import {DraftPage} from "./draftpage/DraftPage";
-import {GameContext} from "./model/GameContext";
+import {GameContext} from "./gamecontext/GameContext";
 import {Messages} from "../_common/lng/Messages";
 import {HotKeyBinder} from "../_common/hotkeys/HotKeysBinder";
 import {ErrorPage} from "./errorpage/ErrorPage";

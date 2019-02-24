@@ -20,11 +20,8 @@ class LabeledDot {
 
     public serialize(): Object {
         return {
-            model: "dot",
-            data: {
-                position: this.position,
-                label: this.label
-            }
+            position: this.position.serialize(),
+            label: this.label,
         };
     }
 

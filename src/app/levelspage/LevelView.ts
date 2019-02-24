@@ -19,7 +19,7 @@ class LevelView extends Component {
             bemInfo: this.createChildBemInfo("content-wrapper"),
         });
         flipper.addChild(contentWrapper);
-        this._title = level.title();
+        this._title = level.title;
         contentWrapper.addChild(new Component({
             bemInfo: this.createChildBemInfo("index"),
             content: index.toString()
@@ -28,8 +28,8 @@ class LevelView extends Component {
             bemInfo: this.createChildBemInfo("title"),
         });
         contentWrapper.addChild(this._titleView);
-        this.updateModifier("passed", level.passed());
-        if (level.passed()) {
+        this.updateModifier("passed", level.passed);
+        if (level.passed) {
             const passIcon = new Component({
                 bemInfo: this.createChildBemInfo("pass-icon"),
                 content: Icons.accept(),

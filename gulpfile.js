@@ -46,10 +46,16 @@ function buildTs(entryPoint, out, debug) {
 	if (!debug) {
 		stream.transform("babelify", config.babel(debug));
 	}
-	stream
+	let errors = [];
+	return stream
 		.bundle()
 		.on("error", (error) => {
-			console.log(error.message);
+			errors.push(error.message)
+		})
+		.on("end", () => {
+			if (errors.length) {
+				throw errors.join('\n');
+			}
 		})
 		.pipe(source("index.js"))
 		.pipe(buffer())
@@ -58,22 +64,24 @@ function buildTs(entryPoint, out, debug) {
 }
 
 function buildScss(entryPoint, out, debug) {
-	gulp.src(entryPoint)
+	return gulp.src(entryPoint)
 		.pipe(sass(config.sass(debug)))
 		.pipe(base64Inline())
 		.pipe(gulp.dest(out));
 }
 
 gulp.task("build-external", () => {
+	const buildPromises = [];
 	for (const externalConf of config.external) {
 		const externalDir = pathUtils.join(path.externalOut, externalConf.name.toLowerCase().replace(/[-_.]/g, ""));
-		buildTs(externalConf.tsEntryPoint, externalDir, gutil.env.debug);
-		buildScss(externalConf.scssEntryPoint, externalDir, gutil.env.debug);
+		buildPromises.push(buildTs(externalConf.tsEntryPoint, externalDir, gutil.env.debug));
+		buildPromises.push(buildScss(externalConf.scssEntryPoint, externalDir, gutil.env.debug));
 	}
+	return Promise.all(buildPromises);
 });
 
 gulp.task("compile-ts", () => {
-	buildTs(
+	return buildTs(
 		path.tsEntryPoint,
 		path.out,
 		gutil.env.debug
@@ -81,12 +89,12 @@ gulp.task("compile-ts", () => {
 });
 
 gulp.task("compile-scss", () => {
-	buildScss(path.scssEntryPoint, path.out, gutil.env.debug);
+	return buildScss(path.scssEntryPoint, path.out, gutil.env.debug);
 });
 
 gulp.task("watch-scss", ["compile-scss"], () => {
 	gutil.env.debug = true;
-	gulp.watch(path.scssFiles, ["compile-scss"]);
+	gulp.watch(path.scssFiles, ["compile-scss"]).on('error', error => console.log(error));
 });
 
 gulp.task("build", ["compile-ts", "compile-scss"]);

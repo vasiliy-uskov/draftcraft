@@ -48,6 +48,10 @@ function isFunction(a: any): boolean {
     return typeof a == "function";
 }
 
+function isNull(a: any): boolean {
+    return a === null;
+}
+
 function verify<T>(a: T) {
     if (a) {
         return a;
@@ -62,6 +66,7 @@ export {
     verifyString,
     verifyObject,
     verifyArray,
+    isNull,
     isBool,
     isNumber,
     isString,

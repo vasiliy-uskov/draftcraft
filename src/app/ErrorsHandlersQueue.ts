@@ -1,6 +1,6 @@
 import {ICustomError} from "../_common/http/Exceptions";
 import {IErrorDispatcher} from "./IErrorDispatcher";
-import {IErrorHandler} from "./model/IErrorHandler";
+import {IErrorHandler} from "./gamecontext/IErrorHandler";
 
 class ErrorsHandlersQueue implements IErrorDispatcher, IErrorHandler {
     public addErrorHandler(handler: (err: ICustomError) => void) {
@@ -13,7 +13,7 @@ class ErrorsHandlersQueue implements IErrorDispatcher, IErrorHandler {
             handelFn(err);
         }
         this._lastError = err;
-        throw err;
+        throw err.toString();
     }
 
     private _lastError: ICustomError|null = null;

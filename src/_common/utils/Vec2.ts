@@ -43,8 +43,8 @@ class Vec2 {
         return this.scale(1 / this.radius());
     }
 
-    public toString(): string {
-        return `{x: ${this.x}, y: ${this.y}}`;
+    public serialize(): Object {
+        return {x: this.x, y: this.y};
     }
 
     static load(data: any): Vec2 {

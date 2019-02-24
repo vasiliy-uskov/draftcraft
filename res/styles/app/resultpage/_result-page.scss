@@ -6,6 +6,10 @@
     position: relative;
     top: 50%;
 
+    &_detailed {
+      width: 700px;
+    }
+
     &__content {
       background: #FFFFFF;
       box-shadow: 0 0 12px rgba(#333333, 0.6);
@@ -21,6 +25,23 @@
     &__mark-icon {
       width: 20%;
       margin: 20px auto;
+    }
+
+    &__answers-wrapper {
+      padding: 10px 20px 0;
+    }
+
+    &__result-canvas {
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+      outline: solid 1px #000000;
+      width: 48%;
+      display: inline-block;
+
+      &:last-child {
+        margin-left: 4%;
+      }
     }
 
     &__controls {
