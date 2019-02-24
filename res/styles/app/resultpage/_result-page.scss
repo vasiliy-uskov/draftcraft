@@ -6,10 +6,6 @@
     position: relative;
     top: 50%;
 
-    &_detailed {
-      width: 700px;
-    }
-
     &__content {
       background: #FFFFFF;
       box-shadow: 0 0 12px rgba(#333333, 0.6);
@@ -28,7 +24,7 @@
     }
 
     &__answers-wrapper {
-      padding: 10px 20px 0;
+      padding: 20px 20px 0;
     }
 
     &__result-canvas {
@@ -79,6 +75,14 @@
         .result-card__score {
           background: #CC2C00;
         }
+      }
+    }
+
+    &_detailed {
+      width: 700px;
+
+      .result-card__content {
+        padding-bottom: 20px;
       }
     }
   }
