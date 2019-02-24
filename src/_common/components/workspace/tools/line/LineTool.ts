@@ -22,7 +22,7 @@ class LineTool extends BaseTool {
     }
 
     protected _mouseDownHandler({relativeCords}: MouseEventData): void {
-        const position = reducePoint(this._documentOrganizer.draft().getControlPoints(), relativeCords);
+        const position = reducePoint(this._documentOrganizer.draft().controlPoints, relativeCords);
         this._line = new Line(position, position);
         this._invalidateView();
     }
@@ -42,7 +42,7 @@ class LineTool extends BaseTool {
                 ? reduceVector(data.relativeCords.reduce(start)).add(start)
                 : data.relativeCords;
             end = reducePoint(
-                this._documentOrganizer.draft().getControlPoints(),
+                this._documentOrganizer.draft().controlPoints,
                 end
             );
             this._line = new Line(start, end);

@@ -22,7 +22,7 @@ class CompassTool extends BaseTool {
 
     protected _mouseDownHandler({relativeCords}: MouseEventData): void {
         this._currentState.addPoint(reducePoint(
-            this._documentOrganizer.draft().getControlPoints(),
+            this._documentOrganizer.draft().controlPoints,
             relativeCords
         ));
         if (this._currentState.result()) {
@@ -34,7 +34,7 @@ class CompassTool extends BaseTool {
 
     protected _mouseMoveHandler({relativeCords}: MouseEventData): void {
         this._currentState.addPoint(reducePoint(
-            this._documentOrganizer.draft().getControlPoints(),
+            this._documentOrganizer.draft().controlPoints,
             relativeCords
         ));
     }

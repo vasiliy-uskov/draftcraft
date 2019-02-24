@@ -8,12 +8,18 @@ class Vec2 {
     }
 
     public angle(): number {
-        const angle = Math.atan(this.y / this.x);
-        return normalizeAngle(this.x < 0 ? Math.PI + angle : angle);
+        if (!this._angle) {
+            this._angle = Math.atan(this.y / this.x);
+            this._angle = normalizeAngle(this.x < 0 ? Math.PI + this._angle : this._angle)
+        }
+        return this._angle;
     }
 
     public radius(): number {
-        return Math.hypot(this.x, this.y);
+        if (!this._radius) {
+            this._radius = Math.hypot(this.x, this.y);
+        }
+        return this._radius;
     }
 
     public scale(scale: number): Vec2 {
@@ -50,6 +56,9 @@ class Vec2 {
 
     public readonly x: number;
     public readonly y: number;
+
+    private _radius: number|null = null;
+    private _angle: number|null = null;
 }
 
 function createVec2ByPolar(angle: number, radius: number) {

@@ -8,7 +8,7 @@ import {TextAlign} from "../../drawingcontext/TextAlign";
 import {LineType} from "../LineType";
 import {LinesTypesConfig} from "./DrawingParams";
 
-const DOT_RADIUS = 4;
+const DOT_RADIUS = 3;
 
 class ShapesDrawer {
     public static drawArc(drawingContext: IDrawingContext, arc: Arc, color: string) {

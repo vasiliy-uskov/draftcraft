@@ -2,7 +2,7 @@ import {Vec2} from "../utils/Vec2";
 import {verifyNumber, verifyObject} from "../utils/typetools";
 import {Draft} from "./Draft";
 import {LineType} from "./LineType";
-import {vecInCorner} from "../utils/mathutils";
+import {pointInCorner} from "../utils/mathutils";
 
 class Arc {
     constructor(center: Vec2, radius: number, startAngle: number, angle: number, lineType: LineType = LineType.thinSolid) {
@@ -18,13 +18,12 @@ class Arc {
     }
 
     public owns(cord: Vec2): boolean {
-        cord = cord.reduce(this.center);
+        const movedToCenterPoint = cord.reduce(this.center);
         const accuracy = 3;
-        const {start, end} = arcToVectors(this);
         const situateInCircle =
-           cord.x * cord.x + cord.y * cord.y < (this.radius + accuracy) * (this.radius + accuracy)
-        && cord.x * cord.x + cord.y * cord.y > (this.radius - accuracy) * (this.radius - accuracy);
-        return situateInCircle && vecInCorner(cord, start, end)
+            movedToCenterPoint.x * movedToCenterPoint.x + movedToCenterPoint.y * movedToCenterPoint.y < (this.radius + accuracy) * (this.radius + accuracy)
+        && movedToCenterPoint.x * movedToCenterPoint.x + movedToCenterPoint.y * movedToCenterPoint.y > (this.radius - accuracy) * (this.radius - accuracy);
+        return situateInCircle && pointInCorner(cord, this)
     }
 
     public serialize(): Object {
@@ -54,19 +53,6 @@ class Arc {
     readonly startAngle: number = 0;
     readonly center: Vec2;
     readonly lineType: LineType;
-}
-
-function arcToVectors(arc: Arc): {center: Vec2, start: Vec2, end: Vec2} {
-    const center = arc.center;
-    const start = (new Vec2(
-        arc.radius * Math.cos(arc.startAngle),
-        arc.radius * Math.sin(arc.startAngle),
-    ));
-    const end = (new Vec2(
-        arc.radius * Math.cos(arc.startAngle + arc.angle),
-        arc.radius * Math.sin(arc.startAngle + arc.angle),
-    ));
-    return {center, start, end}
 }
 
 export {Arc}

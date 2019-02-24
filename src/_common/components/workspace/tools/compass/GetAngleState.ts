@@ -1,4 +1,4 @@
-import {createVec2ByPolar, Vec2} from "../../../../utils/Vec2";
+import {Vec2} from "../../../../utils/Vec2";
 import {IDrawingContext} from "../../../../drawingcontext/IDrawingContext";
 import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
 import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
@@ -6,7 +6,7 @@ import {Line} from "../../../../shapes/Line";
 import {Arc} from "../../../../shapes/Arc";
 import {ICompassState} from "./ICompassState";
 import {GetCenterState} from "./GetCenterState";
-import {vecInCorner} from "../../../../utils/mathutils";
+import {pointInCorner} from "../../../../utils/mathutils";
 
 class GetAngleState implements ICompassState {
     constructor(line: Line, drawingContext: IDrawingContext) {
@@ -35,10 +35,7 @@ class GetAngleState implements ICompassState {
                 .add(arcCenter)
         );
         const getDelta = (start: number, end: number) => (end + Math.PI * 2 - start) % (Math.PI * 2);
-        const arcEndAngle = this._arc.startAngle + this._arc.angle;
-        const arcStart = createVec2ByPolar(this._arc.startAngle, this._arc.radius);
-        const arcEnd = createVec2ByPolar(arcEndAngle, this._arc.radius);
-        if (this._arc.angle < 2 * Math.PI && !vecInCorner(newPoint, arcStart, arcEnd)) {
+        if (!pointInCorner(cord, this._arc)) {
             const startAngleDelta = getDelta(newPoint.angle(), this._arc.startAngle);
             const endAngleDelta = getDelta(this._arc.startAngle + this._arc.angle, newPoint.angle());
             let startAngle;
