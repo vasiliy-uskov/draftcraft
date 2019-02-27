@@ -1,7 +1,7 @@
-import {Draft} from "../../../../shapes/Draft";
+import {Document} from "../Document";
 
 interface IDocumentView {
-    updateState(draft: Draft, selection: Draft): void;
+    updateState(document: Readonly<Document>): void;
 }
 
 export {IDocumentView};

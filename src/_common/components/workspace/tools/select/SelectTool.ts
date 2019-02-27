@@ -11,11 +11,11 @@ class SelectTool extends BaseTool {
         return "pointer";
     }
 
-    protected _mouseDownHandler(data: MouseEventData): void {
-        this._documentOrganizer.edit(api => {
-            const unselectedDraft = this._documentOrganizer.draft().remove(this._documentOrganizer.selection());
-            const selectionToAdd = unselectedDraft.getOwner(data.relativeCords);
-            const selectionToRemove = this._documentOrganizer.selection().getOwner(data.relativeCords);
+    protected _mouseDownHandler({relativeCords}: MouseEventData): void {
+        this._workspace.edit(api => {
+            const unselectedDraft = this._workspace.draft().remove(this._workspace.selection());
+            const selectionToAdd = unselectedDraft.getOwner(relativeCords);
+            const selectionToRemove = this._workspace.selection().getOwner(relativeCords);
             api
                 .addSelection(selectionToAdd)
                 .removeSelection(selectionToRemove)

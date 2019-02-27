@@ -49,6 +49,9 @@ class Icons {
     public static select():string {
         return fs.readFileSync(__dirname + "/../../../res/images/svg/select.svg").toString();
     }
+    public static move():string {
+        return fs.readFileSync(__dirname + "/../../../res/images/svg/move.svg").toString();
+    }
 }
 
 export {Icons};

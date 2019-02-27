@@ -3,7 +3,7 @@ import {MouseEventDispatcher} from "./MouseEventDispatcher";
 import {ITool} from "./tools/ITool";
 import {BaseTool} from "./tools/BaseTool";
 import {ToolCreator} from "./tools/ToolCreator";
-import {DocumentOrganizer} from "./document/DocumentOrganizer";
+import {WorkspaceModel} from "./document/WorkspaceModel";
 import {DocumentDrawer} from "./document/view/DocumentDrawer";
 import {Draft} from "../../shapes/Draft";
 import {Canvas} from "../canvas/Canvas";
@@ -85,7 +85,7 @@ class Workspace extends Component {
         bemInfo: this.createChildBemInfo("working-canvas"),
         adoptiveSize: true,
     });
-    private _documentOrganizer = new DocumentOrganizer(new DocumentDrawer(this._resultsCanvas.context()));
+    private _documentOrganizer = new WorkspaceModel(new DocumentDrawer(this._resultsCanvas.context()));
 }
 
 export {Workspace};

@@ -19,6 +19,14 @@ class Line {
         return new Draft({arcs: [], lines: [this], dots: []})
     }
 
+    public transform(transformation: Transform): Line {
+        return new Line(
+            transformation.transform(this.start),
+            transformation.transform(this.end),
+            this.lineType,
+        )
+    }
+
     public owns(cord: Vec2): boolean {
         const translate = Transform.translate(this.start.scale(-1));
         const accuracy = 5;

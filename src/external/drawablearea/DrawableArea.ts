@@ -56,7 +56,8 @@ class DrawableArea extends Component{
         creator.createLineTool(),
         creator.createCompassTool(),
         creator.createDotTool(),
-        creator.createSelectTool()
+        creator.createSelectTool(),
+        creator.createMoveTool()
     ]);
     private _toolbar = new Toolbar(this._workspace.tools());
 }

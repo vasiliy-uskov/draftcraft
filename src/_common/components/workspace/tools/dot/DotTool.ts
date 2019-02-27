@@ -5,7 +5,7 @@ import {IDrawingContext} from "../../../../drawingcontext/IDrawingContext";
 import {MouseEventData, MouseEventDispatcher} from "../../MouseEventDispatcher";
 import {Component} from "../../../component/Component";
 import {BaseTool} from "../BaseTool";
-import {IDocumentOrganizer} from "../../document/IDocumentOrganizer";
+import {IWorkspaceModel} from "../../document/IWorkspaceModel";
 import {LabeledDot} from "../../../../shapes/LabeledDot";
 import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
 import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
@@ -14,7 +14,7 @@ import {reducePoint} from "../../../../utils/mathutils";
 const LABEL_PADDING = new Vec2(0, -15);
 
 class DotTool extends BaseTool {
-    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, documentOrganizer: IDocumentOrganizer, workspace: Component) {
+    constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, documentOrganizer: IWorkspaceModel, workspace: Component) {
         super(drawingContext, mouseEventDispatcher, documentOrganizer);
         this._labelInput = new LabelInput(workspace);
         this._addDisposable(this._labelInput);
@@ -35,13 +35,13 @@ class DotTool extends BaseTool {
     }
 
     protected _mouseUpHandler({relativeCords}: MouseEventData): void {
-        const position = reducePoint(this._documentOrganizer.draft().controlPoints, relativeCords);
+        const position = reducePoint(this._workspace.draft().controlPoints, relativeCords);
         const labelPosition = relativeCords.add(LABEL_PADDING);
         this._labelInput.show(labelPosition);
         ShapesDrawer.drawDot(this._drawingContext, position, DrawingParams.linesColor());
         this._addHandlerCallOnce(this._labelInput.inputEndEvent(), (label) => {
             const dot = new LabeledDot(position, label);
-            this._documentOrganizer.edit(api => api.addDraft(dot.draft()).commit());
+            this._workspace.edit(api => api.addDraft(dot.draft()).commit());
             this.reset();
         });
     }

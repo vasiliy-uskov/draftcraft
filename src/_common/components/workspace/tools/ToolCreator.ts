@@ -6,13 +6,14 @@ import {LineTool} from "./line/LineTool";
 import {DotTool} from "./dot/DotTool";
 import {CompassTool} from "./compass/CompassTool";
 import {SelectTool} from "./select/SelectTool";
-import {IDocumentOrganizer} from "../document/IDocumentOrganizer";
+import {IWorkspaceModel} from "../document/IWorkspaceModel";
+import {MoveTool} from "./move/MoveTool";
 
 
 type ToolCreatorConfig = {
     canvasContext: IDrawingContext,
     canvasMouseEventDispatcher: MouseEventDispatcher,
-    documentOrganizer: IDocumentOrganizer,
+    documentOrganizer: IWorkspaceModel,
     workspaceContainer: Component
 }
 
@@ -35,13 +36,18 @@ class ToolCreator {
     public createCompassTool(): BaseTool {
         return new CompassTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
     }
+
     public createSelectTool(): BaseTool {
         return new SelectTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
     }
 
+    public createMoveTool(): BaseTool {
+        return new MoveTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
+    }
+
     private readonly _canvasContext: IDrawingContext;
     private readonly _mouseEventDispatcher: MouseEventDispatcher;
-    private readonly _documentOrganizer: IDocumentOrganizer;
+    private readonly _documentOrganizer: IWorkspaceModel;
     private readonly _workspaceContainer: Component;
 }
 

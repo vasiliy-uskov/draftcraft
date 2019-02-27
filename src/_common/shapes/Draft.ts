@@ -4,6 +4,7 @@ import {Line} from "./Line";
 import {verifyArray, verifyObject} from "../utils/typetools";
 import {Vec2} from "../utils/Vec2";
 import {getArcsIntersections, getLineAndArcIntersections, getLinesIntersection, inRange} from "../utils/mathutils";
+import {Transform} from "../utils/Transform";
 
 type DratConfig = {
     arcs: Array<Arc>,
@@ -48,10 +49,17 @@ class Draft {
     }
 
     public remove(draft: Draft): Draft {
-        const arcs = this.arcs.slice().filter(arc => !draft.arcs.includes(arc));
-        const dots = this.dots.slice().filter(dot => !draft.dots.includes(dot));
-        const lines = this.lines.slice().filter(line => !draft.lines.includes(line));
+        const arcs = this.arcs.filter(arc => !draft.arcs.includes(arc));
+        const dots = this.dots.filter(dot => !draft.dots.includes(dot));
+        const lines = this.lines.filter(line => !draft.lines.includes(line));
         return new Draft({arcs, dots, lines})
+    }
+
+    public transform(transformation: Transform): Draft {
+        const arcs = this.arcs.map(arc => arc.transform(transformation));
+        const lines = this.lines.map(line => line.transform(transformation));
+        const dots = this.dots.map(dot => dot.transform(transformation));
+        return new Draft({arcs, lines, dots});
     }
 
     public serialize(): Object {

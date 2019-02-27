@@ -1,12 +1,12 @@
 import {ActionHolder} from "../../../action/ActionHolder";
 import {Document} from "./Document";
 import {Draft} from "../../../shapes/Draft";
-import {IDocumentEditApi, IDocumentOrganizer} from "./IDocumentOrganizer";
+import {IDocumentEditApi, IWorkspaceModel} from "./IWorkspaceModel";
 import {IDocumentView} from "./view/IDocumentView";
 import {DocumentEditApi} from "./DocumentEditApi";
 import {DocumentChangeAction} from "./actions/DocumentChangeAction";
 
-class DocumentOrganizer implements IDocumentOrganizer {
+class WorkspaceModel implements IWorkspaceModel {
     constructor(documentView: IDocumentView) {
         this._documentView = documentView;
     }
@@ -17,22 +17,22 @@ class DocumentOrganizer implements IDocumentOrganizer {
                 const documentClone = new Document(this._document.draft, this._document.selection);
                 const commitDocument = (document: Document) => {
                     this._actionHolder.execute(new DocumentChangeAction(this._document, document));
-                    this._documentView.updateState(this._document.draft, this._document.selection);
+                    this._documentView.updateState(this._document);
                     resolve();
                 };
-                editFn(new DocumentEditApi(documentClone, commitDocument))
+                editFn(new DocumentEditApi(documentClone, this._documentView, commitDocument, resolve))
             })
         })
     }
 
     public undo() {
         this._actionHolder.undo();
-        this._documentView.updateState(this._document.draft, this._document.selection);
+        this._documentView.updateState(this._document);
     }
 
     public redo() {
         this._actionHolder.redo();
-        this._documentView.updateState(this._document.draft, this._document.selection);
+        this._documentView.updateState(this._document);
     }
 
     public cleanDocument() {
@@ -54,4 +54,4 @@ class DocumentOrganizer implements IDocumentOrganizer {
     private _actionHolder = new ActionHolder();
 }
 
-export {DocumentOrganizer}
+export {WorkspaceModel}

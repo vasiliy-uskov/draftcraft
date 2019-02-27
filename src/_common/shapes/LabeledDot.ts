@@ -1,6 +1,7 @@
 import {Vec2} from "../utils/Vec2";
 import {verifyObject, verifyString} from "../utils/typetools";
 import {Draft} from "./Draft";
+import {Transform} from "../utils/Transform";
 
 class LabeledDot {
     constructor(position: Vec2, label: string) {
@@ -10,6 +11,13 @@ class LabeledDot {
 
     public draft(): Draft {
         return new Draft({arcs: [], lines: [], dots: [this]})
+    }
+
+    public transform(transformation: Transform): LabeledDot {
+        return new LabeledDot(
+            transformation.transform(this.position),
+            this.label,
+        )
     }
 
     public owns(cord: Vec2): boolean {
