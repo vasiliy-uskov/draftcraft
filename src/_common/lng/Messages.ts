@@ -10,7 +10,7 @@ class Messages {
 		this._messages.set(PagesType.ErrorPage, error);
 
 		const startPage = new Map<string, string>();
-		startPage.set("startButton", "play");
+		startPage.set("startButton", "start");
 		startPage.set("levelsButton", "levels");
 		startPage.set("logo", "DraftCraft");
 		this._messages.set(PagesType.StartPage, startPage);

@@ -17,14 +17,16 @@ class DraftPage extends BasePage {
 
 		this._gameContext = gameContext;
 
-		const taskWrapper = new Component({blockName: "task-wrapper"});
-		this.addChild(taskWrapper);
+		const contentWrapper = new Component({blockName: "content-wrapper"});
+		this._addDisposable(contentWrapper);
+		this.addChild(contentWrapper);
+
 		this._addDisposable(this._taskView);
-		taskWrapper.addChild(this._taskView);
+		contentWrapper.addChild(this._taskView);
 		this._addHandler(this._taskView.helpRequestEvent(), () => this._helpPopup.open());
 
 		this._addDisposable(this._workspace);
-		this.addChild(this._workspace);
+		contentWrapper.addChild(this._workspace);
 
 		this._addDisposable(this._toolbar);
 		this.addChild(this._toolbar);
@@ -69,6 +71,7 @@ class DraftPage extends BasePage {
 		this._taskView.setContent(currentLevel.task);
 		this._helpPopup.setContent(currentLevel.help);
 		this._toolbar.activateFirstTool();
+		this._invalidateWorkspacePosition();
 	}
 
 	protected async _beforeClose() {
@@ -77,6 +80,16 @@ class DraftPage extends BasePage {
 
 	protected async _afterClose() {
 		this._workspace.clean();
+	}
+
+	private _invalidateWorkspacePosition() {
+		this._workspace.setStyle("margin-top", ``);
+		const y = this._workspace.y();
+		const height = this.height();
+		const workspaceHeight = this._workspace.height();
+		const minTopMargin = 20;
+		const topMargin = Math.max(minTopMargin, (height - workspaceHeight) / 2 - y);
+		this._workspace.setStyle("margin-top", `${topMargin}px`);
 	}
 
 	private _gameContext: GameContext;
