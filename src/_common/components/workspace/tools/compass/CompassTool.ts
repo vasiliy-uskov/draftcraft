@@ -21,10 +21,10 @@ class CompassTool extends BaseTool {
 	}
 
 	protected _mouseDownHandler({relativeCords}: MouseEventData): void {
-		this._currentState.addPoint(reducePoint(
-			this._workspace.draft().controlPoints,
-			relativeCords
-		));
+		relativeCords = this._needToReducePoints()
+			? reducePoint(this._workspace.draft().controlPoints, relativeCords)
+			: relativeCords;
+		this._currentState.addPoint(relativeCords);
 		if (this._currentState.result()) {
 			const arc = this._currentState.result();
 			this._workspace.edit(api => api.addDraft(arc.draft()).commit());

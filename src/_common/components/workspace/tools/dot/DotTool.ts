@@ -35,7 +35,9 @@ class DotTool extends BaseTool {
 	}
 
 	protected _mouseUpHandler({relativeCords}: MouseEventData): void {
-		const position = reducePoint(this._workspace.draft().controlPoints, relativeCords);
+		const position = this._needToReducePoints()
+			? reducePoint(this._workspace.draft().controlPoints, relativeCords)
+			: relativeCords;
 		const labelPosition = relativeCords.add(LABEL_PADDING);
 		this._labelInput.show(labelPosition);
 		ShapesDrawer.drawDot(this._drawingContext, position, DrawingParams.linesColor());

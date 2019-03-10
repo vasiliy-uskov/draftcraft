@@ -41,10 +41,9 @@ class LineTool extends BaseTool {
 			let end = data.shiftKey
 				? reduceVector(data.relativeCords.reduce(start)).add(start)
 				: data.relativeCords;
-			end = reducePoint(
-				this._workspace.draft().controlPoints,
-				end
-			);
+			end = this._needToReducePoints()
+				? reducePoint(this._workspace.draft().controlPoints, end)
+				: end;
 			this._line = new Line(start, end);
 			this._invalidateView();
 		}

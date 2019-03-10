@@ -4,6 +4,7 @@ import {MouseEventData, MouseEventDispatcher} from "../MouseEventDispatcher";
 import {Disposable} from "../../../disposable/Disposable";
 import {EventDispatcher} from "../../../disposable/EventDispatcher";
 import {IWorkspaceModel} from "../document/IWorkspaceModel";
+import {isKeyPressed} from "../../../hotkeys/ActiveKeysMap";
 
 abstract class BaseTool extends Disposable implements ITool {
 	constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, workspace: IWorkspaceModel) {
@@ -12,6 +13,7 @@ abstract class BaseTool extends Disposable implements ITool {
 		this._drawingContext = drawingContext;
 		this._addHandler(mouseEventDispatcher.mouseDownEvent(), (data: MouseEventData) => this._activated && this._mouseDownHandler(data));
 		this._addHandler(mouseEventDispatcher.mouseMoveEvent(), (data: MouseEventData) => this._activated && this._mouseMoveHandler(data));
+		this._addHandler(mouseEventDispatcher.mouseUpEvent(), (data: MouseEventData) => this._activated && this._mouseUpHandler(data));
 		this._addHandler(mouseEventDispatcher.mouseUpEvent(), (data: MouseEventData) => this._activated && this._mouseUpHandler(data));
 	}
 
@@ -47,6 +49,11 @@ abstract class BaseTool extends Disposable implements ITool {
 	}
 
 	protected _mouseMoveHandler(data: MouseEventData): void {
+	}
+
+	/** @final */
+	protected _needToReducePoints(): boolean {
+		return isKeyPressed("Alt");
 	}
 
 	/** @final */
