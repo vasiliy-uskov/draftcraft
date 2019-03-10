@@ -14,8 +14,8 @@ class SelectTool extends BaseTool {
 	protected _mouseDownHandler({relativeCords}: MouseEventData): void {
 		this._workspace.edit(api => {
 			const unselectedDraft = this._workspace.draft().remove(this._workspace.selection());
-			const selectionToAdd = unselectedDraft.getOwner(relativeCords);
-			const selectionToRemove = this._workspace.selection().getOwner(relativeCords);
+			const selectionToAdd = unselectedDraft.getShapesByPoint(relativeCords);
+			const selectionToRemove = this._workspace.selection().getShapesByPoint(relativeCords);
 			api
 				.addSelection(selectionToAdd)
 				.removeSelection(selectionToRemove)
