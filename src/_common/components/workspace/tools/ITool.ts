@@ -1,8 +1,11 @@
 interface ITool {
-    activate(): void;
-    deactivate(): void;
-    reset(): void;
-    icon(): string;
+	activate(): void;
+
+	deactivate(): void;
+
+	reset(): void;
+
+	icon(): string;
 }
 
 export {ITool}

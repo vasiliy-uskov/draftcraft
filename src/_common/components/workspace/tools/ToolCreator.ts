@@ -11,44 +11,44 @@ import {MoveTool} from "./move/MoveTool";
 
 
 type ToolCreatorConfig = {
-    canvasContext: IDrawingContext,
-    canvasMouseEventDispatcher: MouseEventDispatcher,
-    documentOrganizer: IWorkspaceModel,
-    workspaceContainer: Component
+	canvasContext: IDrawingContext,
+	canvasMouseEventDispatcher: MouseEventDispatcher,
+	documentOrganizer: IWorkspaceModel,
+	workspaceContainer: Component
 }
 
 class ToolCreator {
-    constructor({canvasContext, canvasMouseEventDispatcher, documentOrganizer, workspaceContainer}: ToolCreatorConfig) {
-        this._canvasContext = canvasContext;
-        this._mouseEventDispatcher = canvasMouseEventDispatcher;
-        this._documentOrganizer = documentOrganizer;
-        this._workspaceContainer = workspaceContainer;
-    }
+	constructor({canvasContext, canvasMouseEventDispatcher, documentOrganizer, workspaceContainer}: ToolCreatorConfig) {
+		this._canvasContext = canvasContext;
+		this._mouseEventDispatcher = canvasMouseEventDispatcher;
+		this._documentOrganizer = documentOrganizer;
+		this._workspaceContainer = workspaceContainer;
+	}
 
-    public createLineTool(): BaseTool {
-        return new LineTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
-    }
+	public createLineTool(): BaseTool {
+		return new LineTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
+	}
 
-    public createDotTool(): BaseTool {
-        return new DotTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer, this._workspaceContainer);
-    }
+	public createDotTool(): BaseTool {
+		return new DotTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer, this._workspaceContainer);
+	}
 
-    public createCompassTool(): BaseTool {
-        return new CompassTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
-    }
+	public createCompassTool(): BaseTool {
+		return new CompassTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
+	}
 
-    public createSelectTool(): BaseTool {
-        return new SelectTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
-    }
+	public createSelectTool(): BaseTool {
+		return new SelectTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
+	}
 
-    public createMoveTool(): BaseTool {
-        return new MoveTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
-    }
+	public createMoveTool(): BaseTool {
+		return new MoveTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer);
+	}
 
-    private readonly _canvasContext: IDrawingContext;
-    private readonly _mouseEventDispatcher: MouseEventDispatcher;
-    private readonly _documentOrganizer: IWorkspaceModel;
-    private readonly _workspaceContainer: Component;
+	private readonly _canvasContext: IDrawingContext;
+	private readonly _mouseEventDispatcher: MouseEventDispatcher;
+	private readonly _documentOrganizer: IWorkspaceModel;
+	private readonly _workspaceContainer: Component;
 }
 
 export {ToolCreator};

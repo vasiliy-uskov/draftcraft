@@ -23,23 +23,6 @@
       margin: 20px auto;
     }
 
-    &__answers-wrapper {
-      padding: 20px 20px 0;
-    }
-
-    &__result-canvas {
-      background-size: contain;
-      background-position: center center;
-      background-repeat: no-repeat;
-      outline: solid 1px #000000;
-      width: 48%;
-      display: inline-block;
-
-      &:last-child {
-        margin-left: 4%;
-      }
-    }
-
     &__controls {
       margin-top: 10px;
       text-align: center;
@@ -80,11 +63,46 @@
 
     &_detailed {
       width: 700px;
-
-      .result-card__content {
-        padding-bottom: 20px;
-      }
     }
+  }
+
+  .popup-trigger {
+    background: transparent;
+    color: initial;
+    box-shadow: none;
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 20px auto 5px;
+  }
+
+  .popup-trigger:hover {
+    text-decoration: underline;
+  }
+
+  .detailed-answer-popup {
+    .popup__popup-container {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .popup__content-container {
+      padding: 10px 40px;
+    }
+  }
+
+  .answers-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .result-canvas {
+    margin: 0 20px 20px;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: solid 1px #000000;
   }
 
   .icon-button {
