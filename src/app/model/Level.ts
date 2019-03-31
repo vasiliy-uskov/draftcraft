@@ -49,7 +49,7 @@ class Level {
 		try {
 			verifyObject(levelConfig);
 			return new Level({
-				id: verifyString(levelConfig.id),
+				id: levelConfig.id.toString(),
 				task: verifyString(levelConfig.task),
 				help: verifyString(levelConfig.help),
 				img: verifyString(levelConfig.img),

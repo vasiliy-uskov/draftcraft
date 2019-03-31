@@ -22,7 +22,9 @@ class LineTool extends BaseTool {
 	}
 
 	protected _mouseDownHandler({relativeCords}: MouseEventData): void {
-		const position = reducePoint(this._workspace.draft().controlPoints, relativeCords);
+		const position = this._needToReducePoints()
+			? reducePoint(this._workspace.draft().controlPoints, relativeCords)
+			: relativeCords;
 		this._line = new Line(position, position);
 		this._invalidateView();
 	}

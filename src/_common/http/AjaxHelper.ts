@@ -21,7 +21,7 @@ class AjaxHelper {
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			let loadHandler: () => void;
 			let baseErrHandler: (err: HttpRequestFail) => void;
-			let errHandler = () => baseErrHandler(new UnrecognizedHttpRequestError(xhr.status, url));
+			let errHandler = () => baseErrHandler(new UnrecognizedHttpRequestError(xhr.status, url, xhr.responseText));
 			let abortHandler = () => baseErrHandler(new RequestAbortedError(xhr.status, url));
 			let timeoutHandler = () => baseErrHandler(new TimeoutRequestFail(xhr.status, url));
 			const removeHandlers = () => {
@@ -37,7 +37,7 @@ class AjaxHelper {
 			loadHandler = () => {
 				removeHandlers();
 				if (Math.floor(xhr.status / 100) != 2) {
-					reject(new UnrecognizedHttpRequestError(xhr.status, url));
+					reject(new UnrecognizedHttpRequestError(xhr.status, url, xhr.responseText));
 				}
 				if (xhr.responseText === "") {
 					resolve({});

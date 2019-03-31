@@ -29,7 +29,7 @@ class GameContext extends Disposable {
 			.then(() => {
 				const currentLevelId = this._currentLevel.value().id;
 				this._levels.setAnswer(currentLevelId, answer);
-				this._api.setLevelAnswer(currentLevelId, answer);
+				return this._api.setLevelAnswer(currentLevelId, answer);
 			})
 			.then(() => this._updateLevels());
 	}

@@ -10,7 +10,7 @@ class BaseCustomError implements ICustomError {
 	}
 
 	public toString(): string {
-		return `Error ${this.code}: ${this.message}\n${this.stack}`;
+		return `Error ${this.code}: ${this.message}${this.stack ? `\n${this.stack}` : ''}`;
 	}
 
 	public readonly message: string;
@@ -31,8 +31,8 @@ class WrongAnswerDataType extends HttpRequestFail {
 }
 
 class UnrecognizedHttpRequestError extends HttpRequestFail {
-	constructor(code: number, url: string) {
-		super("error", code, url);
+	constructor(code: number, url: string, message: string = "") {
+		super(message, code, url);
 	}
 }
 
