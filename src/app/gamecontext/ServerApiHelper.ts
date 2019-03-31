@@ -19,8 +19,7 @@ class ServerApiHelper {
 	}
 
 	public setLevelAnswer(taskId: string, answer: string): Promise<void> {
-		return AjaxHelper.post(ApiUrls.addAnswer, this._getData({taskId, answer})).then(() => {
-		});
+		return AjaxHelper.post(ApiUrls.addAnswer, this._getData({taskId, answer})).then(() => {});
 	}
 
 	private _getData(args?: Object): Object {

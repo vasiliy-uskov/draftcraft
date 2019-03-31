@@ -7,7 +7,7 @@ type LevelConfig = {
 	title: string,
 	task: string,
 	help: string,
-	img: string,
+	img?: string,
 	enable: boolean,
 	passed: boolean,
 	canvasSize: Size,
@@ -68,7 +68,7 @@ class Level {
 
 	public readonly passed: boolean;
 	public readonly enable: boolean;
-	public readonly img: string;
+	public readonly img?: string;
 	public readonly help: string;
 	public readonly title: string;
 	public readonly id: string;

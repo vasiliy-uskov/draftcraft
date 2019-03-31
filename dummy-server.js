@@ -104,7 +104,7 @@ let levels = [
 	},
 ];
 
-app.post("/get_assigned_levels", function (req, res) {
+app.post("/get_variant_tasks", function (req, res) {
 	res.json(levels);
 });
 
@@ -120,7 +120,7 @@ app.post("/add_answer_to_level", function (req, res) {
 	}
 
 	res.status(200);
-	res.send();
+	res.json(undefined);
 });
 
 app.listen(3000, function () {
