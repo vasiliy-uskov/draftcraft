@@ -40,7 +40,7 @@ class DrawableArea extends Component {
 	}
 
 	public getAnswer(): string {
-		return JSON.stringify(this._workspace.selection().serialize());
+		return JSON.stringify(this._workspace.markedDraft().serialize());
 	}
 
 	public getDetailedAnswer(): string {
@@ -57,7 +57,7 @@ class DrawableArea extends Component {
 		creator.createLineTool(),
 		creator.createCompassTool(),
 		creator.createDotTool(),
-		creator.createSelectTool(),
+		creator.createMarkTool(),
 		creator.createMoveTool()
 	]);
 }

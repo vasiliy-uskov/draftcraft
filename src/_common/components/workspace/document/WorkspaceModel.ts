@@ -12,7 +12,7 @@ class WorkspaceModel implements IWorkspaceModel {
 	}
 
 	public edit(editFn: (api: IDocumentEditApi) => void) {
-		const documentClone = new Document(this._document.draft, this._document.selection);
+		const documentClone = new Document(this._document.draft, this._document.markedDraft);
 		const commitDocument = (document: Document) => {
 			this._actionHolder.execute(new DocumentChangeAction(this._document, document));
 			this._documentView.updateState(this._document);
@@ -35,8 +35,8 @@ class WorkspaceModel implements IWorkspaceModel {
 		this._actionHolder = new ActionHolder();
 	}
 
-	public selection(): Draft {
-		return this._document.selection;
+	public markedDraft(): Draft {
+		return this._document.markedDraft;
 	}
 
 	public draft(): Draft {

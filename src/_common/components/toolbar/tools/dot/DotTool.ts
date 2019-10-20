@@ -1,10 +1,10 @@
 import {Vec2} from "../../../../utils/Vec2";
 import {LabelInput} from "./LabelInput";
 import {IDrawingContext} from "../../../../drawingcontext/IDrawingContext";
-import {MouseEventData, MouseEventDispatcher} from "../../MouseEventDispatcher";
+import {MouseEventData, MouseEventDispatcher} from "../../../workspace/MouseEventDispatcher";
 import {Component} from "../../../component/Component";
 import {BaseTool} from "../BaseTool";
-import {IWorkspaceModel} from "../../document/IWorkspaceModel";
+import {IWorkspaceModel} from "../../../workspace/document/IWorkspaceModel";
 import {LabeledDot} from "../../../../shapes/LabeledDot";
 import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
 import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";

@@ -50,8 +50,8 @@ class Workspace extends Component {
 		return this._documentOrganizer.draft();
 	}
 
-	public selection(): Draft {
-		return this._documentOrganizer.selection();
+	public markedDraft(): Draft {
+		return this._documentOrganizer.markedDraft();
 	}
 
 	public undo() {

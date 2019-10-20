@@ -5,15 +5,15 @@ interface IDocumentEditApi {
 
 	removeDraft(draft: Draft): IDocumentEditApi;
 
-	addSelection(draft: Draft): IDocumentEditApi;
+	markDraft(draft: Draft): IDocumentEditApi;
 
-	removeSelection(draft: Draft): IDocumentEditApi;
+	unmarkDraft(draft: Draft): IDocumentEditApi;
 
 	updateView(): IDocumentEditApi;
 
 	draft(): Draft;
 
-	selection(): Draft;
+	markedDraft(): Draft;
 
 	commit(): void;
 
@@ -23,7 +23,7 @@ interface IDocumentEditApi {
 interface IWorkspaceModel {
 	edit(editFn: (api: IDocumentEditApi) => void): void;
 
-	selection(): Draft;
+	markedDraft(): Draft;
 
 	draft(): Draft;
 }

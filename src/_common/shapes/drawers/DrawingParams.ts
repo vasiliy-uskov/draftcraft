@@ -5,7 +5,7 @@ const DrawingParams = new class {
 		return "#555555"
 	}
 
-	public selectedLinesColor(): string {
+	public markedLinesColor(): string {
 		return "#AD731D"
 	}
 

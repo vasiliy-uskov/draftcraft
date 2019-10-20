@@ -1,5 +1,5 @@
 import {AnnotationDrawer} from "../../../../shapes/drawers/AnnotationDrawer";
-import {MouseEventData} from "../../MouseEventDispatcher";
+import {MouseEventData} from "../../../workspace/MouseEventDispatcher";
 import {BaseTool} from "../BaseTool";
 import {Line} from "../../../../shapes/Line";
 import {reducePoint, reduceVector} from "../../../../utils/mathutils";

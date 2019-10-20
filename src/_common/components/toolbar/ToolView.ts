@@ -1,5 +1,5 @@
 import {Component} from "../component/Component";
-import {ITool} from "../workspace/tools/ITool";
+import {ITool} from "./tools/ITool";
 import {BemInfo} from "../component/BemInfo";
 
 type ToolViewConfig = {

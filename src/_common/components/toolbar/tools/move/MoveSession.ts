@@ -1,4 +1,4 @@
-import {IDocumentEditApi} from "../../document/IWorkspaceModel";
+import {IDocumentEditApi} from "../../../workspace/document/IWorkspaceModel";
 import {Draft} from "../../../../shapes/Draft";
 import {Vec2} from "../../../../utils/Vec2";
 import {Transform} from "../../../../utils/Transform";
@@ -38,7 +38,7 @@ class MoveSession {
 		const transformedDraft = this._transformedDraft();
 		this._documentApi
 			.addDraft(transformedDraft)
-			.addSelection(transformedDraft)
+			.markDraft(transformedDraft)
 			.commit();
 	}
 
@@ -47,7 +47,7 @@ class MoveSession {
 		ShapesDrawer.drawDraft(
 			this._drawingContext,
 			this._transformedDraft(),
-			DrawingParams.selectedLinesColor()
+			DrawingParams.markedLinesColor()
 		);
 	}
 

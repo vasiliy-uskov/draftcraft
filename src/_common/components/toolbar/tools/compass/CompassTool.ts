@@ -1,5 +1,5 @@
 import {ICompassState} from "./ICompassState";
-import {MouseEventData} from "../../MouseEventDispatcher";
+import {MouseEventData} from "../../../workspace/MouseEventDispatcher";
 import {BaseTool} from "../BaseTool";
 import {GetCenterState} from "./GetCenterState";
 import {reducePoint} from "../../../../utils/mathutils";

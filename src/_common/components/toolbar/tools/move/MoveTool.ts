@@ -1,5 +1,5 @@
 import {BaseTool} from "../BaseTool";
-import {MouseEventData} from "../../MouseEventDispatcher";
+import {MouseEventData} from "../../../workspace/MouseEventDispatcher";
 import {Vec2} from "../../../../utils/Vec2";
 import {MoveSession} from "./MoveSession";
 
@@ -31,7 +31,7 @@ class MoveTool extends BaseTool {
 			this._moveSession = new MoveSession({
 				documentApi,
 				drawingContext: this._drawingContext,
-				selectedDraft: this._workspace.selection()
+				selectedDraft: this._workspace.markedDraft()
 			})
 		})
 	}

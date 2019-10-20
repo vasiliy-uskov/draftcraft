@@ -1,12 +1,12 @@
 import {Draft} from "../../../shapes/Draft";
 
 class Document {
-	constructor(draft: Draft = Draft.create(), selection: Draft = Draft.create()) {
+	constructor(draft: Draft = Draft.create(), markedDraft: Draft = Draft.create()) {
 		this.draft = draft;
-		this.selection = selection;
+		this.markedDraft = markedDraft;
 	}
 
-	public selection: Draft;
+	public markedDraft: Draft;
 	public draft: Draft;
 }
 

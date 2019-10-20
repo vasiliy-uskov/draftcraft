@@ -1,9 +1,9 @@
 import {ITool} from "./ITool";
 import {IDrawingContext} from "../../../drawingcontext/IDrawingContext";
-import {MouseEventData, MouseEventDispatcher} from "../MouseEventDispatcher";
+import {MouseEventData, MouseEventDispatcher} from "../../workspace/MouseEventDispatcher";
 import {Disposable} from "../../../disposable/Disposable";
 import {EventDispatcher} from "../../../disposable/EventDispatcher";
-import {IWorkspaceModel} from "../document/IWorkspaceModel";
+import {IWorkspaceModel} from "../../workspace/document/IWorkspaceModel";
 
 abstract class BaseTool extends Disposable implements ITool {
 	constructor(drawingContext: IDrawingContext, mouseEventDispatcher: MouseEventDispatcher, workspace: IWorkspaceModel) {

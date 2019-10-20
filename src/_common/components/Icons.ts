@@ -61,7 +61,7 @@ class Icons {
 		return fs.readFileSync(__dirname + "/../../../res/images/svg/accept.svg").toString();
 	}
 
-	public static select(): string {
+	public static marker(): string {
 		return fs.readFileSync(__dirname + "/../../../res/images/svg/select.svg").toString();
 	}
 

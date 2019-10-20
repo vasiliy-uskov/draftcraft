@@ -18,17 +18,17 @@ class DocumentEditApi implements IDocumentEditApi {
 
 	public removeDraft(draft: Draft): DocumentEditApi {
 		this._document.draft = this._document.draft.remove(draft);
-		this._document.selection = this._document.selection.remove(draft);
+		this._document.markedDraft = this._document.markedDraft.remove(draft);
 		return this;
 	}
 
-	public addSelection(draft: Draft): DocumentEditApi {
-		this._document.selection = this._document.selection.add(draft);
+	public markDraft(draft: Draft): DocumentEditApi {
+		this._document.markedDraft = this._document.markedDraft.add(draft);
 		return this;
 	}
 
-	public removeSelection(draft: Draft): DocumentEditApi {
-		this._document.selection = this._document.selection.remove(draft);
+	public unmarkDraft(draft: Draft): DocumentEditApi {
+		this._document.markedDraft = this._document.markedDraft.remove(draft);
 		return this;
 	}
 
@@ -41,8 +41,8 @@ class DocumentEditApi implements IDocumentEditApi {
 		return this._document.draft
 	}
 
-	public selection(): Draft {
-		return this._document.selection;
+	public markedDraft(): Draft {
+		return this._document.markedDraft;
 	}
 
 	public commit() {

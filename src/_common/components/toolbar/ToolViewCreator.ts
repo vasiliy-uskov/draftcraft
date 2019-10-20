@@ -2,11 +2,11 @@ import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
 import {MouseEventDispatcher} from "../workspace/MouseEventDispatcher";
 import {IWorkspaceModel} from "../workspace/document/IWorkspaceModel";
 import {Component} from "../component/Component";
-import {LineTool} from "../workspace/tools/line/LineTool";
-import {DotTool} from "../workspace/tools/dot/DotTool";
-import {CompassTool} from "../workspace/tools/compass/CompassTool";
-import {SelectTool} from "../workspace/tools/select/SelectTool";
-import {MoveTool} from "../workspace/tools/move/MoveTool";
+import {LineTool} from "./tools/line/LineTool";
+import {DotTool} from "./tools/dot/DotTool";
+import {CompassTool} from "./tools/compass/CompassTool";
+import {MarkTool} from "./tools/marker/MarkTool";
+import {MoveTool} from "./tools/move/MoveTool";
 import {ToolView} from "./ToolView";
 import {Icons} from "../Icons";
 import {BemInfo} from "../component/BemInfo";
@@ -27,7 +27,7 @@ interface IToolCreator {
 
 	createCompassTool(): ToolView;
 
-	createSelectTool(): ToolView;
+	createMarkTool(): ToolView;
 
 	createMoveTool(): ToolView;
 }
@@ -68,12 +68,12 @@ class ToolViewCreator implements IToolCreator {
 		});
 	}
 
-	public createSelectTool(): ToolView {
+	public createMarkTool(): ToolView {
 		return new ToolView({
 			bemInfo: this._createBemInfoFn(),
-			tool: new SelectTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer),
+			tool: new MarkTool(this._canvasContext, this._mouseEventDispatcher, this._documentOrganizer),
 			cursor: "pointer",
-			icon: Icons.select(),
+			icon: Icons.marker(),
 		});
 	}
 

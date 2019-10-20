@@ -10,10 +10,10 @@ class DocumentDrawer implements IDocumentView {
 	}
 
 	public updateState(document: Readonly<Document>) {
-		const unselectedDraft = document.draft.remove(document.selection);
+		const unselectedDraft = document.draft.remove(document.markedDraft);
 		this._drawingContext.clean();
 		ShapesDrawer.drawDraft(this._drawingContext, unselectedDraft, DrawingParams.linesColor());
-		ShapesDrawer.drawDraft(this._drawingContext, document.selection, DrawingParams.selectedLinesColor());
+		ShapesDrawer.drawDraft(this._drawingContext, document.markedDraft, DrawingParams.markedLinesColor());
 	}
 
 	private _drawingContext: IDrawingContext;
