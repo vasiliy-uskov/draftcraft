@@ -10,6 +10,9 @@ import {HotKeyBinder} from "../../_common/hotkeys/HotKeysBinder";
 import {InfoPopup} from "../../_common/components/popup/InfoPopup";
 import {TaskView} from "./TaskView";
 import {Component} from "../../_common/components/component/Component";
+import {LineTool} from "../../_common/components/workspace/tools/line/LineTool";
+import {CompassTool} from "../../_common/components/workspace/tools/compass/CompassTool";
+import {DotTool} from "../../_common/components/workspace/tools/dot/DotTool";
 
 class DraftPage extends BasePage {
     constructor(container: HTMLElement, gameContext: GameContext, messages: Messages, hotKeyBinder: HotKeyBinder) {
@@ -81,13 +84,13 @@ class DraftPage extends BasePage {
 
     private _gameContext: GameContext;
     private _helpPopup = new InfoPopup({blockName: "help-popup"});
-    private _workspace = new Workspace(creator => [
-        creator.createLineTool(),
-        creator.createCompassTool(),
-        creator.createDotTool()
-    ]);
+    private _workspace = new Workspace();
     private _taskView = new TaskView(this._getMessage("helpButtonHint"));
-    private _toolbar = new Toolbar(this._workspace.tools());
+    private _toolbar = new Toolbar([
+        new LineTool(this._workspace.canvasContext(), this._workspace.eventDispatcher(), this._workspace.model()),
+        new CompassTool(this._workspace.canvasContext(), this._workspace.eventDispatcher(), this._workspace.model()),
+        new DotTool(this._workspace.canvasContext(), this._workspace.eventDispatcher(), this._workspace.model(), this._workspace),
+    ]);
 }
 
 export {DraftPage};

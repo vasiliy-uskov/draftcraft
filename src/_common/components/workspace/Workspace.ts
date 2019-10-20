@@ -1,16 +1,15 @@
 import {Component} from "../component/Component";
 import {MouseEventDispatcher} from "./MouseEventDispatcher";
-import {ITool} from "./tools/ITool";
-import {BaseTool} from "./tools/BaseTool";
-import {ToolCreator} from "./tools/ToolCreator";
 import {WorkspaceModel} from "./document/WorkspaceModel";
 import {DocumentDrawer} from "./document/view/DocumentDrawer";
 import {Draft} from "../../shapes/Draft";
 import {Canvas} from "../canvas/Canvas";
 import {Size} from "../../utils/Size";
+import {IDrawingContext} from "../../drawingcontext/IDrawingContext";
+import {IWorkspaceModel} from "./document/IWorkspaceModel";
 
 class Workspace extends Component {
-    constructor(createTools: (creator: ToolCreator) => Array<BaseTool>) {
+    constructor() {
         super({
             blockName: "workspace",
         });
@@ -21,27 +20,20 @@ class Workspace extends Component {
         this._addDisposable(this._workingCanvas);
         this.addChild(this._workingCanvas);
 
-        const canvasMouseEventDispatcher = new MouseEventDispatcher(this._workingCanvas);
-        this._addDisposable(canvasMouseEventDispatcher);
-
-        const toolFactory = new ToolCreator({
-            canvasMouseEventDispatcher,
-            canvasContext: this._workingCanvas.context(),
-            documentOrganizer: this._documentOrganizer,
-            workspaceContainer: this,
-        });
-
-        this._tools = createTools(toolFactory);
-        this._tools.forEach((tool) => {
-            this._addDisposable(tool);
-            this._addHandler(tool.activatedEvent(), () => {
-                this.setStyle("cursor", tool.cursor());
-            })
-        });
+        this._eventDispatcher = new MouseEventDispatcher(this._workingCanvas);
+        this._addDisposable(this._eventDispatcher);
     }
 
-    public tools(): Array<ITool> {
-        return this._tools;
+    public eventDispatcher(): MouseEventDispatcher {
+        return this._eventDispatcher;
+    }
+
+    public canvasContext(): IDrawingContext {
+        return this._workingCanvas.context();
+    }
+
+    public model(): IWorkspaceModel {
+        return this._documentOrganizer;
     }
 
     public setBackgroundImage(src: string) {
@@ -76,7 +68,6 @@ class Workspace extends Component {
         this._resultsCanvas.context().clean();
     }
 
-    private _tools: Array<BaseTool>;
     private _resultsCanvas = new Canvas({
         bemInfo: this.createChildBemInfo("results-canvas"),
         adoptiveSize: true,
@@ -85,6 +76,7 @@ class Workspace extends Component {
         bemInfo: this.createChildBemInfo("working-canvas"),
         adoptiveSize: true,
     });
+    private _eventDispatcher: MouseEventDispatcher;
     private _documentOrganizer = new WorkspaceModel(new DocumentDrawer(this._resultsCanvas.context()));
 }
 

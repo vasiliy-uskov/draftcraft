@@ -23,8 +23,6 @@
     "noImplicitUseStrict": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "strictNullChecks": false,
     "removeComments": true
   },
   "exclude": [
