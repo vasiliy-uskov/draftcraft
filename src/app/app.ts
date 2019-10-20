@@ -9,8 +9,8 @@ const sessionId = sessionStorage.getItem("draftCraftSessionId");
 const messages = new Messages();
 const errorsHandlersQueue = new ErrorsHandlersQueue();
 const gameContext = new GameContext(
-    new ServerApiHelper(sessionId),
-    errorsHandlersQueue,
+	new ServerApiHelper(sessionId),
+	errorsHandlersQueue,
 );
 const game = new Game(gameContext, messages, errorsHandlersQueue);
 gameContext.ready().then(() => game.start());

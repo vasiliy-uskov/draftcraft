@@ -1,4 +1,5 @@
 interface IAction {
-    execute(): void;
-    unexecute(): void;
+	execute(): void;
+
+	unexecute(): void;
 }
