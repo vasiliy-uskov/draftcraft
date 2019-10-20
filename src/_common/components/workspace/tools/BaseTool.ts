@@ -15,10 +15,6 @@ abstract class BaseTool extends Disposable implements ITool {
 		this._addHandler(mouseEventDispatcher.mouseUpEvent(), (data: MouseEventData) => this._activated && this._mouseUpHandler(data));
 	}
 
-	public abstract icon(): string;
-
-	public abstract cursor(): string;
-
 	public actionCreatedEvent(): EventDispatcher<IAction> {
 		return this._actionCreatedEvent;
 	}

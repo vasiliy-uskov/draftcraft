@@ -1,20 +1,10 @@
 import {ICompassState} from "./ICompassState";
-import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
 import {BaseTool} from "../BaseTool";
 import {GetCenterState} from "./GetCenterState";
 import {reducePoint} from "../../../../utils/mathutils";
 
 class CompassTool extends BaseTool {
-
-	public cursor(): string {
-		return "crosshair";
-	}
-
-	public icon(): string {
-		return Icons.compass();
-	}
-
 	public reset() {
 		this._currentState = new GetCenterState(this._drawingContext);
 		this._drawingContext.clean();

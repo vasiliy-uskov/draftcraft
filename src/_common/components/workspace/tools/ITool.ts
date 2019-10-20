@@ -4,8 +4,6 @@ interface ITool {
 	deactivate(): void;
 
 	reset(): void;
-
-	icon(): string;
 }
 
 export {ITool}

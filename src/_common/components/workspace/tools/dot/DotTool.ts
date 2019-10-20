@@ -1,5 +1,4 @@
 import {Vec2} from "../../../../utils/Vec2";
-import {Icons} from "../../../Icons";
 import {LabelInput} from "./LabelInput";
 import {IDrawingContext} from "../../../../drawingcontext/IDrawingContext";
 import {MouseEventData, MouseEventDispatcher} from "../../MouseEventDispatcher";
@@ -18,14 +17,6 @@ class DotTool extends BaseTool {
 		super(drawingContext, mouseEventDispatcher, documentOrganizer);
 		this._labelInput = new LabelInput(workspace);
 		this._addDisposable(this._labelInput);
-	}
-
-	public cursor(): string {
-		return "crosshair";
-	}
-
-	public icon(): string {
-		return Icons.dot();
 	}
 
 	public reset(): void {

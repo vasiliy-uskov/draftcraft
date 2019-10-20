@@ -1,18 +1,9 @@
 import {BaseTool} from "../BaseTool";
 import {MouseEventData} from "../../MouseEventDispatcher";
-import {Icons} from "../../../Icons";
 import {Vec2} from "../../../../utils/Vec2";
 import {MoveSession} from "./MoveSession";
 
 class MoveTool extends BaseTool {
-	public icon(): string {
-		return Icons.move();
-	}
-
-	public cursor(): string {
-		return "move";
-	}
-
 	public reset(): void {
 		if (this._moveSession) {
 			this._moveSession.reset();

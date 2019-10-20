@@ -1,20 +1,23 @@
 import {Component} from "../component/Component";
 import {ToolView} from "./ToolView";
-import {ITool} from "../workspace/tools/ITool";
+import {IWorkspace} from "./IWorkspace";
+import {IToolCreator, ToolViewCreator} from "./ToolViewCreator";
 
 class Toolbar extends Component {
-	constructor(tools: Array<ITool>) {
+	constructor(workspace: IWorkspace, createToolsFn: (a: IToolCreator) => Array<ToolView>) {
 		super({blockName: "toolbar"});
-		this._tools = tools.map((tool: ITool) => {
-			const toolView = new ToolView({
-				icon: tool.icon(),
-				tool,
-				bemInfo: this.createChildBemInfo("tool")
-			});
-			this._addDisposable(toolView);
-			this._listen("click", toolView, this._onToolClickHandler.bind(this, toolView));
-			this.addChild(toolView);
-			return toolView;
+		const toolCreator = new ToolViewCreator({
+			canvasContext: workspace.canvasContext(),
+			canvasMouseEventDispatcher: workspace.eventDispatcher(),
+			documentOrganizer: workspace.model(),
+			workspaceContainer: workspace,
+			createBemInfoFn: () => this.createChildBemInfo("tool"),
+		});
+		this._tools = createToolsFn(toolCreator).map((tool: ToolView) => {
+			this._addDisposable(tool);
+			this._listen("click", tool, this._onToolClickHandler.bind(this, tool));
+			this.addChild(tool);
+			return tool;
 		});
 	}
 

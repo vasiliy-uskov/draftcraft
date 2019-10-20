@@ -1,5 +1,4 @@
 import {AnnotationDrawer} from "../../../../shapes/drawers/AnnotationDrawer";
-import {Icons} from "../../../Icons";
 import {MouseEventData} from "../../MouseEventDispatcher";
 import {BaseTool} from "../BaseTool";
 import {Line} from "../../../../shapes/Line";
@@ -8,14 +7,6 @@ import {ShapesDrawer} from "../../../../shapes/drawers/ShapesDrawer";
 import {DrawingParams} from "../../../../shapes/drawers/DrawingParams";
 
 class LineTool extends BaseTool {
-	public cursor(): string {
-		return "crosshair";
-	}
-
-	public icon(): string {
-		return Icons.pencil();
-	}
-
 	public reset(): void {
 		this._drawingContext.clean();
 		this._line = null;

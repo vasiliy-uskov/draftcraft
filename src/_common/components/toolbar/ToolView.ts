@@ -2,10 +2,18 @@ import {Component} from "../component/Component";
 import {ITool} from "../workspace/tools/ITool";
 import {BemInfo} from "../component/BemInfo";
 
+type ToolViewConfig = {
+	tool: ITool,
+	icon: string;
+	cursor: string,
+	bemInfo: BemInfo,
+}
+
 class ToolView extends Component {
-	constructor({bemInfo, icon, tool}: { bemInfo: BemInfo, icon: string, tool: ITool }) {
+	constructor({bemInfo, icon, tool, cursor}: ToolViewConfig) {
 		super({bemInfo, content: icon});
 		this._tool = tool;
+		this._cursor = cursor
 	}
 
 	public activated(): boolean {
@@ -18,6 +26,7 @@ class ToolView extends Component {
 
 	public activate() {
 		this._tool.activate();
+		document.body.style.cursor = this._cursor;
 		this.updateModifier("selected", true);
 		this._activated = true;
 	}
@@ -29,6 +38,7 @@ class ToolView extends Component {
 	}
 
 	private _activated = false;
+	private _cursor: string;
 	private readonly _tool: ITool;
 }
 
