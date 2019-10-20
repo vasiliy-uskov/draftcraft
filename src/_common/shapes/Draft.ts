@@ -25,7 +25,7 @@ class Draft {
 		return !this.arcs.length && !this.lines.length && !this.dots.length;
 	}
 
-	public getOwner(vec: Vec2): Draft {
+	public getDraftIntersectedByDot(vec: Vec2): Draft {
 		const arcs = this.arcs.filter(arc => arc.owns(vec));
 		const dots = this.dots.filter(dot => dot.owns(vec));
 		const lines = this.lines.filter(line => line.owns(vec));
